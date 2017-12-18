@@ -1,6 +1,6 @@
 [package]
 name        = "directories"
-version     = "0.0.1"
+version     = "0.0.2"
 authors     = [ "Simon Ochsenreither <simon@ochsenreither.de>" ]
 description = "A minimal library that provides the platform-specific location of configuration, cache etc. directories by leveraging the mechanisms defined by the XDG base directory and the XDG user directory specifications on Linux, the Known Folder API on Windows, and the Standard Directory rules on macOS."
 license     = "MPL-2.0"

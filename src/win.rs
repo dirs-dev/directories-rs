@@ -9,6 +9,7 @@ use self::winapi::um::shtypes;
 use self::winapi::um::winnt;
 
 use BaseDirectories;
+use ProjectDirectories;
 
 pub fn base_directories() -> BaseDirectories {
     let home_dir         = unsafe { known_folder(&knownfolders::FOLDERID_UserProfiles) };
@@ -23,7 +24,7 @@ pub fn base_directories() -> BaseDirectories {
     let templates_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
     let videos_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
 
-    let cache_dir        = data_dir.join("\\cache");
+    let cache_dir        = data_dir.join("cache");
     let config_dir       = data_roaming_dir.clone();
 
     BaseDirectories {
@@ -43,6 +44,27 @@ pub fn base_directories() -> BaseDirectories {
         videos_dir:       videos_dir,
         executables_dir:  None,
         fonts_dir:        None
+    }
+}
+
+impl ProjectDirectories {
+    pub fn from_unprocessed_string(value: String) -> ProjectDirectories {
+        let data_dir                 = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
+
+        let project_cache_dir        = data_dir.join(&value).join("cache");
+        let project_data_dir         = data_dir.join(&value);
+        let project_roaming_data_dir = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&value);
+
+        let project_config_dir       = project_roaming_data_dir.clone();
+
+        ProjectDirectories {
+            project_name:             value,
+            project_cache_dir:        project_cache_dir,
+            project_config_dir:       project_config_dir,
+            project_data_dir:         project_data_dir,
+            project_data_roaming_dir: project_roaming_data_dir,
+            project_runtime_dir:      None,
+        }
     }
 }
 

@@ -38,3 +38,22 @@ pub fn base_directories() -> BaseDirectories {
         fonts_dir:        Some(fonts_dir)
     }
 }
+
+impl ProjectDirectories {
+    pub fn from_unprocessed_string(value: String) -> ProjectDirectories {
+        let home_dir                 = env::home_dir().unwrap();
+        let project_cache_dir        = home_dir.join("Library/Caches").join(&value);
+        let project_config_dir       = home_dir.join("Library/Preferences").join(&value);
+        let project_data_dir         = home_dir.join("Library/Application Support").join(&value);
+        let project_roaming_data_dir = project_data_dir.clone();
+
+        ProjectDirectories {
+            project_name:             value,
+            project_cache_dir:        project_cache_dir,
+            project_config_dir:       project_config_dir,
+            project_data_dir:         project_data_dir,
+            project_data_roaming_dir: project_roaming_data_dir,
+            project_runtime_dir:      None,
+        }
+    }
+}
