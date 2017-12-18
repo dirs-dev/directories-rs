@@ -4,4 +4,4 @@ version = "0.0.1"
 authors = [ "Simon Ochsenreither <simon@ochsenreither.de>" ]
 
 [dependencies]
-winapi = { git = "https://github.com/retep998/winapi-rs", branch="dev", features = ["knownfolders", "objbase", "shlobj"] }
+winapi = { version = "0.3", features = ["knownfolders", "objbase", "shlobj"] }
