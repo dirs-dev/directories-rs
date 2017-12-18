@@ -34,6 +34,25 @@ pub fn base_directories() -> BaseDirectories {
     }
 }
 
+impl ProjectDirectories {
+    pub fn from_unprocessed_string(value: String) -> ProjectDirectories {
+        let home_dir                 = env::home_dir().unwrap();
+        let project_cache_dir        = env::var("XDG_CACHE_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".cache")).join(&value);
+        let project_config_dir       = env::var("XDG_CONFIG_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".config")).join(&value);
+        let project_data_dir         = env::var("XDG_DATA_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".local/share")).join(&value);
+        let project_roaming_data_dir = project_data_dir.clone();
+
+        ProjectDirectories {
+            project_name:             value,
+            project_cache_dir:        project_cache_dir,
+            project_config_dir:       project_config_dir,
+            project_data_dir:         project_data_dir,
+            project_data_roaming_dir: project_roaming_data_dir,
+            project_runtime_dir:      None,
+        }
+    }
+}
+
 fn is_absolute_path(path: String) -> Option<PathBuf> {
     let path = PathBuf::from(path);
     if path.is_absolute() {

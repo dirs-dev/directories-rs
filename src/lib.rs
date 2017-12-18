@@ -34,3 +34,15 @@ pub struct BaseDirectories {
     executables_dir:  Option<PathBuf>,
     fonts_dir:        Option<PathBuf>
 }
+
+#[derive(Debug, Clone)]
+pub struct ProjectDirectories {
+    project_name:             String,
+    
+    // base directories
+    project_cache_dir:        PathBuf,
+    project_config_dir:       PathBuf,
+    project_data_dir:         PathBuf,
+    project_data_roaming_dir: PathBuf,
+    project_runtime_dir:      Option<PathBuf>,
+}
