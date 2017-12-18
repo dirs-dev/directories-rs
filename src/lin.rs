@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use std::process::Command;
 
 use BaseDirectories;
+use ProjectDirectories;
 
 pub fn base_directories() -> BaseDirectories {
     let home_dir         = env::home_dir().unwrap();
