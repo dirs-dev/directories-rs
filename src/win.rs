@@ -10,6 +10,7 @@ use self::winapi::um::winnt;
 
 use BaseDirectories;
 use ProjectDirectories;
+use strip_qualification;
 
 pub fn base_directories() -> BaseDirectories {
     let home_dir         = unsafe { known_folder(&knownfolders::FOLDERID_UserProfiles) };
@@ -48,7 +49,8 @@ pub fn base_directories() -> BaseDirectories {
 }
 
 impl ProjectDirectories {
-    pub fn from_unprocessed_string(value: String) -> ProjectDirectories {
+    pub fn from_unprocessed_string(value: &str) -> ProjectDirectories {
+        let project_name             = String::from(value);
         let data_dir                 = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
 
         let project_cache_dir        = data_dir.join(&value).join("cache");
@@ -58,13 +60,22 @@ impl ProjectDirectories {
         let project_config_dir       = project_roaming_data_dir.clone();
 
         ProjectDirectories {
-            project_name:             value,
+            project_name:             project_name,
             project_cache_dir:        project_cache_dir,
             project_config_dir:       project_config_dir,
             project_data_dir:         project_data_dir,
             project_data_roaming_dir: project_roaming_data_dir,
             project_runtime_dir:      None,
         }
+    }
+
+    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
+        ProjectDirectories::from_unprocessed_string(project_name)
+    }
+
+    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
+        let name = strip_qualification(qualified_project_name).trim();
+        ProjectDirectories::from_unprocessed_string(name)
     }
 }
 

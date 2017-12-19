@@ -56,4 +56,12 @@ impl ProjectDirectories {
             project_runtime_dir:      None,
         }
     }
+
+    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
+        from_unprocessed_string(name)
+    }
+
+    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
+        from_unprocessed_string(name)
+    }
 }

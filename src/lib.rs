@@ -46,3 +46,23 @@ pub struct ProjectDirectories {
     project_data_roaming_dir: PathBuf,
     project_runtime_dir:      Option<PathBuf>,
 }
+
+fn strip_qualification(name: &str) -> &str {
+    name.rfind('.').map(|start| &name[start+1..]).unwrap_or(name)
+}
+
+#[cfg(test)]
+mod tests {
+    use strip_qualification;
+
+    #[test]
+    fn test_strip_qualification() {
+        let actual1   = strip_qualification("org.foo.BarApp");
+        let expected1 = "BarApp";
+        assert_eq!(actual1, expected1);
+
+        let actual2   = strip_qualification("BarApp");
+        let expected2 = "BarApp";
+        assert_eq!(actual2, expected2);
+    }
+}
