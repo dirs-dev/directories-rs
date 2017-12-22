@@ -13,7 +13,7 @@ use ProjectDirectories;
 use strip_qualification;
 
 pub fn base_directories() -> BaseDirectories {
-    let home_dir         = unsafe { known_folder(&knownfolders::FOLDERID_UserProfiles) };
+    let home_dir         = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
     let data_dir         = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
     let data_roaming_dir = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
     let desktop_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };

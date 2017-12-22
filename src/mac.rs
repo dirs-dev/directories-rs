@@ -5,9 +5,9 @@ use BaseDirectories;
 #[cfg(target_os = "macos")]
 pub fn base_directories() -> BaseDirectories {
     let home_dir         = env::home_dir().unwrap();
-    let cache_dir        = home_dir.join("Library/Caches/");
-    let config_dir       = home_dir.join("Library/Preferences/");
-    let data_dir         = home_dir.join("Library/Application Support/");
+    let cache_dir        = home_dir.join("Library/Caches");
+    let config_dir       = home_dir.join("Library/Preferences");
+    let data_dir         = home_dir.join("Library/Application Support");
     let data_roaming_dir = data_dir.clone();
     let desktop_dir      = home_dir.join("Desktop");
     let documents_dir    = home_dir.join("Documents");
@@ -16,8 +16,8 @@ pub fn base_directories() -> BaseDirectories {
     let pictures_dir     = home_dir.join("Pictures");
     let public_dir       = home_dir.join("Public");
     let videos_dir       = home_dir.join("Movies");
-    let executables_dir  = home_dir.join("Applications/");
-    let fonts_dir        = home_dir.join("Library/Fonts/");
+    let executables_dir  = home_dir.join("Applications");
+    let fonts_dir        = home_dir.join("Library/Fonts");
 
     BaseDirectories {
         home_dir:         home_dir,
