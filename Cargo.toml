@@ -1,10 +1,12 @@
 [package]
 name        = "directories"
-version     = "0.1.0"
+version     = "0.1.8"
 authors     = [ "Simon Ochsenreither <simon@ochsenreither.de>" ]
-description = "A minimal library that provides the platform-specific location of configuration, cache etc. directories by leveraging the mechanisms defined by the XDG base directory and the XDG user directory specifications on Linux, the Known Folder API on Windows, and the Standard Directory rules on macOS."
+description = "A tiny library that provides platform-specific locations of config, cache, ... directories on Linux, Windows and macOS by leveraging the mechanisms defined by the XDG base directory and the XDG user directory specifications on Linux, the Known Folder system on Windows, and the Standard Directory rules on macOS."
+readme      = "README.md"
 license     = "MPL-2.0"
 repository  = "https://github.com/soc/directories-rs"
+maintenance = { status = "actively-developed" }
 keywords    = ["xdg", "basedir"]
 
 [dependencies]

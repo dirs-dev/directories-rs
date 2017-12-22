@@ -1,9 +1,10 @@
-# Directories
+# Directories ![crates.io version](https://img.shields.io/crates/v/directories.svg) ![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 
 ## Introduction
 
 - A tiny library with a minimal API (4 structs, 4 functions)
-- to find the platform-specific locations for storing configuration, cache and other data
+- that provides the platform-specific, user-accessible locations
+- for storing configuration, cache and other data
 - on Linux, Windows (≥ Vista) and macOS.
 
 The library provides the location of these directories by leveraging the mechanisms defined by
@@ -15,17 +16,17 @@ The library provides the location of these directories by leveraging the mechani
 
 ## Usage
 
-#### Dependency
+### Dependency
 
-Add the library as a dependency to your project by adding
+Add the library as a dependency to your project by inserting
 
 ```toml
-directories = 0.0.3
+directories = "0.1.8"
 ```
 
-to the `[dependencies]` section of your Cargo.toml file.
+into the `[dependencies]` section of your Cargo.toml file.
 
-#### Example
+### Example
 
 Library run by a user with user name "my_user_name" on Linux:
 
@@ -33,8 +34,8 @@ Library run by a user with user name "my_user_name" on Linux:
 extern crate directories;
 use directories::ProjectDirectories;
 
-let my_proj_dirs       = ProjectDirectories.from_project_name("My Project");
-let my_proj_config_dir = my_proj_dirs.project_config_dir; // "/home/my_user_name/.config/my-project/"
+let my_proj_dirs = ProjectDirectories.from_project_name("My Project");
+my_proj_dirs.project_config_dir; // "/home/my_user_name/.config/my-project/"
 ```
 
 ## Features
@@ -46,44 +47,44 @@ that have been defined according to the conventions of operating system the libr
 
 If you want to compute the location of cache, config or data directories for your own application or project, use `ProjectDirectories` instead.
 
-| Static field name  | Value on Linux / BSD                              | Value on Windows                              | Value on macOS                       |
-| ------------------ | ------------------------------------------------- | --------------------------------------------- | ------------------------------------ |
-| `home_dir`         | `$HOME`                                           | `{FOLDERID_Profile}`                          | `$HOME`                              |
-| `cache_dir`        | `$XDG_CACHE_DIR`  or `~/.cache/`                  | `{FOLDERID_LocalAppData}/cache/`              | `$HOME/Library/Caches/`              |
-| `config_dir`       | `$XDG_CONFIG_DIR` or `~/.config/`                 | `{FOLDERID_RoamingAppData}`                   | `$HOME/Library/Preferences/`         |
-| `data_dir`         | `$XDG_DATA_DIR`   or `~/.local/share/`            | `{FOLDERID_LocalAppData}`                     | `$HOME/Library/Application Support/` |
-| `data_roaming_dir` | `$XDG_DATA_DIR`   or `~/.local/share/`            | `{FOLDERID_RoamingAppData}`                   | `$HOME/Library/Application Support/` |
-| `runtime_dir`      | `$XDG_RUNTIME_DIR`                                | `None`                                        | `None`                               |
-| `desktop_dir`      | `XDG_DESKTOP_DIR`                                 | `{FOLDERID_Desktop}`                          | `$HOME/Desktop/`                     |
-| `documents_dir`    | `XDG_DOCUMENTS_DIR`                               | `{FOLDERID_Documents}`                        | `$HOME/Documents/`                   |
-| `download_dir`     | `XDG_DOWNLOAD_DIR`                                | `{FOLDERID_Downloads}`                        | `$HOME/Downloads/`                   |
-| `music_dir`        | `XDG_MUSIC_DIR`                                   | `{FOLDERID_Music}`                            | `$HOME/Music/`                       |
-| `pictures_dir`     | `XDG_PICTURES_DIR`                                | `{FOLDERID_Pictures}`                         | `$HOME/Pictures/`                    |
-| `public_dir`       | `XDG_PUBLICSHARE_DIR`                             | `{FOLDERID_Public}`                           | `$HOME/Public/`                      |
-| `templates_dir`    | `XDG_TEMPLATES_DIR`                               | `{FOLDERID_Templates}`                        | `None`                               |
-| `videos_dir`       | `XDG_VIDEOS_DIR`                                  | `{FOLDERID_Videos}`                           | `$HOME/Movies/`                      |
-| `executables_dir`  | `$XDG_DATA_HOME/../bin/` or `$HOME/.local/bin/`   | `None`                                        | `$HOME/Applications/`                |
-| `fonts_dir`        | `$XDG_DATA_HOME/fonts/` or `/.local/share/fonts/` | `None`                                        | `$HOME/Library/Fonts/`               |
+| Field name         | Value on Linux                                                     | Value on Windows                 | Value on macOS                       |
+| ------------------ | ------------------------------------------------------------------ | -------------------------------- | ------------------------------------ |
+| `home_dir`         | `$HOME`                                                            | `{FOLDERID_Profile}`             | `$HOME`                              |
+| `cache_dir`        | `$XDG_CACHE_DIR`  or `~/.cache/`                                   | `{FOLDERID_LocalAppData}/cache/` | `$HOME/Library/Caches/`              |
+| `config_dir`       | `$XDG_CONFIG_DIR` or `~/.config/`                                  | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Preferences/`         |
+| `data_dir`         | `$XDG_DATA_DIR`   or `~/.local/share/`                             | `{FOLDERID_LocalAppData}`        | `$HOME/Library/Application Support/` |
+| `data_roaming_dir` | `$XDG_DATA_DIR`   or `~/.local/share/`                             | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Application Support/` |
+| `runtime_dir`      | `Some($XDG_RUNTIME_DIR)`                                           | `None`                           | `None`                               |
+| `desktop_dir`      | `XDG_DESKTOP_DIR`                                                  | `{FOLDERID_Desktop}`             | `$HOME/Desktop/`                     |
+| `documents_dir`    | `XDG_DOCUMENTS_DIR`                                                | `{FOLDERID_Documents}`           | `$HOME/Documents/`                   |
+| `download_dir`     | `XDG_DOWNLOAD_DIR`                                                 | `{FOLDERID_Downloads}`           | `$HOME/Downloads/`                   |
+| `music_dir`        | `XDG_MUSIC_DIR`                                                    | `{FOLDERID_Music}`               | `$HOME/Music/`                       |
+| `pictures_dir`     | `XDG_PICTURES_DIR`                                                 | `{FOLDERID_Pictures}`            | `$HOME/Pictures/`                    |
+| `public_dir`       | `XDG_PUBLICSHARE_DIR`                                              | `{FOLDERID_Public}`              | `$HOME/Public/`                      |
+| `templates_dir`    | `XDG_TEMPLATES_DIR`                                                | `{FOLDERID_Templates}`           | `None`                               |
+| `videos_dir`       | `XDG_VIDEOS_DIR`                                                   | `{FOLDERID_Videos}`              | `$HOME/Movies/`                      |
+| `executables_dir`  | `Some($XDG_DATA_HOME/../bin/)` or `Some($HOME/.local/bin/)`        | `None`                           | `Some($HOME/Applications/)`          |
+| `fonts_dir`        | `Some($XDG_DATA_HOME/fonts/)` or `Some($HOME/.local/share/fonts/)` | `None`                           | `Some($HOME/Library/Fonts/)`         |
 
 ### `ProjectDirectories`
 
 The intended use-case for `ProjectDirectories` is to compute the location of cache, config or data directories for your own application or project,
 which are derived from the standard directories.
 
-| Instance field name        | Value on Linux / BSD                                                        | Value on Windows                                   | Value on macOS                                         |
-| -------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
-| `project_cache_dir`        | `$XDG_CACHE_DIR/_yourprojectname_` or `~/.cache/_yourprojectname_/`         | `{FOLDERID_LocalAppData}/cache/_yourprojectname_/` | `$HOME/Library/Caches/_yourprojectname_/`              |
-| `project_config_dir`       | `$XDG_CONFIG_DIR/_yourprojectname_`  or `~/.config/_yourprojectname_/`      | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Preferences/_yourprojectname_/`         |
-| `project_data_dir`         | `$XDG_DATA_DIR/_yourprojectname_` or `~/.local/share/_yourprojectname_/`    | `{FOLDERID_LocalAppData}/_yourprojectname_/`       | `$HOME/Library/Application Support/_yourprojectname_/` |
-| `project_data_roaming_dir` | `$XDG_DATA_DIR/_yourprojectname_` or `~/.local/share/_yourprojectname_/`    | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Application Support/_yourprojectname_/` |
-| `project_runtime_dir`      | `$XDG_RUNTIME_DIR/_yourprojectname_` or `~/.local/share/_yourprojectname_/` | `None`                                             | `None`                                                 |
+| Field name                 | Value on Linux                                                                              | Value on Windows                                   | Value on macOS                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
+| `project_cache_dir`        | `$XDG_CACHE_DIR/_yourprojectname_` or `$HOME/.cache/_yourprojectname_/`                     | `{FOLDERID_LocalAppData}/cache/_yourprojectname_/` | `$HOME/Library/Caches/_yourprojectname_/`              |
+| `project_config_dir`       | `$XDG_CONFIG_DIR/_yourprojectname_`  or `$HOME/.config/_yourprojectname_/`                  | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Preferences/_yourprojectname_/`         |
+| `project_data_dir`         | `$XDG_DATA_DIR/_yourprojectname_` or `$HOME/.local/share/_yourprojectname_/`                | `{FOLDERID_LocalAppData}/_yourprojectname_/`       | `$HOME/Library/Application Support/_yourprojectname_/` |
+| `project_data_roaming_dir` | `$XDG_DATA_DIR/_yourprojectname_` or `$HOME/.local/share/_yourprojectname_/`                | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Application Support/_yourprojectname_/` |
+| `project_runtime_dir`      | `Some($XDG_RUNTIME_DIR/_yourprojectname_)` or `Some($HOME/.local/share/_yourprojectname_/)` | `None`                                             | `None`                                                 |
 
 The specific value of `_yourprojectname_` depends on the function used to create the `ProjectDirectories` struct:
 
-| Factory method                | Example project name           | Value on Linux | Value on Windows | Value on macOS                  |
-| ----------------------------- | ------------------------------ | -------------- | ---------------- | ------------------------------- |
-| `from_unprocessed_string`     | `"FooBar-App"`                 | `"FooBar-App"` | `"FooBar-App"`   | `"FooBar-App"`                  |
-| `from_project_name`           | `"FooBar App"`                 | `"foobar-app"` | `"FooBar App"`   | `"FooBar App"`                  |
+| Function name                 | Example project name           | Value on Linux | Value on Windows | Value on macOS                 |
+| ----------------------------- | ------------------------------ | -------------- | ---------------- | ------------------------------ |
+| `from_unprocessed_string`     | `"FooBar-App"`                 | `"FooBar-App"` | `"FooBar-App"`   | `"FooBar-App"`                 |
+| `from_project_name`           | `"FooBar App"`                 | `"foobar-app"` | `"FooBar App"`   | `"FooBar App"`                 |
 | `from_qualified_project_name` | `"org.foobar-corp.FooBar-App"` | `"foobar-app"` | `"FooBar-App"`   | `"org.foobar-corp.FooBar-App"` |
 
 ## Versioning
