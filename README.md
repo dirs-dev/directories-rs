@@ -2,7 +2,7 @@
 
 ## Introduction
 
-- A tiny library with a minimal API (4 structs, 4 functions)
+- A tiny library with a minimal API (2 structs, 4 functions)
 - that provides the platform-specific, user-accessible locations
 - for storing configuration, cache and other data
 - on Linux, Windows (≥ Vista) and macOS.
