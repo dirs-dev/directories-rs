@@ -73,7 +73,7 @@ which are derived from the standard directories.
 
 | Field name                 | Value on Linux                                                                              | Value on Windows                                   | Value on macOS                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
-| `project_cache_dir`        | `$XDG_CACHE_DIR/_yourprojectname_` or `$HOME/.cache/_yourprojectname_/`                     | `{FOLDERID_LocalAppData}/cache/_yourprojectname_/` | `$HOME/Library/Caches/_yourprojectname_/`              |
+| `project_cache_dir`        | `$XDG_CACHE_DIR/_yourprojectname_` or `$HOME/.cache/_yourprojectname_/`                     | `{FOLDERID_LocalAppData}/_yourprojectname_/cache/` | `$HOME/Library/Caches/_yourprojectname_/`              |
 | `project_config_dir`       | `$XDG_CONFIG_DIR/_yourprojectname_`  or `$HOME/.config/_yourprojectname_/`                  | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Preferences/_yourprojectname_/`         |
 | `project_data_dir`         | `$XDG_DATA_DIR/_yourprojectname_` or `$HOME/.local/share/_yourprojectname_/`                | `{FOLDERID_LocalAppData}/_yourprojectname_/`       | `$HOME/Library/Application Support/_yourprojectname_/` |
 | `project_data_roaming_dir` | `$XDG_DATA_DIR/_yourprojectname_` or `$HOME/.local/share/_yourprojectname_/`                | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Application Support/_yourprojectname_/` |
