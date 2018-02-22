@@ -12,7 +12,7 @@ pub fn base_directories() -> BaseDirectories {
     let data_roaming_dir = data_dir.clone();
     let desktop_dir      = home_dir.join("Desktop");
     let documents_dir    = home_dir.join("Documents");
-    let download_dir     = home_dir.join("Downloads");
+    let downloads_dir    = home_dir.join("Downloads");
     let music_dir        = home_dir.join("Music");
     let pictures_dir     = home_dir.join("Pictures");
     let public_dir       = home_dir.join("Public");
@@ -29,7 +29,7 @@ pub fn base_directories() -> BaseDirectories {
         runtime_dir:      None,
         desktop_dir:      desktop_dir,
         documents_dir:    documents_dir,
-        download_dir:     download_dir,
+        downloads_dir:    downloads_dir,
         music_dir:        music_dir,
         pictures_dir:     pictures_dir,
         public_dir:       public_dir,

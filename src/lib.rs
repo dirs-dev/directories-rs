@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::path::PathBuf;
 
 #[cfg(target_os = "linux")]   mod lin;
@@ -23,7 +24,7 @@ pub struct BaseDirectories {
     // user directories
     desktop_dir:      PathBuf,
     documents_dir:    PathBuf,
-    download_dir:     PathBuf,
+    downloads_dir:     PathBuf,
     music_dir:        PathBuf,
     pictures_dir:     PathBuf,
     public_dir:       PathBuf,
@@ -45,6 +46,78 @@ pub struct ProjectDirectories {
     project_data_dir:         PathBuf,
     project_data_roaming_dir: PathBuf,
     project_runtime_dir:      Option<PathBuf>,
+}
+
+impl BaseDirectories {
+    pub fn home_dir(&self) -> &Path {
+        self.home_dir.as_path()
+    }
+    pub fn cache_dir(&self) -> &Path {
+        self.cache_dir.as_path()
+    }
+    pub fn config_dir(&self) -> &Path {
+        self.config_dir.as_path()
+    }
+    pub fn data_dir(&self) -> &Path {
+        self.data_dir.as_path()
+    }
+    pub fn data_roaming_dir(&self) -> &Path {
+        self.data_roaming_dir.as_path()
+    }
+    pub fn runtime_dir(&self) -> Option<&Path> {
+        self.runtime_dir.as_ref().map(|p| p.as_path())
+    }
+    pub fn desktop_dir(&self) -> &Path {
+        self.desktop_dir.as_path()
+    }
+    pub fn documents_dir(&self) -> &Path {
+        self.documents_dir.as_path()
+    }
+    pub fn downloads_dir(&self) -> &Path {
+        self.downloads_dir.as_path()
+    }
+    pub fn music_dir(&self) -> &Path {
+        self.music_dir.as_path()
+    }
+    pub fn pictures_dir(&self) -> &Path {
+        self.pictures_dir.as_path()
+    }
+    pub fn public_dir(&self) -> &Path {
+        self.public_dir.as_path()
+    }
+    pub fn templates_dir(&self) -> Option<&Path> {
+        self.templates_dir.as_ref().map(|p| p.as_path())
+    }
+    pub fn videos_dir(&self) -> &Path {
+        self.videos_dir.as_path()
+    }
+    pub fn executables_dir(&self) -> Option<&Path> {
+        self.executables_dir.as_ref().map(|p| p.as_path())
+    }
+    pub fn fonts_dir(&self) -> Option<&Path> {
+        self.fonts_dir.as_ref().map(|p| p.as_path())
+    }
+}
+
+impl ProjectDirectories {
+    pub fn project_name(&self) -> &str {
+        self.project_name.as_str()
+    }
+    pub fn project_cache_dir(&self) -> &Path {
+        self.project_cache_dir.as_path()
+    }
+    pub fn project_config_dir(&self) -> &Path {
+        self.project_config_dir.as_path()
+    }
+    pub fn project_data_dir(&self) -> &Path {
+        self.project_data_dir.as_path()
+    }
+    pub fn project_data_roaming_dir(&self) -> &Path {
+        self.project_data_roaming_dir.as_path()
+    }
+    pub fn project_runtime_dir(&self) -> Option<&Path> {
+        self.project_runtime_dir.as_ref().map(|p| p.as_path())
+    }
 }
 
 fn strip_qualification(name: &str) -> &str {

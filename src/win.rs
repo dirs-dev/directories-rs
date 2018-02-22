@@ -18,7 +18,7 @@ pub fn base_directories() -> BaseDirectories {
     let data_roaming_dir = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
     let desktop_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
     let documents_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
-    let download_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
+    let downloads_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
     let music_dir        = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
     let pictures_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
     let public_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
@@ -37,7 +37,7 @@ pub fn base_directories() -> BaseDirectories {
         runtime_dir:      None,
         desktop_dir:      desktop_dir,
         documents_dir:    documents_dir,
-        download_dir:     download_dir,
+        downloads_dir:    downloads_dir,
         music_dir:        music_dir,
         pictures_dir:     pictures_dir,
         public_dir:       public_dir,
