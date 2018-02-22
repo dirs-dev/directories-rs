@@ -56,15 +56,16 @@ impl ProjectDirectories {
         }
     }
 
+    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
+        let name = trim_and_replace_spaces_with_hyphens_then_lowercase(project_name);
+        ProjectDirectories::from_unprocessed_string(&name)
+    }
+
     pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
         let name = strip_qualification(qualified_project_name).to_lowercase();
         ProjectDirectories::from_unprocessed_string(name.trim())
     }
 
-    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
-        let name = trim_and_replace_spaces_with_hyphens_then_lowercase(project_name);
-        ProjectDirectories::from_unprocessed_string(&name)
-    }
 }
 
 fn is_absolute_path(path: String) -> Option<PathBuf> {
