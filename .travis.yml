@@ -1,0 +1,16 @@
+sudo: false
+language: rust
+rust:
+- stable
+- beta
+
+install:
+- rustc -Vv
+- cargo -V
+
+script:
+- cargo check --verbose
+- cargo test --verbose
+
+cache:
+  cargo: true
