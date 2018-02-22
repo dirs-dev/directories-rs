@@ -1,9 +1,10 @@
-# Directories [![crates.io version](https://img.shields.io/crates/v/directories.svg)](https://crates.io/crates/directories) ![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg) [![TravisCI status](https://travis-ci.org/soc/directories-rs.svg?branch=master)](https://travis-ci.org/soc/directories-rs) [![AppVeyor status](https://ci.appveyor.com/api/projects/status/p5c600gk0lthlhjn?svg=true)](https://ci.appveyor.com/project/soc/directories-rs)
+[![crates.io version](https://img.shields.io/crates/v/directories.svg)](https://crates.io/crates/directories) ![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg) [![TravisCI status](https://travis-ci.org/soc/directories-rs.svg?branch=master)](https://travis-ci.org/soc/directories-rs) [![AppVeyor status](https://ci.appveyor.com/api/projects/status/p5c600gk0lthlhjn?svg=true)](https://ci.appveyor.com/project/soc/directories-rs)
 
+# Directories
 
 ## Introduction
 
-- A tiny library with a minimal API (2 structs, 4 functions)
+- A tiny library with a minimal API (2 structs, 4 factory functions, getters)
 - that provides the platform-specific, user-accessible locations
 - for storing configuration, cache and other data
 - on Linux, Windows (≥ Vista) and macOS.
@@ -22,7 +23,7 @@ The library provides the location of these directories by leveraging the mechani
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.1.8"
+directories = "0.2.0"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
@@ -48,7 +49,7 @@ that have been defined according to the conventions of operating system the libr
 
 If you want to compute the location of cache, config or data directories for your own application or project, use `ProjectDirectories` instead.
 
-| Field name         | Value on Linux                                                     | Value on Windows                 | Value on macOS                       |
+| Function name      | Value on Linux                                                     | Value on Windows                 | Value on macOS                       |
 | ------------------ | ------------------------------------------------------------------ | -------------------------------- | ------------------------------------ |
 | `home_dir`         | `$HOME`                                                            | `{FOLDERID_Profile}`             | `$HOME`                              |
 | `cache_dir`        | `$XDG_CACHE_DIR`  or `~/.cache/`                                   | `{FOLDERID_LocalAppData}/cache/` | `$HOME/Library/Caches/`              |
@@ -58,7 +59,7 @@ If you want to compute the location of cache, config or data directories for you
 | `runtime_dir`      | `Some($XDG_RUNTIME_DIR)`                                           | `None`                           | `None`                               |
 | `desktop_dir`      | `XDG_DESKTOP_DIR`                                                  | `{FOLDERID_Desktop}`             | `$HOME/Desktop/`                     |
 | `documents_dir`    | `XDG_DOCUMENTS_DIR`                                                | `{FOLDERID_Documents}`           | `$HOME/Documents/`                   |
-| `download_dir`     | `XDG_DOWNLOAD_DIR`                                                 | `{FOLDERID_Downloads}`           | `$HOME/Downloads/`                   |
+| `downloads_dir`    | `XDG_DOWNLOAD_DIR`                                                 | `{FOLDERID_Downloads}`           | `$HOME/Downloads/`                   |
 | `music_dir`        | `XDG_MUSIC_DIR`                                                    | `{FOLDERID_Music}`               | `$HOME/Music/`                       |
 | `pictures_dir`     | `XDG_PICTURES_DIR`                                                 | `{FOLDERID_Pictures}`            | `$HOME/Pictures/`                    |
 | `public_dir`       | `XDG_PUBLICSHARE_DIR`                                              | `{FOLDERID_Public}`              | `$HOME/Public/`                      |
@@ -72,7 +73,7 @@ If you want to compute the location of cache, config or data directories for you
 The intended use-case for `ProjectDirectories` is to compute the location of cache, config or data directories for your own application or project,
 which are derived from the standard directories.
 
-| Field name                 | Value on Linux                                                                              | Value on Windows                                   | Value on macOS                                         |
+| Function name              | Value on Linux                                                                              | Value on Windows                                   | Value on macOS                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
 | `project_cache_dir`        | `$XDG_CACHE_DIR/_yourprojectname_` or `$HOME/.cache/_yourprojectname_/`                     | `{FOLDERID_LocalAppData}/_yourprojectname_/cache/` | `$HOME/Library/Caches/_yourprojectname_/`              |
 | `project_config_dir`       | `$XDG_CONFIG_DIR/_yourprojectname_`  or `$HOME/.config/_yourprojectname_/`                  | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Preferences/_yourprojectname_/`         |

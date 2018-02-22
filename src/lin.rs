@@ -25,7 +25,7 @@ pub fn base_directories() -> BaseDirectories {
         runtime_dir:      runtime_dir,
         desktop_dir:      run_xdg_user_dir_command("DESKTOP"),
         documents_dir:    run_xdg_user_dir_command("DOCUMENTS"),
-        download_dir:     run_xdg_user_dir_command("DOWNLOAD"),
+        downloads_dir:    run_xdg_user_dir_command("DOWNLOAD"),
         music_dir:        run_xdg_user_dir_command("MUSIC"),
         pictures_dir:     run_xdg_user_dir_command("PICTURES"),
         public_dir:       run_xdg_user_dir_command("PUBLICSHARE"),
