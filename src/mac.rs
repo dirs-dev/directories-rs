@@ -1,3 +1,4 @@
+use ProjectDirectories;
 use std::env;
 
 use BaseDirectories;
@@ -58,10 +59,10 @@ impl ProjectDirectories {
     }
 
     pub fn from_project_name(project_name: &str) -> ProjectDirectories {
-        from_unprocessed_string(name)
+        ProjectDirectories::from_unprocessed_string(project_name.to_string())
     }
 
     pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
-        from_unprocessed_string(name)
+        ProjectDirectories::from_unprocessed_string(qualified_project_name.to_string())
     }
 }
