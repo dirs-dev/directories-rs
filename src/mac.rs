@@ -10,15 +10,15 @@ pub fn base_directories() -> BaseDirectories {
     let config_dir       = home_dir.join("Library/Preferences");
     let data_dir         = home_dir.join("Library/Application Support");
     let data_roaming_dir = data_dir.clone();
+    let audio_dir        = home_dir.join("Music");
     let desktop_dir      = home_dir.join("Desktop");
-    let documents_dir    = home_dir.join("Documents");
-    let downloads_dir    = home_dir.join("Downloads");
-    let music_dir        = home_dir.join("Music");
-    let pictures_dir     = home_dir.join("Pictures");
+    let document_dir     = home_dir.join("Documents");
+    let download_dir     = home_dir.join("Downloads");
+    let picture_dir      = home_dir.join("Pictures");
     let public_dir       = home_dir.join("Public");
-    let videos_dir       = home_dir.join("Movies");
-    let executables_dir  = home_dir.join("Applications");
-    let fonts_dir        = home_dir.join("Library/Fonts");
+    let video_dir        = home_dir.join("Movies");
+    let executable_dir   = home_dir.join("Applications");
+    let font_dir         = home_dir.join("Library/Fonts");
 
     BaseDirectories {
         home_dir:         home_dir,
@@ -26,17 +26,18 @@ pub fn base_directories() -> BaseDirectories {
         config_dir:       config_dir,
         data_dir:         data_dir,
         data_roaming_dir: data_roaming_dir,
+        executable_dir:   Some(executable_dir),
         runtime_dir:      None,
+
+        audio_dir:        audio_dir,
         desktop_dir:      desktop_dir,
-        documents_dir:    documents_dir,
-        downloads_dir:    downloads_dir,
-        music_dir:        music_dir,
-        pictures_dir:     pictures_dir,
+        document_dir:     document_dir,
+        download_dir:     download_dir,
+        font_dir:         Some(font_dir),
+        picture_dir:      picture_dir,
         public_dir:       public_dir,
-        templates_dir:    None,
-        videos_dir:       videos_dir,
-        executables_dir:  Some(executables_dir),
-        fonts_dir:        Some(fonts_dir)
+        template_dir:     None,
+        video_dir:        video_dir
     }
 }
 

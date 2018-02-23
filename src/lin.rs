@@ -13,8 +13,8 @@ pub fn base_directories() -> BaseDirectories {
     let data_dir         = env::var("XDG_DATA_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".local/share"));
     let data_roaming_dir = data_dir.clone();
     let runtime_dir      = env::var("XDG_RUNTIME_DIR").ok().and_then(is_absolute_path);
-    let executables_dir  = { let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir };
-    let fonts_dir        = data_dir.join("fonts");
+    let executable_dir   = { let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir };
+    let font_dir         = data_dir.join("fonts");
 
     BaseDirectories {
         home_dir:         home_dir,
@@ -22,17 +22,18 @@ pub fn base_directories() -> BaseDirectories {
         config_dir:       config_dir,
         data_dir:         data_dir,
         data_roaming_dir: data_roaming_dir,
+        executable_dir:   Some(executable_dir),
         runtime_dir:      runtime_dir,
+
+        audio_dir:        run_xdg_user_dir_command("MUSIC"),
         desktop_dir:      run_xdg_user_dir_command("DESKTOP"),
-        documents_dir:    run_xdg_user_dir_command("DOCUMENTS"),
-        downloads_dir:    run_xdg_user_dir_command("DOWNLOAD"),
-        music_dir:        run_xdg_user_dir_command("MUSIC"),
-        pictures_dir:     run_xdg_user_dir_command("PICTURES"),
+        document_dir:     run_xdg_user_dir_command("DOCUMENTS"),
+        download_dir:     run_xdg_user_dir_command("DOWNLOAD"),
+        font_dir:         Some(font_dir),
+        picture_dir:      run_xdg_user_dir_command("PICTURES"),
         public_dir:       run_xdg_user_dir_command("PUBLICSHARE"),
-        templates_dir:    Some(run_xdg_user_dir_command("TEMPLATES")),
-        videos_dir:       run_xdg_user_dir_command("VIDEOS"),
-        executables_dir:  Some(executables_dir),
-        fonts_dir:        Some(fonts_dir)
+        template_dir:     Some(run_xdg_user_dir_command("TEMPLATES")),
+        video_dir:        run_xdg_user_dir_command("VIDEOS")
     }
 }
 

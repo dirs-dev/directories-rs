@@ -17,13 +17,13 @@ pub fn base_directories() -> BaseDirectories {
     let data_dir         = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
     let data_roaming_dir = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
     let desktop_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
-    let documents_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
-    let downloads_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
-    let music_dir        = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
-    let pictures_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
+    let document_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
+    let download_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
+    let audio_dir        = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
+    let picture_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
     let public_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
-    let templates_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
-    let videos_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
+    let template_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
+    let video_dir        = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
 
     let cache_dir        = data_dir.join("cache");
     let config_dir       = data_roaming_dir.clone();
@@ -34,17 +34,18 @@ pub fn base_directories() -> BaseDirectories {
         config_dir:       config_dir,
         data_dir:         data_dir,
         data_roaming_dir: data_roaming_dir,
+        executable_dir:   None,
         runtime_dir:      None,
+
+        audio_dir:        audio_dir,
         desktop_dir:      desktop_dir,
-        documents_dir:    documents_dir,
-        downloads_dir:    downloads_dir,
-        music_dir:        music_dir,
-        pictures_dir:     pictures_dir,
+        document_dir:     document_dir,
+        download_dir:     download_dir,
+        font_dir:         None,
+        picture_dir:      picture_dir,
         public_dir:       public_dir,
-        templates_dir:    Some(templates_dir),
-        videos_dir:       videos_dir,
-        executables_dir:  None,
-        fonts_dir:        None
+        template_dir:     Some(template_dir),
+        video_dir:        video_dir
     }
 }
 

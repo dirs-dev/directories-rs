@@ -23,7 +23,7 @@ The library provides the location of these directories by leveraging the mechani
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.2.0"
+directories = "0.3.1"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
@@ -56,17 +56,17 @@ If you want to compute the location of cache, config or data directories for you
 | `config_dir`       | `$XDG_CONFIG_DIR` or `~/.config/`                                  | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Preferences/`         |
 | `data_dir`         | `$XDG_DATA_DIR`   or `~/.local/share/`                             | `{FOLDERID_LocalAppData}`        | `$HOME/Library/Application Support/` |
 | `data_roaming_dir` | `$XDG_DATA_DIR`   or `~/.local/share/`                             | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Application Support/` |
+| `executable_dir`   | `Some($XDG_DATA_HOME/../bin/)` or `Some($HOME/.local/bin/)`        | `None`                           | `Some($HOME/Applications/)`          |
 | `runtime_dir`      | `Some($XDG_RUNTIME_DIR)`                                           | `None`                           | `None`                               |
+| `audio_dir`        | `XDG_MUSIC_DIR`                                                    | `{FOLDERID_Music}`               | `$HOME/Music/`                       |
 | `desktop_dir`      | `XDG_DESKTOP_DIR`                                                  | `{FOLDERID_Desktop}`             | `$HOME/Desktop/`                     |
-| `documents_dir`    | `XDG_DOCUMENTS_DIR`                                                | `{FOLDERID_Documents}`           | `$HOME/Documents/`                   |
-| `downloads_dir`    | `XDG_DOWNLOAD_DIR`                                                 | `{FOLDERID_Downloads}`           | `$HOME/Downloads/`                   |
-| `music_dir`        | `XDG_MUSIC_DIR`                                                    | `{FOLDERID_Music}`               | `$HOME/Music/`                       |
-| `pictures_dir`     | `XDG_PICTURES_DIR`                                                 | `{FOLDERID_Pictures}`            | `$HOME/Pictures/`                    |
+| `document_dir`     | `XDG_DOCUMENTS_DIR`                                                | `{FOLDERID_Documents}`           | `$HOME/Documents/`                   |
+| `download_dir`     | `XDG_DOWNLOAD_DIR`                                                 | `{FOLDERID_Downloads}`           | `$HOME/Downloads/`                   |
+| `font_dir`         | `Some($XDG_DATA_HOME/fonts/)` or `Some($HOME/.local/share/fonts/)` | `None`                           | `Some($HOME/Library/Fonts/)`         |
+| `picture_dir`      | `XDG_PICTURES_DIR`                                                 | `{FOLDERID_Pictures}`            | `$HOME/Pictures/`                    |
 | `public_dir`       | `XDG_PUBLICSHARE_DIR`                                              | `{FOLDERID_Public}`              | `$HOME/Public/`                      |
-| `templates_dir`    | `XDG_TEMPLATES_DIR`                                                | `{FOLDERID_Templates}`           | `None`                               |
-| `videos_dir`       | `XDG_VIDEOS_DIR`                                                   | `{FOLDERID_Videos}`              | `$HOME/Movies/`                      |
-| `executables_dir`  | `Some($XDG_DATA_HOME/../bin/)` or `Some($HOME/.local/bin/)`        | `None`                           | `Some($HOME/Applications/)`          |
-| `fonts_dir`        | `Some($XDG_DATA_HOME/fonts/)` or `Some($HOME/.local/share/fonts/)` | `None`                           | `Some($HOME/Library/Fonts/)`         |
+| `template_dir`     | `XDG_TEMPLATES_DIR`                                                | `{FOLDERID_Templates}`           | `None`                               |
+| `video_dir`        | `XDG_VIDEOS_DIR`                                                   | `{FOLDERID_Videos}`              | `$HOME/Movies/`                      |
 
 ### `ProjectDirectories`
 

@@ -19,21 +19,19 @@ pub struct BaseDirectories {
     config_dir:       PathBuf,
     data_dir:         PathBuf,
     data_roaming_dir: PathBuf,
+    executable_dir:   Option<PathBuf>,
     runtime_dir:      Option<PathBuf>,
 
     // user directories
+    audio_dir:        PathBuf,
     desktop_dir:      PathBuf,
-    documents_dir:    PathBuf,
-    downloads_dir:     PathBuf,
-    music_dir:        PathBuf,
-    pictures_dir:     PathBuf,
+    document_dir:     PathBuf,
+    download_dir:     PathBuf,
+    font_dir:         Option<PathBuf>,
+    picture_dir:      PathBuf,
     public_dir:       PathBuf,
-    templates_dir:    Option<PathBuf>,
-    videos_dir:       PathBuf,
-
-    // derived directories
-    executables_dir:  Option<PathBuf>,
-    fonts_dir:        Option<PathBuf>
+    template_dir:     Option<PathBuf>,
+    video_dir:        PathBuf
 }
 
 #[derive(Debug, Clone)]
@@ -64,38 +62,39 @@ impl BaseDirectories {
     pub fn data_roaming_dir(&self) -> &Path {
         self.data_roaming_dir.as_path()
     }
+    pub fn executable_dir(&self) -> Option<&Path> {
+        self.executable_dir.as_ref().map(|p| p.as_path())
+    }
     pub fn runtime_dir(&self) -> Option<&Path> {
         self.runtime_dir.as_ref().map(|p| p.as_path())
+    }
+
+    pub fn audio_dir(&self) -> &Path {
+        self.audio_dir.as_path()
     }
     pub fn desktop_dir(&self) -> &Path {
         self.desktop_dir.as_path()
     }
-    pub fn documents_dir(&self) -> &Path {
-        self.documents_dir.as_path()
+    pub fn document_dir(&self) -> &Path {
+        self.document_dir.as_path()
     }
-    pub fn downloads_dir(&self) -> &Path {
-        self.downloads_dir.as_path()
+    pub fn download_dir(&self) -> &Path {
+        self.download_dir.as_path()
     }
-    pub fn music_dir(&self) -> &Path {
-        self.music_dir.as_path()
+    pub fn font_dir(&self) -> Option<&Path> {
+        self.font_dir.as_ref().map(|p| p.as_path())
     }
-    pub fn pictures_dir(&self) -> &Path {
-        self.pictures_dir.as_path()
+    pub fn picture_dir(&self) -> &Path {
+        self.picture_dir.as_path()
     }
     pub fn public_dir(&self) -> &Path {
         self.public_dir.as_path()
     }
-    pub fn templates_dir(&self) -> Option<&Path> {
-        self.templates_dir.as_ref().map(|p| p.as_path())
+    pub fn template_dir(&self) -> Option<&Path> {
+        self.template_dir.as_ref().map(|p| p.as_path())
     }
-    pub fn videos_dir(&self) -> &Path {
-        self.videos_dir.as_path()
-    }
-    pub fn executables_dir(&self) -> Option<&Path> {
-        self.executables_dir.as_ref().map(|p| p.as_path())
-    }
-    pub fn fonts_dir(&self) -> Option<&Path> {
-        self.fonts_dir.as_ref().map(|p| p.as_path())
+    pub fn video_dir(&self) -> &Path {
+        self.video_dir.as_path()
     }
 }
 
