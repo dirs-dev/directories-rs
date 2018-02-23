@@ -1,5 +1,11 @@
+os:
+- linux
+- osx
+
 sudo: false
+
 language: rust
+
 rust:
 - stable
 - beta
