@@ -46,53 +46,166 @@ pub struct ProjectDirectories {
     project_runtime_dir:      Option<PathBuf>,
 }
 
+#[deny(missing_docs)]
 impl BaseDirectories {
+    /// Returns the path to the user's home directory.
+    ///
+    /// |Platform | Value                | Example       |
+    /// | ------- | -------------------- | ------------- |
+    /// | Linux   | `$HOME`              | /home/eve/    |
+    /// | macOS   | `$HOME`              | /Users/eve/   |
+    /// | Windows | `{FOLDERID_Profile}` | C:\Users\Eve\ |
     pub fn home_dir(&self) -> &Path {
         self.home_dir.as_path()
     }
+    /// Returns the path to the user's cache directory.
+    /// 
+    /// |Platform | Value                             | Example                           |
+    /// | ------- | --------------------------------- | --------------------------------- |
+    /// | Linux   | `$XDG_CACHE_HOME` or `~/.cache/`  | /home/eve/.cache/                 |
+    /// | macOS   | `$HOME/Library/Caches/`           | /Users/eve/Library/Caches/        |
+    /// | Windows | `{FOLDERID_LocalAppData}\cache\`  | C:\Users\Eve\AppData\Local\cache\ |
     pub fn cache_dir(&self) -> &Path {
         self.cache_dir.as_path()
     }
+    /// Returns the path to the user's config directory.
+    /// 
+    /// |Platform | Value                              | Example                         |
+    /// | ------- | ---------------------------------- | ------------------------------- |
+    /// | Linux   | `$XDG_CONFIG_HOME` or `~/.config/` | /home/eve/.config               |
+    /// | macOS   | `$HOME/Library/Preferences/`       | /Users/eve/Library/Preferences/ |
+    /// | Windows | `{FOLDERID_RoamingAppData}`        | C:\Users\Eve\AppData\Roaming\   |
     pub fn config_dir(&self) -> &Path {
         self.config_dir.as_path()
     }
+    /// Returns the path to the user's data directory.
+    /// 
+    /// |Platform | Value                                 | Example                                 |
+    /// | ------- | ------------------------------------- | --------------------------------------- |
+    /// | Linux   | `$XDG_DATA_HOME` or `~/.local/share/` | /home/eve/.local/share/                 |
+    /// | macOS   | `$HOME/Library/Application Support/`  | /Users/eve/Library/Application Support/ |
+    /// | Windows | `{FOLDERID_LocalAppData}`             | C:\Users\Eve\AppData\Local\             |
     pub fn data_dir(&self) -> &Path {
         self.data_dir.as_path()
     }
+    /// Returns the path to the user's roaming data directory.
+    /// 
+    /// |Platform | Value                                 | Example                                 |
+    /// | ------- | ------------------------------------- | --------------------------------------- |
+    /// | Linux   | `$XDG_DATA_HOME` or `~/.local/share/` | /home/eve/.local/share/                 |
+    /// | macOS   | `$HOME/Library/Application Support/`  | /Users/eve/Library/Application Support/ |
+    /// | Windows | `{FOLDERID_RoamingAppData}`           | C:\Users\Eve\AppData\Roaming\           |
     pub fn data_roaming_dir(&self) -> &Path {
         self.data_roaming_dir.as_path()
     }
+    /// Returns the path to the user's executable directory.
+    /// 
+    /// |Platform | Value                                                          | Example                  |
+    /// | ------- | -------------------------------------------------------------- | ------------------------ |
+    /// | Linux   | `$XDG_BIN_HOME/` or `$XDG_DATA_HOME/../bin/` or `~/.local/bin` | /home/eve/.local/bin/    |
+    /// | macOS   | `$HOME/Applications/`                                          | /Users/eve/Applications/ |
+    /// | Windows | –                                                              | –                        |
     pub fn executable_dir(&self) -> Option<&Path> {
         self.executable_dir.as_ref().map(|p| p.as_path())
     }
+    /// Returns the path to the user's runtime directory.
+    /// 
+    /// |Platform | Value              | Example         |
+    /// | ------- | ------------------ | --------------- |
+    /// | Linux   | `$XDG_RUNTIME_DIR` | /run/user/1001/ |
+    /// | macOS   | –                  | –               |
+    /// | Windows | –                  | –               |
     pub fn runtime_dir(&self) -> Option<&Path> {
         self.runtime_dir.as_ref().map(|p| p.as_path())
     }
 
+    /// Returns the path to the user's audio directory.
+    /// 
+    /// |Platform | Value              | Example             |
+    /// | ------- | ------------------ | ------------------- |
+    /// | Linux   | `XDG_MUSIC_DIR`    | /home/eve/Music/    |
+    /// | macOS   | `$HOME/Music/`     | /Users/eve/Music/   |
+    /// | Windows | `{FOLDERID_Music}` | C:\Users\Eve\Music\ |
     pub fn audio_dir(&self) -> &Path {
         self.audio_dir.as_path()
     }
+    /// Returns the path to the user's desktop directory.
+    /// 
+    /// |Platform | Value              | Example                 |
+    /// | ------- | ------------------ | ----------------------- |
+    /// | Linux   | `XDG_DESKTOP_DIR`    | /home/eve/Desktop/    |
+    /// | macOS   | `$HOME/Desktop/`     | /Users/eve/Desktop/   |
+    /// | Windows | `{FOLDERID_Desktop}` | C:\Users\Eve\Desktop\ |
     pub fn desktop_dir(&self) -> &Path {
         self.desktop_dir.as_path()
     }
+    /// Returns the path to the user's document directory.
+    /// 
+    /// |Platform | Value                  | Example                 |
+    /// | ------- | ---------------------- | ----------------------- |
+    /// | Linux   | `XDG_DOCUMENTS_DIR`    | /home/eve/Documents/    |
+    /// | macOS   | `$HOME/Documents/`     | /Users/eve/Documents/   |
+    /// | Windows | `{FOLDERID_Documents}` | C:\Users\Eve\Documents\ |
     pub fn document_dir(&self) -> &Path {
         self.document_dir.as_path()
     }
+    /// Returns the path to the user's download directory.
+    /// 
+    /// |Platform | Value                  | Example                 |
+    /// | ------- | ---------------------- | ----------------------- |
+    /// | Linux   | `XDG_DOWNLOAD_DIR`     | /home/eve/Downloads/    |
+    /// | macOS   | `$HOME/Downloads/`     | /Users/eve/Downloads/   |
+    /// | Windows | `{FOLDERID_Downloads}` | C:\Users\Eve\Downloads\ |
     pub fn download_dir(&self) -> &Path {
         self.download_dir.as_path()
     }
+    /// Returns the path to the user's font directory.
+    /// 
+    /// |Platform | Value                                                  | Example                       |
+    /// | ------- | ------------------------------------------------------ | ----------------------------- |
+    /// | Linux   | `$XDG_DATA_HOME/fonts/` or `$HOME/.local/share/fonts/` | /home/eve/.local/share/fonts/ |
+    /// | macOS   | `$HOME/Library/Fonts/`                                 | /Users/eve/Library/Fonts/     |
+    /// | Windows | –                                                      | –                             |
     pub fn font_dir(&self) -> Option<&Path> {
         self.font_dir.as_ref().map(|p| p.as_path())
     }
+    /// Returns the path to the user's picture directory.
+    /// 
+    /// |Platform | Value                 | Example                |
+    /// | ------- | --------------------- | ---------------------- |
+    /// | Linux   | `XDG_PICTURES_DIR`    | /home/eve/Pictures/    |
+    /// | macOS   | `$HOME/Pictures/`     | /Users/eve/Pictures/   |
+    /// | Windows | `{FOLDERID_Pictures}` | C:\Users\Eve\Pictures\ |
     pub fn picture_dir(&self) -> &Path {
         self.picture_dir.as_path()
     }
+    /// Returns the path to the user's public directory.
+    /// 
+    /// |Platform | Value                 | Example            |
+    /// | ------- | --------------------- | ------------------ |
+    /// | Linux   | `XDG_PUBLICSHARE_DIR` | /home/eve/Public/  |
+    /// | macOS   | `$HOME/Public/`       | /Users/eve/Public/ |
+    /// | Windows | `{FOLDERID_Public}`   | C:\Users\Public\   |
     pub fn public_dir(&self) -> &Path {
         self.public_dir.as_path()
     }
+    /// Returns the path to the user's template directory.
+    /// 
+    /// |Platform | Value                  | Example                                                   |
+    /// | ------- | ---------------------- | --------------------------------------------------------- |
+    /// | Linux   | `XDG_TEMPLATES_DIR`    | /home/eve/Templates/                                      |
+    /// | macOS   | –                      | –                                                         |
+    /// | Windows | `{FOLDERID_Templates}` | C:\Users\Eve\AppData\Roaming\Microsoft\Windows\Templates\ |
     pub fn template_dir(&self) -> Option<&Path> {
         self.template_dir.as_ref().map(|p| p.as_path())
     }
+    /// Returns the path to the user's video directory.
+    /// 
+    /// |Platform | Value               | Example              |
+    /// | ------- | ------------------- | -------------------- |
+    /// | Linux   | `XDG_VIDEOS_DIR`    | /home/eve/Videos/    |
+    /// | macOS   | `$HOME/Movies/`     | /Users/eve/Movies/   |
+    /// | Windows | `{FOLDERID_Videos}` | C:\Users\Eve\Videos\ |
     pub fn video_dir(&self) -> &Path {
         self.video_dir.as_path()
     }

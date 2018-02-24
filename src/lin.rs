@@ -13,7 +13,9 @@ pub fn base_directories() -> BaseDirectories {
     let data_dir         = env::var("XDG_DATA_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".local/share"));
     let data_roaming_dir = data_dir.clone();
     let runtime_dir      = env::var("XDG_RUNTIME_DIR").ok().and_then(is_absolute_path);
-    let executable_dir   = { let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir };
+    let executable_dir   = 
+        env::var("XDG_BIN_HOME").ok().and_then(is_absolute_path).unwrap_or({
+            let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir });
     let font_dir         = data_dir.join("fonts");
 
     BaseDirectories {
