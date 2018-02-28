@@ -18,7 +18,7 @@ pub struct BaseDirectories {
     cache_dir:        PathBuf,
     config_dir:       PathBuf,
     data_dir:         PathBuf,
-    data_roaming_dir: PathBuf,
+    data_local_dir:   PathBuf,
     executable_dir:   Option<PathBuf>,
     runtime_dir:      Option<PathBuf>,
 
@@ -39,11 +39,11 @@ pub struct ProjectDirectories {
     project_name:             String,
     
     // base directories
-    project_cache_dir:        PathBuf,
-    project_config_dir:       PathBuf,
-    project_data_dir:         PathBuf,
-    project_data_roaming_dir: PathBuf,
-    project_runtime_dir:      Option<PathBuf>,
+    project_cache_dir:      PathBuf,
+    project_config_dir:     PathBuf,
+    project_data_dir:       PathBuf,
+    project_data_local_dir: PathBuf,
+    project_runtime_dir:    Option<PathBuf>
 }
 
 #[deny(missing_docs)]
@@ -84,26 +84,26 @@ impl BaseDirectories {
     /// | ------- | ------------------------------------- | --------------------------------------- |
     /// | Linux   | `$XDG_DATA_HOME` or `~/.local/share/` | /home/eve/.local/share/                 |
     /// | macOS   | `$HOME/Library/Application Support/`  | /Users/eve/Library/Application Support/ |
-    /// | Windows | `{FOLDERID_LocalAppData}`             | C:\Users\Eve\AppData\Local\             |
-    pub fn data_dir(&self) -> &Path {
+    /// | Windows | `{FOLDERID_RoamingAppData}`           | C:\Users\Eve\AppData\Roaming\           |
+    pub fn data_roaming_dir(&self) -> &Path {
         self.data_dir.as_path()
     }
-    /// Returns the path to the user's roaming data directory.
+    /// Returns the path to the user's local data directory.
     /// 
     /// |Platform | Value                                 | Example                                 |
     /// | ------- | ------------------------------------- | --------------------------------------- |
     /// | Linux   | `$XDG_DATA_HOME` or `~/.local/share/` | /home/eve/.local/share/                 |
     /// | macOS   | `$HOME/Library/Application Support/`  | /Users/eve/Library/Application Support/ |
-    /// | Windows | `{FOLDERID_RoamingAppData}`           | C:\Users\Eve\AppData\Roaming\           |
-    pub fn data_roaming_dir(&self) -> &Path {
-        self.data_roaming_dir.as_path()
+    /// | Windows | `{FOLDERID_LocalAppData}`             | C:\Users\Eve\AppData\Local\             |
+    pub fn data_dir(&self) -> &Path {
+        self.data_local_dir.as_path()
     }
     /// Returns the path to the user's executable directory.
     /// 
     /// |Platform | Value                                                          | Example                  |
     /// | ------- | -------------------------------------------------------------- | ------------------------ |
     /// | Linux   | `$XDG_BIN_HOME/` or `$XDG_DATA_HOME/../bin/` or `~/.local/bin` | /home/eve/.local/bin/    |
-    /// | macOS   | `$HOME/Applications/`                                          | /Users/eve/Applications/ |
+    /// | macOS   | –                                                              | –                        |
     /// | Windows | –                                                              | –                        |
     pub fn executable_dir(&self) -> Option<&Path> {
         self.executable_dir.as_ref().map(|p| p.as_path())
@@ -224,8 +224,8 @@ impl ProjectDirectories {
     pub fn project_data_dir(&self) -> &Path {
         self.project_data_dir.as_path()
     }
-    pub fn project_data_roaming_dir(&self) -> &Path {
-        self.project_data_roaming_dir.as_path()
+    pub fn project_data_local_dir(&self) -> &Path {
+        self.project_data_local_dir.as_path()
     }
     pub fn project_runtime_dir(&self) -> Option<&Path> {
         self.project_runtime_dir.as_ref().map(|p| p.as_path())
