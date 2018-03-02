@@ -30,7 +30,7 @@ install:
 
 test_script:
 - cargo check --verbose
-- cargo test --verbose
+- cargo test --verbose -- --nocapture
 
 cache:
 - C:\Users\appveyor\.cargo\registry
