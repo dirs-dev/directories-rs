@@ -8,75 +8,75 @@ use self::winapi::um::shlobj;
 use self::winapi::um::shtypes;
 use self::winapi::um::winnt;
 
-use BaseDirectories;
-use ProjectDirectories;
+use BaseDirs;
+use ProjectDirs;
 use strip_qualification;
 
-pub fn base_directories() -> BaseDirectories {
-    let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
-    let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
-    let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
-    let desktop_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
-    let document_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
-    let download_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
-    let audio_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
-    let picture_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
-    let public_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
-    let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
-    let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
+pub fn base_dirs() -> BaseDirs {
+    let home       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
+    let data       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
+    let data_local = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
+    let desktop    = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
+    let document   = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
+    let download   = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
+    let audio      = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
+    let picture    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
+    let public     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
+    let template   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
+    let video      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
 
-    let cache_dir      = data_local_dir.join("cache");
-    let config_dir     = data_dir.clone();
+    let cache      = data_local.join("cache");
+    let config     = data.clone();
 
-    BaseDirectories {
-        home_dir:       home_dir,
-        cache_dir:      cache_dir,
-        config_dir:     config_dir,
-        data_dir:       data_dir,
-        data_local_dir: data_local_dir,
-        executable_dir: None,
-        runtime_dir:    None,
+    BaseDirs {
+        home:       home,
+        cache:      cache,
+        config:     config,
+        data:       data,
+        data_local: data_local,
+        executable: None,
+        runtime:    None,
 
-        audio_dir:      audio_dir,
-        desktop_dir:    desktop_dir,
-        document_dir:   document_dir,
-        download_dir:   download_dir,
-        font_dir:       None,
-        picture_dir:    picture_dir,
-        public_dir:     public_dir,
-        template_dir:   Some(template_dir),
-        video_dir:      video_dir
+        audio:      audio,
+        desktop:    desktop,
+        document:   document,
+        download:   download,
+        font:       None,
+        picture:    picture,
+        public:     public,
+        template:   Some(template),
+        video:      video
     }
 }
 
-impl ProjectDirectories {
-    pub fn from_unprocessed_string(value: &str) -> ProjectDirectories {
-        let project_name             = String::from(value);
-        let data_local_dir           = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
+impl ProjectDirs {
+    pub fn from_unprocessed_string(value: &str) -> ProjectDirs {
+        let project_name = String::from(value);
+        let data_local   = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
 
-        let project_cache_dir        = data_local_dir.join(&value).join("cache");
-        let project_data_local_dir   = data_local_dir.join(&value);
-        let project_data_dir = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&value);
+        let cache        = data_local.join(&value).join("cache");
+        let data_local   = data_local.join(&value);
+        let data         = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&value);
 
-        let project_config_dir       = project_data_dir.clone();
+        let config       = data.clone();
 
-        ProjectDirectories {
-            project_name:           project_name,
-            project_cache_dir:      project_cache_dir,
-            project_config_dir:     project_config_dir,
-            project_data_dir:       project_data_dir,
-            project_data_local_dir: project_data_local_dir,
-            project_runtime_dir:    None
+        ProjectDirs {
+            project_name: project_name,
+            cache:        cache,
+            config:       config,
+            data:         data,
+            data_local:   data_local,
+            runtime:      None
         }
     }
 
-    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
-        ProjectDirectories::from_unprocessed_string(project_name)
+    pub fn from_project_name(project_name: &str) -> ProjectDirs {
+        ProjectDirs::from_unprocessed_string(project_name)
     }
 
-    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
+    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirs {
         let name = strip_qualification(qualified_project_name).trim();
-        ProjectDirectories::from_unprocessed_string(name)
+        ProjectDirs::from_unprocessed_string(name)
     }
 }
 
