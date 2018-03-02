@@ -36,7 +36,7 @@ Library run by a user with user name "my_user_name" on Linux:
 extern crate directories;
 use directories::ProjectDirectories;
 
-let my_proj_dirs = ProjectDirectories.from_project_name("My Project");
+let my_proj_dirs = ProjectDirectories::from_project_name("My Project");
 my_proj_dirs.project_config_dir; // "/home/my_user_name/.config/my-project/"
 ```
 
