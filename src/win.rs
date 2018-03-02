@@ -8,11 +8,11 @@ use self::winapi::um::shlobj;
 use self::winapi::um::shtypes;
 use self::winapi::um::winnt;
 
-use BaseDirectories;
-use ProjectDirectories;
+use BaseDirs;
+use ProjectDirs;
 use strip_qualification;
 
-pub fn base_directories() -> BaseDirectories {
+pub fn base_dirs() -> BaseDirs {
     let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
     let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
     let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
@@ -28,7 +28,7 @@ pub fn base_directories() -> BaseDirectories {
     let cache_dir      = data_local_dir.join("cache");
     let config_dir     = data_dir.clone();
 
-    BaseDirectories {
+    BaseDirs {
         home_dir:       home_dir,
         cache_dir:      cache_dir,
         config_dir:     config_dir,
@@ -37,46 +37,43 @@ pub fn base_directories() -> BaseDirectories {
         executable_dir: None,
         runtime_dir:    None,
 
-        audio_dir:      audio_dir,
-        desktop_dir:    desktop_dir,
-        document_dir:   document_dir,
-        download_dir:   download_dir,
+        audio_dir:      Some(audio_dir),
+        desktop_dir:    Some(desktop_dir),
+        document_dir:   Some(document_dir),
+        download_dir:   Some(download_dir),
         font_dir:       None,
-        picture_dir:    picture_dir,
-        public_dir:     public_dir,
+        picture_dir:    Some(picture_dir),
+        public_dir:     Some(public_dir),
         template_dir:   Some(template_dir),
-        video_dir:      video_dir
+        video_dir:      Some(video_dir)
     }
 }
 
-impl ProjectDirectories {
-    pub fn from_unprocessed_string(value: &str) -> ProjectDirectories {
-        let project_name             = String::from(value);
-        let data_local_dir           = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
+impl ProjectDirs {
+    pub fn from_unprocessed_string(value: &str) -> ProjectDirs {
+        let project_name   = String::from(value);
+        let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&value);
+        let config_dir     = data_dir.clone();
+        let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) }.join(&value);
+        let cache_dir      = data_local_dir.join("cache");
 
-        let project_cache_dir        = data_local_dir.join(&value).join("cache");
-        let project_data_local_dir   = data_local_dir.join(&value);
-        let project_data_dir = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&value);
-
-        let project_config_dir       = project_data_dir.clone();
-
-        ProjectDirectories {
-            project_name:           project_name,
-            project_cache_dir:      project_cache_dir,
-            project_config_dir:     project_config_dir,
-            project_data_dir:       project_data_dir,
-            project_data_local_dir: project_data_local_dir,
-            project_runtime_dir:    None
+        ProjectDirs {
+            project_name:   project_name,
+            cache_dir:      cache_dir,
+            config_dir:     config_dir,
+            data_dir:       data_dir,
+            data_local_dir: data_local_dir,
+            runtime_dir:    None
         }
     }
 
-    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
-        ProjectDirectories::from_unprocessed_string(project_name)
+    pub fn from_project_name(project_name: &str) -> ProjectDirs {
+        ProjectDirs::from_unprocessed_string(project_name)
     }
 
-    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
+    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirs {
         let name = strip_qualification(qualified_project_name).trim();
-        ProjectDirectories::from_unprocessed_string(name)
+        ProjectDirs::from_unprocessed_string(name)
     }
 }
 
