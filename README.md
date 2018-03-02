@@ -34,17 +34,17 @@ Library run by a user with user name "my_user_name" on Linux:
 
 ```rust
 extern crate directories;
-use directories::ProjectDirectories;
+use directories::ProjectDirs;
 
-let my_proj_dirs = ProjectDirectories::from_project_name("My Project");
+let my_proj_dirs = ProjectDirs::from_project_name("My Project");
 my_proj_dirs.project_config_dir; // "/home/my_user_name/.config/my-project/"
 ```
 
 ## Features
 
-### `BaseDirectories`
+### `BaseDirs`
 
-The intended use-case for `BaseDirectories` is to query the paths of standard directories
+The intended use-case for `BaseDirs` is to query the paths of standard directories
 that have been defined according to the conventions of operating system the library is running on.
 
 If you want to compute the location of cache, config or data directories for your own application or project, use `ProjectDirectories` instead.
@@ -68,9 +68,9 @@ If you want to compute the location of cache, config or data directories for you
 | `template_dir`     | `XDG_TEMPLATES_DIR`                                                                          | `{FOLDERID_Templates}`           | `None`                               |
 | `video_dir`        | `XDG_VIDEOS_DIR`                                                                             | `{FOLDERID_Videos}`              | `$HOME/Movies/`                      |
 
-### `ProjectDirectories`
+### `ProjectDirs`
 
-The intended use-case for `ProjectDirectories` is to compute the location of cache, config or data directories for your own application or project,
+The intended use-case for `ProjectDirs` is to compute the location of cache, config or data directories for your own application or project,
 which are derived from the standard directories.
 
 | Function name              | Value on Linux                                                                              | Value on Windows                                   | Value on macOS                                         |
@@ -81,7 +81,7 @@ which are derived from the standard directories.
 | `project_data_local_dir`   | `$XDG_DATA_HOME/_yourprojectname_`         or `$HOME/.local/share/_yourprojectname_/`       | `{FOLDERID_LocalAppData}/_yourprojectname_/`       | `$HOME/Library/Application Support/_yourprojectname_/` |
 | `project_runtime_dir`      | `Some($XDG_RUNTIME_DIR/_yourprojectname_)` or `Some($HOME/.local/share/_yourprojectname_/)` | `None`                                             | `None`                                                 |
 
-The specific value of `_yourprojectname_` depends on the function used to create the `ProjectDirectories` struct:
+The specific value of `_yourprojectname_` depends on the function used to create the `ProjectDirs` struct:
 
 | Function name                 | Example project name           | Value on Linux | Value on Windows | Value on macOS                 |
 | ----------------------------- | ------------------------------ | -------------- | ---------------- | ------------------------------ |

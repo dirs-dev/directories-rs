@@ -5,12 +5,12 @@ use std::path::PathBuf;
 #[cfg(target_os = "windows")] mod win;
 #[cfg(target_os = "macos")]   mod mac;
 
-#[cfg(target_os = "linux")]   pub use lin::base_directories as base_directories;
-#[cfg(target_os = "windows")] pub use win::base_directories as base_directories;
-#[cfg(target_os = "macos")]   pub use mac::base_directories as base_directories;
+#[cfg(target_os = "linux")]   pub use lin::base_dirs as base_dirs;
+#[cfg(target_os = "windows")] pub use win::base_dirs as base_dis;
+#[cfg(target_os = "macos")]   pub use mac::base_dirs as base_dirs;
 
 #[derive(Debug, Clone)]
-pub struct BaseDirectories {
+pub struct BaseDirs {
     // home directory
     home_dir:         PathBuf,
 
@@ -35,7 +35,7 @@ pub struct BaseDirectories {
 }
 
 #[derive(Debug, Clone)]
-pub struct ProjectDirectories {
+pub struct ProjectDirs {
     project_name:             String,
     
     // base directories
@@ -47,7 +47,7 @@ pub struct ProjectDirectories {
 }
 
 #[deny(missing_docs)]
-impl BaseDirectories {
+impl BaseDirs {
     /// Returns the path to the user's home directory.
     ///
     /// |Platform | Value                | Example       |
@@ -211,7 +211,7 @@ impl BaseDirectories {
     }
 }
 
-impl ProjectDirectories {
+impl ProjectDirs {
     pub fn project_name(&self) -> &str {
         self.project_name.as_str()
     }

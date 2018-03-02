@@ -2,11 +2,11 @@ use std::env;
 use std::path::PathBuf;
 use std::process::Command;
 
-use BaseDirectories;
-use ProjectDirectories;
+use BaseDirs;
+use ProjectDirs;
 use strip_qualification;
 
-pub fn base_directories() -> BaseDirectories {
+pub fn base_dirs() -> BaseDirs {
     let home_dir       = env::home_dir().unwrap();
     let cache_dir      = env::var("XDG_CACHE_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".cache"));
     let config_dir     = env::var("XDG_CONFIG_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".config"));
@@ -18,7 +18,7 @@ pub fn base_directories() -> BaseDirectories {
             let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir });
     let font_dir       = data_dir.join("fonts");
 
-    BaseDirectories {
+    BaseDirs {
         home_dir:       home_dir,
         cache_dir:      cache_dir,
         config_dir:     config_dir,
@@ -39,8 +39,8 @@ pub fn base_directories() -> BaseDirectories {
     }
 }
 
-impl ProjectDirectories {
-    pub fn from_unprocessed_string(value: &str) -> ProjectDirectories {
+impl ProjectDirs {
+    pub fn from_unprocessed_string(value: &str) -> ProjectDirs {
         let project_name = String::from(value);
         let home_dir               = env::home_dir().unwrap();
         let project_cache_dir      = env::var("XDG_CACHE_HOME").ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".cache")).join(&value);
@@ -49,7 +49,7 @@ impl ProjectDirectories {
         let project_data_local_dir = project_data_dir.clone();
         let project_runtime_dir    = env::var("XDG_RUNTIME_DIR").ok().and_then(is_absolute_path).unwrap().join(&value);
 
-        ProjectDirectories {
+        ProjectDirs {
             project_name:           project_name,
             project_cache_dir:      project_cache_dir,
             project_config_dir:     project_config_dir,
@@ -59,14 +59,14 @@ impl ProjectDirectories {
         }
     }
 
-    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
+    pub fn from_project_name(project_name: &str) -> ProjectDirs {
         let name = trim_and_replace_spaces_with_hyphens_then_lowercase(project_name);
-        ProjectDirectories::from_unprocessed_string(&name)
+        ProjectDirs::from_unprocessed_string(&name)
     }
 
-    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
+    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirs {
         let name = strip_qualification(qualified_project_name).to_lowercase();
-        ProjectDirectories::from_unprocessed_string(name.trim())
+        ProjectDirs::from_unprocessed_string(name.trim())
     }
 
 }

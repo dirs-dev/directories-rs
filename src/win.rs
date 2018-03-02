@@ -8,11 +8,11 @@ use self::winapi::um::shlobj;
 use self::winapi::um::shtypes;
 use self::winapi::um::winnt;
 
-use BaseDirectories;
-use ProjectDirectories;
+use BaseDirs;
+use ProjectDirs;
 use strip_qualification;
 
-pub fn base_directories() -> BaseDirectories {
+pub fn base_directories() -> BaseDirs {
     let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
     let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
     let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
@@ -28,7 +28,7 @@ pub fn base_directories() -> BaseDirectories {
     let cache_dir      = data_local_dir.join("cache");
     let config_dir     = data_dir.clone();
 
-    BaseDirectories {
+    BaseDirs {
         home_dir:       home_dir,
         cache_dir:      cache_dir,
         config_dir:     config_dir,
@@ -49,8 +49,8 @@ pub fn base_directories() -> BaseDirectories {
     }
 }
 
-impl ProjectDirectories {
-    pub fn from_unprocessed_string(value: &str) -> ProjectDirectories {
+impl ProjectDirs {
+    pub fn from_unprocessed_string(value: &str) -> ProjectDirs {
         let project_name             = String::from(value);
         let data_local_dir           = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
 
@@ -60,7 +60,7 @@ impl ProjectDirectories {
 
         let project_config_dir       = project_data_dir.clone();
 
-        ProjectDirectories {
+        ProjectDirs {
             project_name:           project_name,
             project_cache_dir:      project_cache_dir,
             project_config_dir:     project_config_dir,
@@ -70,13 +70,13 @@ impl ProjectDirectories {
         }
     }
 
-    pub fn from_project_name(project_name: &str) -> ProjectDirectories {
-        ProjectDirectories::from_unprocessed_string(project_name)
+    pub fn from_project_name(project_name: &str) -> ProjectDirs {
+        ProjectDirs::from_unprocessed_string(project_name)
     }
 
-    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirectories {
+    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirs {
         let name = strip_qualification(qualified_project_name).trim();
-        ProjectDirectories::from_unprocessed_string(name)
+        ProjectDirs::from_unprocessed_string(name)
     }
 }
 
