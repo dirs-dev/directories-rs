@@ -1,4 +1,4 @@
-[![crates.io version](https://img.shields.io/crates/v/directories.svg)](https://crates.io/crates/directories) ![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg) [![TravisCI status](https://travis-ci.org/soc/directories-rs.svg?branch=master)](https://travis-ci.org/soc/directories-rs) [![AppVeyor status](https://ci.appveyor.com/api/projects/status/p5c600gk0lthlhjn?svg=true)](https://ci.appveyor.com/project/soc/directories-rs)
+[![crates.io version](https://img.shields.io/crates/v/directories.svg)](https://crates.io/crates/directories) [![](https://docs.rs/directories/badge.svg)](https://docs.rs/directories/) ![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg) [![TravisCI status](https://travis-ci.org/soc/directories-rs.svg?branch=master)](https://travis-ci.org/soc/directories-rs) [![AppVeyor status](https://ci.appveyor.com/api/projects/status/p5c600gk0lthlhjn?svg=true)](https://ci.appveyor.com/project/soc/directories-rs)
 
 # Directories
 
