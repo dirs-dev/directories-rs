@@ -4,7 +4,7 @@
 
 ## Introduction
 
-- A tiny library with a minimal API (2 structs, 4 factory functions, getters)
+- A tiny library with a minimal API (2 structs, 3 factory functions, getters)
 - that provides the platform-specific, user-accessible locations
 - for storing configuration, cache and other data
 - on Linux, Windows (≥ Vista) and macOS.
@@ -30,14 +30,17 @@ into the `[dependencies]` section of your Cargo.toml file.
 
 ### Example
 
-Library run by a user with user name "my_user_name" on Linux:
+Library run by user Alice:
 
 ```rust
 extern crate directories;
 use directories::ProjectDirs;
 
-let my_proj_dirs = ProjectDirs::from_project_name("My Project");
-my_proj_dirs.config_dir(); // "/home/my_user_name/.config/my-project/"
+let proj_dirs = ProjectDirs::from("com", "Foo Corp",  "Bar App");
+proj_dirs.config_dir();
+// Linux:   /home/alice/.config/barapp/
+// Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App
+// macOS:   /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
 ```
 
 ## Features
@@ -52,42 +55,52 @@ If you want to compute the location of cache, config or data directories for you
 | Function name    | Value on Linux                                                                               | Value on Windows                 | Value on macOS                       |
 | ---------------- | -------------------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------ |
 | `home_dir`       | `$HOME`                                                                                      | `{FOLDERID_Profile}`             | `$HOME`                              |
-| `cache_dir`      | `$XDG_CACHE_HOME`  or `~/.cache/`                                                            | `{FOLDERID_LocalAppData}/cache/` | `$HOME/Library/Caches/`              |
-| `config_dir`     | `$XDG_CONFIG_HOME` or `~/.config/`                                                           | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Preferences/`         |
-| `data_dir`       | `$XDG_DATA_HOME`   or `~/.local/share/`                                                      | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Application Support/` |
-| `data_local_dir` | `$XDG_DATA_HOME`   or `~/.local/share/`                                                      | `{FOLDERID_LocalAppData}`        | `$HOME/Library/Application Support/` |
+| `cache_dir`      | `$XDG_CACHE_HOME`             or `~/.cache/`                                                 | `{FOLDERID_LocalAppData}/cache/` | `$HOME/Library/Caches/`              |
+| `config_dir`     | `$XDG_CONFIG_HOME`            or `~/.config/`                                                | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Preferences/`         |
+| `data_dir`       | `$XDG_DATA_HOME`              or `~/.local/share/`                                           | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Application Support/` |
+| `data_local_dir` | `$XDG_DATA_HOME`              or `~/.local/share/`                                           | `{FOLDERID_LocalAppData}`        | `$HOME/Library/Application Support/` |
 | `executable_dir` | `Some($XDG_BIN_HOME/../bin/)` or `Some($XDG_DATA_HOME/../bin/)` or `Some($HOME/.local/bin/)` | `None`                           | `None`                               |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR)`                                                                     | `None`                           | `None`                               |
-| `audio_dir`      | `XDG_MUSIC_DIR`                                                                              | `{FOLDERID_Music}`               | `$HOME/Music/`                       |
-| `desktop_dir`    | `XDG_DESKTOP_DIR`                                                                            | `{FOLDERID_Desktop}`             | `$HOME/Desktop/`                     |
-| `document_dir`   | `XDG_DOCUMENTS_DIR`                                                                          | `{FOLDERID_Documents}`           | `$HOME/Documents/`                   |
-| `download_dir`   | `XDG_DOWNLOAD_DIR`                                                                           | `{FOLDERID_Downloads}`           | `$HOME/Downloads/`                   |
+| `runtime_dir`    | `Some($XDG_RUNTIME_DIR)`      or `None`                                                      | `None`                           | `None`                               |
+| `audio_dir`      | `Some(XDG_MUSIC_DIR)`         or `None`                                                      | `Some({FOLDERID_Music})`         | `Some($HOME/Music/)`                 |
+| `desktop_dir`    | `Some(XDG_DESKTOP_DIR)`       or `None`                                                      | `Some({FOLDERID_Desktop})`       | `Some($HOME/Desktop/)`               |
+| `document_dir`   | `Some(XDG_DOCUMENTS_DIR)`     or `None`                                                      | `Some({FOLDERID_Documents})`     | `Some($HOME/Documents/)`             |
+| `download_dir`   | `Some(XDG_DOWNLOAD_DIR)`      or `None`                                                      | `Some({FOLDERID_Downloads})`     | `Some($HOME/Downloads/)`             |
 | `font_dir`       | `Some($XDG_DATA_HOME/fonts/)` or `Some($HOME/.local/share/fonts/)`                           | `None`                           | `Some($HOME/Library/Fonts/)`         |
-| `picture_dir`    | `XDG_PICTURES_DIR`                                                                           | `{FOLDERID_Pictures}`            | `$HOME/Pictures/`                    |
-| `public_dir`     | `XDG_PUBLICSHARE_DIR`                                                                        | `{FOLDERID_Public}`              | `$HOME/Public/`                      |
-| `template_dir`   | `XDG_TEMPLATES_DIR`                                                                          | `{FOLDERID_Templates}`           | `None`                               |
-| `video_dir`      | `XDG_VIDEOS_DIR`                                                                             | `{FOLDERID_Videos}`              | `$HOME/Movies/`                      |
+| `picture_dir`    | `Some(XDG_PICTURES_DIR)`      or `None`                                                      | `Some({FOLDERID_Pictures})`      | `Some($HOME/Pictures/)`              |
+| `public_dir`     | `Some(XDG_PUBLICSHARE_DIR)`   or `None`                                                      | `Some({FOLDERID_Public})`        | `Some($HOME/Public/)`                |
+| `template_dir`   | `Some(XDG_TEMPLATES_DIR)`     or `None`                                                      | `Some({FOLDERID_Templates})`     | `None`                               |
+| `video_dir`      | `Some(XDG_VIDEOS_DIR)`        or `None`                                                      | `Some({FOLDERID_Videos})`        | `Some($HOME/Movies/)`                |
 
 ### `ProjectDirs`
 
 The intended use-case for `ProjectDirs` is to compute the location of cache, config or data directories for your own application or project,
 which are derived from the standard directories.
 
-| Function name    | Value on Linux                                                                              | Value on Windows                                   | Value on macOS                                         |
-| ---------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
-| `cache_dir`      | `$XDG_CACHE_HOME/_yourprojectname_`        or `$HOME/.cache/_yourprojectname_/`             | `{FOLDERID_LocalAppData}/_yourprojectname_/cache/` | `$HOME/Library/Caches/_yourprojectname_/`              |
-| `config_dir`     | `$XDG_CONFIG_HOME/_yourprojectname_`       or `$HOME/.config/_yourprojectname_/`            | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Preferences/_yourprojectname_/`         |
-| `data_dir`       | `$XDG_DATA_HOME/_yourprojectname_`         or `$HOME/.local/share/_yourprojectname_/`       | `{FOLDERID_RoamingAppData}/_yourprojectname_/`     | `$HOME/Library/Application Support/_yourprojectname_/` |
-| `data_local_dir` | `$XDG_DATA_HOME/_yourprojectname_`         or `$HOME/.local/share/_yourprojectname_/`       | `{FOLDERID_LocalAppData}/_yourprojectname_/`       | `$HOME/Library/Application Support/_yourprojectname_/` |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR/_yourprojectname_)` or `Some($HOME/.local/share/_yourprojectname_/)` | `None`                                             | `None`                                                 |
+| Function name    | Value on Linux                                                                  | Value on Windows                                | Value on macOS                                      |
+| ---------------- | ------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------- |
+| `cache_dir`      | `$XDG_CACHE_HOME/_project_path_`        or `$HOME/.cache/_project_path_/`       | `{FOLDERID_LocalAppData}/_project_path_/cache/` | `$HOME/Library/Caches/_project_path_/`              |
+| `config_dir`     | `$XDG_CONFIG_HOME/_project_path_`       or `$HOME/.config/_project_path_/`      | `{FOLDERID_RoamingAppData}/_project_path_/`     | `$HOME/Library/Preferences/_project_path_/`         |
+| `data_dir`       | `$XDG_DATA_HOME/_project_path_`         or `$HOME/.local/share/_project_path_/` | `{FOLDERID_RoamingAppData}/_project_path_/`     | `$HOME/Library/Application Support/_project_path_/` |
+| `data_local_dir` | `$XDG_DATA_HOME/_project_path_`         or `$HOME/.local/share/_project_path_/` | `{FOLDERID_LocalAppData}/_project_path_/`       | `$HOME/Library/Application Support/_project_path_/` |
+| `runtime_dir`    | `Some($XDG_RUNTIME_DIR/_project_path_)`                                         | `None`                                          | `None`                                              |
 
-The specific value of `_yourprojectname_` depends on the function used to create the `ProjectDirs` struct:
+The specific value of `_project_path_` is computed by the
 
-| Function name                 | Example project name           | Value on Linux | Value on Windows | Value on macOS                 |
-| ----------------------------- | ------------------------------ | -------------- | ---------------- | ------------------------------ |
-| `from_unprocessed_string`     | `"FooBar-App"`                 | `"FooBar-App"` | `"FooBar-App"`   | `"FooBar-App"`                 |
-| `from_project_name`           | `"FooBar App"`                 | `"foobar-app"` | `"FooBar App"`   | `"FooBar App"`                 |
-| `from_qualified_project_name` | `"org.foobar-corp.FooBar-App"` | `"foobar-app"` | `"FooBar-App"`   | `"org.foobar-corp.FooBar-App"` |
+    ProjectDirs::from(qualifier: &str, organization: &str, project: &str)
+
+function and varies across operating systems. As an example, calling
+
+    ProjectDirs::from("org" /*qualifier*/, "Baz Corp" /*organization*/, "Foo Bar-App" /*project*/)
+    
+results in the following values:
+
+| Value on Linux | Value on Windows         | Value on macOS               |
+| -------------- | ------------------------ | ---------------------------- |
+| `"foobar-app"` | `"Baz Corp/Foo Bar-App"` | `"org.Baz-Corp.Foo-Bar-App"` |
+
+The `ProjectDirs::from_path` function allows the creation of `ProjectDirs` structs directly from a `PathBuf` value.
+This argument is used verbatim and is not adapted to operating system standards.
+The use of `ProjectDirs::from_path` is heavily discouraged, as its results will not follow operating system standards on at least two of three platforms.
 
 ## Versioning
 
