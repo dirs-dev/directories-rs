@@ -1,5 +1,6 @@
 use std;
 use std::path::PathBuf;
+use std::iter::FromIterator;
 
 extern crate winapi;
 use self::winapi::um::knownfolders;
@@ -10,7 +11,6 @@ use self::winapi::um::winnt;
 
 use BaseDirs;
 use ProjectDirs;
-use strip_qualification;
 
 pub fn base_dirs() -> BaseDirs {
     let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
@@ -50,15 +50,14 @@ pub fn base_dirs() -> BaseDirs {
 }
 
 impl ProjectDirs {
-    pub fn from_unprocessed_string(value: &str) -> ProjectDirs {
-        let project_name   = String::from(value);
-        let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&value);
+    pub fn from_path(project_path: PathBuf) -> ProjectDirs {
+        let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&project_path);
         let config_dir     = data_dir.clone();
-        let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) }.join(&value);
+        let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) }.join(&project_path);
         let cache_dir      = data_local_dir.join("cache");
 
         ProjectDirs {
-            project_name:   project_name,
+            project_path:   project_path,
             cache_dir:      cache_dir,
             config_dir:     config_dir,
             data_dir:       data_dir,
@@ -67,13 +66,9 @@ impl ProjectDirs {
         }
     }
 
-    pub fn from_project_name(project_name: &str) -> ProjectDirs {
-        ProjectDirs::from_unprocessed_string(project_name)
-    }
-
-    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirs {
-        let name = strip_qualification(qualified_project_name).trim();
-        ProjectDirs::from_unprocessed_string(name)
+    #[allow(unused_variables)]
+    pub fn from(qualifier: &str, organization: &str, project: &str) -> ProjectDirs {
+        ProjectDirs::from_path(PathBuf::from_iter(&[organization, project]))
     }
 }
 

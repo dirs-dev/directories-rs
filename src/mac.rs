@@ -1,4 +1,5 @@
 use std::env;
+use std::path::PathBuf;
 
 use BaseDirs;
 use ProjectDirs;
@@ -41,16 +42,15 @@ pub fn base_dirs() -> BaseDirs {
 }
 
 impl ProjectDirs {
-    pub fn from_unprocessed_string(value: &str) -> ProjectDirs {
-        let project_name   = String::from(value);
+    pub fn from_path(project_path: PathBuf) -> ProjectDirs {
         let home_dir       = env::home_dir().unwrap();
-        let cache_dir      = home_dir.join("Library/Caches").join(&value);
-        let config_dir     = home_dir.join("Library/Preferences").join(&value);
-        let data_dir       = home_dir.join("Library/Application Support").join(&value);
+        let cache_dir      = home_dir.join("Library/Caches").join(&project_path);
+        let config_dir     = home_dir.join("Library/Preferences").join(&project_path);
+        let data_dir       = home_dir.join("Library/Application Support").join(&project_path);
         let data_local_dir = data_dir.clone();
 
         ProjectDirs {
-            project_name:   project_name,
+            project_path:   project_path,
             cache_dir:      cache_dir,
             config_dir:     config_dir,
             data_dir:       data_dir,
@@ -59,11 +59,13 @@ impl ProjectDirs {
         }
     }
 
-    pub fn from_project_name(project_name: &str) -> ProjectDirs {
-        ProjectDirs::from_unprocessed_string(project_name)
-    }
-
-    pub fn from_qualified_project_name(qualified_project_name: &str) -> ProjectDirs {
-        ProjectDirs::from_unprocessed_string(qualified_project_name)
+    #[allow(unused_variables)]
+    pub fn from(qualifier: &str, organization: &str, project: &str) -> ProjectDirs {
+        // we should replace more characters, according to RFC1034 identifier rules
+        let organization = organization.replace(" ", "-");
+        let project      = project.replace(" ", "-");
+        let mut parts    = vec![qualifier, &organization, &project]; parts.retain(|e| !e.is_empty());
+        let bundle_id    = parts.join(".");
+        ProjectDirs::from_path(PathBuf::from(bundle_id))
     }
 }

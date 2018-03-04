@@ -36,7 +36,7 @@ pub struct BaseDirs {
 
 #[derive(Debug, Clone)]
 pub struct ProjectDirs {
-    project_name:   String,
+    project_path:   PathBuf,
     
     // base directories
     cache_dir:      PathBuf,
@@ -212,8 +212,8 @@ impl BaseDirs {
 }
 
 impl ProjectDirs {
-    pub fn project_name(&self) -> &str {
-        self.project_name.as_str()
+    pub fn project_path(&self) -> &Path {
+        self.project_path.as_path()
     }
     pub fn cache_dir(&self) -> &Path {
         self.cache_dir.as_path()
@@ -232,14 +232,8 @@ impl ProjectDirs {
     }
 }
 
-fn strip_qualification(name: &str) -> &str {
-    name.rfind('.').map(|start| &name[start+1..]).unwrap_or(name)
-}
-
 #[cfg(test)]
 mod tests {
-    use strip_qualification;
-
     #[test]
     fn test_base_dirs() {
         println!("{:?}", ::base_dirs());
@@ -247,18 +241,14 @@ mod tests {
 
     #[test]
     fn test_project_dirs() {
-        let proj_dirs = ::ProjectDirs::from_unprocessed_string("foobar");
+        let proj_dirs = ::ProjectDirs::from("qux", "FooCorp", "BarApp");
+        println!(r#"ProjectDirs::from("qux", "FooCorp", "BarApp")"#);
         println!("{:?}", proj_dirs);
-    }
-
-    #[test]
-    fn test_strip_qualification() {
-        let actual1   = strip_qualification("org.foo.BarApp");
-        let expected1 = "BarApp";
-        assert_eq!(actual1, expected1);
-
-        let actual2   = strip_qualification("BarApp");
-        let expected2 = "BarApp";
-        assert_eq!(actual2, expected2);
+        let proj_dirs = ::ProjectDirs::from("qux.zoo", "Foo Corp", "Bar-App");
+        println!(r#"ProjectDirs::from("qux.zoo", "Foo Corp", "Bar-App")"#);
+        println!("{:?}", proj_dirs);
+        let proj_dirs = ::ProjectDirs::from("com", "Foo Corp.", "Bar App");
+        println!(r#"ProjectDirs::from("com", "Foo Corp.", "Bar App")"#);
+        println!("{:?}", proj_dirs);
     }
 }
