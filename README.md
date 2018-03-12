@@ -23,7 +23,7 @@ The library provides the location of these directories by leveraging the mechani
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.5.0"
+directories = "0.6.0"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
@@ -39,7 +39,7 @@ use directories::ProjectDirs;
 let proj_dirs = ProjectDirs::from("com", "Foo Corp",  "Bar App");
 proj_dirs.config_dir();
 // Linux:   /home/alice/.config/barapp/
-// Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App
+// Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config\
 // macOS:   /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
 ```
 
@@ -48,14 +48,14 @@ proj_dirs.config_dir();
 ### `BaseDirs`
 
 The intended use-case for `BaseDirs` is to query the paths of standard directories
-that have been defined according to the conventions of operating system the library is running on.
+that have been defined according to the conventions of the operating system the library is running on.
 
 If you want to compute the location of cache, config or data directories for your own application or project, use `ProjectDirs` instead.
 
 | Function name    | Value on Linux                                                                               | Value on Windows                 | Value on macOS                       |
 | ---------------- | -------------------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------ |
 | `home_dir`       | `$HOME`                                                                                      | `{FOLDERID_Profile}`             | `$HOME`                              |
-| `cache_dir`      | `$XDG_CACHE_HOME`             or `~/.cache/`                                                 | `{FOLDERID_LocalAppData}/cache/` | `$HOME/Library/Caches/`              |
+| `cache_dir`      | `$XDG_CACHE_HOME`             or `~/.cache/`                                                 | `{FOLDERID_LocalAppData}` | `$HOME/Library/Caches/`              |
 | `config_dir`     | `$XDG_CONFIG_HOME`            or `~/.config/`                                                | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Preferences/`         |
 | `data_dir`       | `$XDG_DATA_HOME`              or `~/.local/share/`                                           | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Application Support/` |
 | `data_local_dir` | `$XDG_DATA_HOME`              or `~/.local/share/`                                           | `{FOLDERID_LocalAppData}`        | `$HOME/Library/Application Support/` |
@@ -90,8 +90,8 @@ The specific value of `_project_path_` is computed by the
 
 function and varies across operating systems. As an example, calling
 
-    ProjectDirs::from("org" /*qualifier*/, "Baz Corp" /*organization*/, "Foo Bar-App" /*project*/)
-    
+    ProjectDirs::from("org" /*qualifier*/, "Baz Corp" /*organization*/, "Foo Bar-App" /*application*/)
+
 results in the following values:
 
 | Value on Linux | Value on Windows         | Value on macOS               |

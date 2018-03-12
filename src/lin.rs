@@ -5,6 +5,7 @@ use std::process::Command;
 use BaseDirs;
 use ProjectDirs;
 
+#[cfg(target_os = "linux")]
 pub fn base_dirs() -> BaseDirs {
     let home_dir       = env::home_dir().unwrap();
     let cache_dir      = env::var("XDG_CACHE_HOME") .ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".cache"));
@@ -38,7 +39,13 @@ pub fn base_dirs() -> BaseDirs {
     }
 }
 
+#[deny(missing_docs)]
 impl ProjectDirs {
+    /// Creates a `ProjectDirs` struct directly from a `PathBuf` value.
+    /// The argument is used verbatim and is not adapted to operating system standards.
+    /// 
+    /// The use of `ProjectDirs::from_path` is strongly discouraged, as its results will
+    /// not follow operating system standards on at least two of three platforms.
     pub fn from_path(project_path: PathBuf) -> ProjectDirs {
         let home_dir       = env::home_dir().unwrap();
         let cache_dir      = env::var("XDG_CACHE_HOME") .ok().and_then(is_absolute_path).unwrap_or(home_dir.join(".cache")).join(&project_path);
@@ -57,11 +64,25 @@ impl ProjectDirs {
         }
     }
 
+    /// Creates a `ProjectDirs` struct from values describing the project.
+    ///
+    /// The use of `ProjectDirs::from` (instead of `ProjectDirs::from_path`) is strongly encouraged,
+    /// as its results will follow operating system standards on Linux, macOS and Windows.
+    ///
+    /// # Parameters
+    ///
+    /// - `qualifier`    – The reverse domain name notation of the application, excluding the organization or application name itself.<br/>
+    ///   An empty string can be passed if no qualifier should be used (only affects macOS).<br/>
+    ///   Example values: `"com.example"`, `"org"`, `"uk.co"`, `"io"`, `""`
+    /// - `organization` – The name of the organization that develops this application, or for which the application is developed.<br/>
+    ///   An empty string can be passed if no organization should be used (only affects macOS and Windows).<br/>
+    ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`
+    /// - `application`  – The name of the application itself.<br/>
+    ///   Example values: `"Bar App"`, `"ExampleProgram"`, `"Unicorn-Programme"`
     #[allow(unused_variables)]
-    pub fn from(qualifier: &str, organization: &str, project: &str) -> ProjectDirs {
-        ProjectDirs::from_path(PathBuf::from(&trim_and_lowercase_then_replace_spaces(project, "")))
+    pub fn from(qualifier: &str, organization: &str, application: &str) -> ProjectDirs {
+        ProjectDirs::from_path(PathBuf::from(&trim_and_lowercase_then_replace_spaces(application, "")))
     }
-
 }
 
 fn is_absolute_path(path: String) -> Option<PathBuf> {

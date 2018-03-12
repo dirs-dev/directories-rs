@@ -12,6 +12,7 @@ use self::winapi::um::winnt;
 use BaseDirs;
 use ProjectDirs;
 
+#[cfg(target_os = "windows")]
 pub fn base_dirs() -> BaseDirs {
     let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
     let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
@@ -25,7 +26,7 @@ pub fn base_dirs() -> BaseDirs {
     let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
     let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
 
-    let cache_dir      = data_local_dir.join("cache");
+    let cache_dir      = data_local_dir.clone();
     let config_dir     = data_dir.clone();
 
     BaseDirs {
@@ -49,12 +50,20 @@ pub fn base_dirs() -> BaseDirs {
     }
 }
 
+#[deny(missing_docs)]
 impl ProjectDirs {
+    /// Creates a `ProjectDirs` struct directly from a `PathBuf` value.
+    /// The argument is used verbatim and is not adapted to operating system standards.
+    /// 
+    /// The use of `ProjectDirs::from_path` is strongly discouraged, as its results will
+    /// not follow operating system standards on at least two of three platforms.
     pub fn from_path(project_path: PathBuf) -> ProjectDirs {
-        let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&project_path);
-        let config_dir     = data_dir.clone();
-        let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) }.join(&project_path);
-        let cache_dir      = data_local_dir.join("cache");
+        let app_data_local   = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) }.join(&project_path);
+        let app_data_roaming = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&project_path);
+        let cache_dir      = app_data_local.join("cache");
+        let data_local_dir = app_data_local.join("data");
+        let config_dir     = app_data_roaming.join("config");
+        let data_dir       = app_data_roaming.join("data");
 
         ProjectDirs {
             project_path:   project_path,
@@ -66,6 +75,21 @@ impl ProjectDirs {
         }
     }
 
+    /// Creates a `ProjectDirs` struct from values describing the project.
+    ///
+    /// The use of `ProjectDirs::from` (instead of `ProjectDirs::from_path`) is strongly encouraged,
+    /// as its results will follow operating system standards on Linux, macOS and Windows.
+    ///
+    /// # Parameters
+    ///
+    /// - `qualifier`    – The reverse domain name notation of the application, excluding the organization or application name itself.<br/>
+    ///   An empty string can be passed if no qualifier should be used (only affects macOS).<br/>
+    ///   Example values: `"com.example"`, `"org"`, `"uk.co"`, `"io"`, `""`
+    /// - `organization` – The name of the organization that develops this application, or for which the application is developed.<br/>
+    ///   An empty string can be passed if no organization should be used (only affects macOS and Windows).<br/>
+    ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`
+    /// - `application`  – The name of the application itself.<br/>
+    ///   Example values: `"Bar App"`, `"ExampleProgram"`, `"Unicorn-Programme"`
     #[allow(unused_variables)]
     pub fn from(qualifier: &str, organization: &str, project: &str) -> ProjectDirs {
         ProjectDirs::from_path(PathBuf::from_iter(&[organization, project]))
