@@ -19,6 +19,29 @@ use std::path::PathBuf;
 #[cfg(target_os = "windows")] mod win;
 #[cfg(target_os = "macos")]   mod mac;
 
+/// `BaseDirs` provides paths to standard directories, following the conventions of the operating system the library is running on.
+///
+/// To compute the location of cache, config or data directories for individual projects or applications, use `ProjectDirs` instead.
+///
+/// # Examples
+///
+/// All examples on this page are computed with a user named _Alice_.
+///
+/// ```
+/// use directories::BaseDirs;
+///
+/// let base_dirs = BaseDirs::new();
+///
+/// base_dirs.config_dir();
+/// // Linux:   /home/alice/.config/
+/// // Windows: C:\Users\Alice\AppData\Roaming\
+/// // macOS:   /Users/Alice/Library/Preferences/
+///
+/// base_dirs.audio_dir();
+/// // Linux:   /home/alice/Music/
+/// // Windows: /Users/Alice/Music/
+/// // macOS:   C:\Users\Alice\Music\
+/// ```
 #[derive(Debug, Clone)]
 pub struct BaseDirs {
     // home directory
@@ -44,6 +67,23 @@ pub struct BaseDirs {
     video_dir:      Option<PathBuf>
 }
 
+/// `ProjectDirs` computes the location of cache, config or data directories for a specific application,
+/// which are derived from the standard directories and the name of the project/organization.
+///
+/// # Examples
+///
+/// All examples on this page are computed with a user named _Alice_,
+/// and a `ProjectDirs` struct created with `ProjectDirs::from("com", "Foo Corp", "Bar App")`.
+///
+/// ```
+/// use directories::ProjectDirs;
+///
+/// let proj_dirs = ProjectDirs::from("com", "Foo Corp",  "Bar App");
+/// proj_dirs.config_dir();
+/// // Linux:   /home/alice/.config/barapp/
+/// // Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App
+/// // macOS:   /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
+/// ```
 #[derive(Debug, Clone)]
 pub struct ProjectDirs {
     project_path:   PathBuf,
@@ -56,29 +96,6 @@ pub struct ProjectDirs {
     runtime_dir:    Option<PathBuf>
 }
 
-/// `BaseDirs` provides paths to standard directories, following the conventions of the operating system the library is running on.
-///
-/// To compute the location of cache, config or data directories for individual projects or applications, use `ProjectDirs` instead.
-/// 
-/// # Examples
-/// 
-/// All examples on this page are computed with a user named _Alice_.
-/// 
-/// ```
-/// use directories::BaseDirs;
-/// 
-/// let base_dirs = BaseDirs::new();
-/// 
-/// base_dirs.config_dir();
-/// // Linux:   /home/alice/.config/
-/// // Windows: C:\Users\Alice\AppData\Roaming\
-/// // macOS:   /Users/Alice/Library/Preferences/
-/// 
-/// base_dirs.audio_dir();
-/// // Linux:   /home/alice/Music/
-/// // Windows: /Users/Alice/Music/
-/// // macOS:   C:\Users\Alice\Music\
-/// ```
 #[deny(missing_docs)]
 impl BaseDirs {
     /// Returns the path to the user's home directory.
@@ -244,23 +261,6 @@ impl BaseDirs {
     }
 }
 
-/// `ProjectDirs` computes the location of cache, config or data directories for a specific application,
-/// which are derived from the standard directories and the name of the project/organization.
-/// 
-/// # Examples
-/// 
-/// All examples on this page are computed with a user named _Alice_,
-/// and a `ProjectDirs` struct created with `ProjectDirs::from("com", "Foo Corp", "Bar App")`.
-/// 
-/// ```
-/// use directories::ProjectDirs;
-///
-/// let proj_dirs = ProjectDirs::from("com", "Foo Corp",  "Bar App");
-/// proj_dirs.config_dir();
-/// // Linux:   /home/alice/.config/barapp/
-/// // Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App
-/// // macOS:   /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
-/// ```
 #[deny(missing_docs)]
 impl ProjectDirs {
     /// Returns the project path fragment used to compute the project's cache/config/data directories.

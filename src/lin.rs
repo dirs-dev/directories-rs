@@ -78,7 +78,7 @@ impl ProjectDirs {
     ///   Example values: `"com.example"`, `"org"`, `"uk.co"`, `"io"`, `""`
     /// - `organization` – The name of the organization that develops this application, or for which the application is developed.<br/>
     ///   An empty string can be passed if no organization should be used (only affects macOS and Windows).<br/>
-    ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`
+    ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`, `""`
     /// - `application`  – The name of the application itself.<br/>
     ///   Example values: `"Bar App"`, `"ExampleProgram"`, `"Unicorn-Programme"`
     #[allow(unused_variables)]
@@ -97,10 +97,12 @@ fn is_absolute_path(path: String) -> Option<PathBuf> {
 }
 
 fn run_xdg_user_dir_command(arg: &str) -> Option<PathBuf> {
+    use std::ffi::OsString;
+    use std::os::unix::ffi::OsStringExt;
     let mut out  = Command::new("xdg-user-dir").arg(arg).output().ok()?.stdout;
     let out_len = out.len();
     out.truncate(out_len - 1);
-    Some(PathBuf::from(String::from_utf8(out).unwrap()))
+    Some(PathBuf::from(OsString::from_vec(out)))
 }
 
 fn trim_and_lowercase_then_replace_spaces(name: &str, replacement: &str) -> String {

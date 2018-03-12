@@ -89,7 +89,7 @@ impl ProjectDirs {
     ///   Example values: `"com.example"`, `"org"`, `"uk.co"`, `"io"`, `""`
     /// - `organization` – The name of the organization that develops this application, or for which the application is developed.<br/>
     ///   An empty string can be passed if no organization should be used (only affects macOS and Windows).<br/>
-    ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`
+    ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`, `""`
     /// - `application`  – The name of the application itself.<br/>
     ///   Example values: `"Bar App"`, `"ExampleProgram"`, `"Unicorn-Programme"`
     #[allow(unused_variables)]
