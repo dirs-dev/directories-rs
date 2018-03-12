@@ -13,40 +13,42 @@ use BaseDirs;
 use ProjectDirs;
 
 #[cfg(target_os = "windows")]
-pub fn base_dirs() -> BaseDirs {
-    let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
-    let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
-    let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
-    let desktop_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
-    let document_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
-    let download_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
-    let audio_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
-    let picture_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
-    let public_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
-    let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
-    let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
+impl BaseDirs {
+    pub fn new() -> BaseDirs {
+        let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
+        let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
+        let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
+        let desktop_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
+        let document_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
+        let download_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
+        let audio_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
+        let picture_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
+        let public_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
+        let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
+        let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
 
-    let cache_dir      = data_local_dir.clone();
-    let config_dir     = data_dir.clone();
+        let cache_dir      = data_local_dir.clone();
+        let config_dir     = data_dir.clone();
 
-    BaseDirs {
-        home_dir:       home_dir,
-        cache_dir:      cache_dir,
-        config_dir:     config_dir,
-        data_dir:       data_dir,
-        data_local_dir: data_local_dir,
-        executable_dir: None,
-        runtime_dir:    None,
+        BaseDirs {
+            home_dir:       home_dir,
+            cache_dir:      cache_dir,
+            config_dir:     config_dir,
+            data_dir:       data_dir,
+            data_local_dir: data_local_dir,
+            executable_dir: None,
+            runtime_dir:    None,
 
-        audio_dir:      Some(audio_dir),
-        desktop_dir:    Some(desktop_dir),
-        document_dir:   Some(document_dir),
-        download_dir:   Some(download_dir),
-        font_dir:       None,
-        picture_dir:    Some(picture_dir),
-        public_dir:     Some(public_dir),
-        template_dir:   Some(template_dir),
-        video_dir:      Some(video_dir)
+            audio_dir:      Some(audio_dir),
+            desktop_dir:    Some(desktop_dir),
+            document_dir:   Some(document_dir),
+            download_dir:   Some(download_dir),
+            font_dir:       None,
+            picture_dir:    Some(picture_dir),
+            public_dir:     Some(public_dir),
+            template_dir:   Some(template_dir),
+            video_dir:      Some(video_dir)
+        }
     }
 }
 

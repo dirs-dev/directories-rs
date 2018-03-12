@@ -23,7 +23,7 @@ The library provides the location of these directories by leveraging the mechani
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.6.0"
+directories = "0.7.0"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.

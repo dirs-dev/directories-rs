@@ -19,10 +19,6 @@ use std::path::PathBuf;
 #[cfg(target_os = "windows")] mod win;
 #[cfg(target_os = "macos")]   mod mac;
 
-#[cfg(target_os = "linux")]   pub use lin::base_dirs as base_dirs;
-#[cfg(target_os = "windows")] pub use win::base_dirs as base_dirs;
-#[cfg(target_os = "macos")]   pub use mac::base_dirs as base_dirs;
-
 #[derive(Debug, Clone)]
 pub struct BaseDirs {
     // home directory
@@ -69,9 +65,9 @@ pub struct ProjectDirs {
 /// All examples on this page are computed with a user named _Alice_.
 /// 
 /// ```
-/// use directories::base_dirs;
+/// use directories::BaseDirs;
 /// 
-/// let base_dirs = base_dirs();
+/// let base_dirs = BaseDirs::new();
 /// 
 /// base_dirs.config_dir();
 /// // Linux:   /home/alice/.config/
@@ -328,7 +324,7 @@ impl ProjectDirs {
 mod tests {
     #[test]
     fn test_base_dirs() {
-        println!("{:?}", ::base_dirs());
+        println!("{:?}", ::BaseDirs::new());
     }
 
     #[test]
