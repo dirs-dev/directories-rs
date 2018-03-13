@@ -1,3 +1,6 @@
+#![cfg(target_os = "windows")]
+#![deny(missing_docs)]
+
 use std;
 use std::path::PathBuf;
 use std::iter::FromIterator;
@@ -10,23 +13,16 @@ use self::winapi::um::shtypes;
 use self::winapi::um::winnt;
 
 use BaseDirs;
+use UserDirs;
 use ProjectDirs;
 
-#[cfg(target_os = "windows")]
 impl BaseDirs {
+    /// Creates a `BaseDirs` struct which holds the paths to user-invisible directories for cache, config, etc. data on the system.
+    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
     pub fn new() -> BaseDirs {
         let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
         let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
         let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
-        let desktop_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
-        let document_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
-        let download_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
-        let audio_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
-        let picture_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
-        let public_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
-        let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
-        let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
-
         let cache_dir      = data_local_dir.clone();
         let config_dir     = data_dir.clone();
 
@@ -37,22 +33,43 @@ impl BaseDirs {
             data_dir:       data_dir,
             data_local_dir: data_local_dir,
             executable_dir: None,
-            runtime_dir:    None,
-
-            audio_dir:      Some(audio_dir),
-            desktop_dir:    Some(desktop_dir),
-            document_dir:   Some(document_dir),
-            download_dir:   Some(download_dir),
-            font_dir:       None,
-            picture_dir:    Some(picture_dir),
-            public_dir:     Some(public_dir),
-            template_dir:   Some(template_dir),
-            video_dir:      Some(video_dir)
+            runtime_dir:    None
         }
     }
 }
 
-#[deny(missing_docs)]
+impl UserDirs {
+    /// Creates a `UserDirs` struct which holds the paths to user-facing directories for audio, font, video, etc. data on the system.
+    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
+    pub fn new() -> UserDirs {
+        let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
+        let audio_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
+        let desktop_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
+        let document_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
+        let download_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
+        let picture_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
+        let public_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
+        let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
+        // see https://github.com/soc/directories-rs/issues/18
+        // let trash_dir      = unsafe { known_folder(&knownfolders::FOLDERID_RecycleBinFolder) };
+        let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
+
+        UserDirs {
+            home_dir:     home_dir,
+            audio_dir:    Some(audio_dir),
+            desktop_dir:  Some(desktop_dir),
+            document_dir: Some(document_dir),
+            download_dir: Some(download_dir),
+            font_dir:     None,
+            picture_dir:  Some(picture_dir),
+            public_dir:   Some(public_dir),
+            template_dir: Some(template_dir),
+            // trash_dir:    trash_dir,
+            video_dir:    Some(video_dir)
+        }
+    }
+}
+
 impl ProjectDirs {
     /// Creates a `ProjectDirs` struct directly from a `PathBuf` value.
     /// The argument is used verbatim and is not adapted to operating system standards.

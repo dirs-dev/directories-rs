@@ -30,6 +30,7 @@ install:
 
 test_script:
 - cargo check --verbose
+- set RUST_BACKTRACE=full
 - cargo test --verbose -- --nocapture
 
 cache:

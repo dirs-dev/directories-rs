@@ -1,49 +1,66 @@
+#[cfg(target_os = "macos")]
+#![deny(missing_docs)]
+
 use std::env;
 use std::path::PathBuf;
 
 use BaseDirs;
+use UserDirs;
 use ProjectDirs;
 
-#[cfg(target_os = "macos")]
 impl BaseDirs {
+    /// Creates a `BaseDirs` struct which holds the paths to user-invisible directories for cache, config, etc. data on the system.
+    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
     pub fn new() -> BaseDirs {
         let home_dir       = env::home_dir().unwrap();
         let cache_dir      = home_dir.join("Library/Caches");
         let config_dir     = home_dir.join("Library/Preferences");
         let data_dir       = home_dir.join("Library/Application Support");
         let data_local_dir = data_dir.clone();
+
+        BaseDirs {
+            home_dir:       home_dir,
+            cache_dir:      cache_dir,
+            config_dir:     config_dir,
+            data_dir:       data_dir,
+            data_local_dir: data_local_dir,
+            executable_dir: None,
+            runtime_dir:    None
+        }
+    }
+}
+
+impl UserDirs {
+    /// Creates a `UserDirs` struct which holds the paths to user-facing directories for audio, font, video, etc. data on the system.
+    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
+    pub fn new() -> UserDirs {
+        let home_dir       = env::home_dir().unwrap();
         let audio_dir      = home_dir.join("Music");
         let desktop_dir    = home_dir.join("Desktop");
         let document_dir   = home_dir.join("Documents");
         let download_dir   = home_dir.join("Downloads");
         let picture_dir    = home_dir.join("Pictures");
         let public_dir     = home_dir.join("Public");
+        // let trash_dir      = home_dir.join(".trash");
         let video_dir      = home_dir.join("Movies");
         let font_dir       = home_dir.join("Library/Fonts");
 
-        BaseDirs {
-            home_dir:         home_dir,
-            cache_dir:        cache_dir,
-            config_dir:       config_dir,
-            data_dir:         data_dir,
-            data_local_dir:   data_local_dir,
-            executable_dir:   None,
-            runtime_dir:      None,
-
-            audio_dir:        Some(audio_dir),
-            desktop_dir:      Some(desktop_dir),
-            document_dir:     Some(document_dir),
-            download_dir:     Some(download_dir),
-            font_dir:         Some(font_dir),
-            picture_dir:      Some(picture_dir),
-            public_dir:       Some(public_dir),
-            template_dir:     None,
-            video_dir:        Some(video_dir)
+        UserDirs {
+            home_dir:     home_dir,
+            audio_dir:    Some(audio_dir),
+            desktop_dir:  Some(desktop_dir),
+            document_dir: Some(document_dir),
+            download_dir: Some(download_dir),
+            font_dir:     Some(font_dir),
+            picture_dir:  Some(picture_dir),
+            public_dir:   Some(public_dir),
+            template_dir: None,
+            // trash_dir:    trash_dir,
+            video_dir:    Some(video_dir)
         }
     }
 }
 
-#[deny(missing_docs)]
 impl ProjectDirs {
     /// Creates a `ProjectDirs` struct directly from a `PathBuf` value.
     /// The argument is used verbatim and is not adapted to operating system standards.
