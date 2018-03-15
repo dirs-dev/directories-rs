@@ -23,7 +23,7 @@ The library provides the location of these directories by leveraging the mechani
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.8.0"
+directories = "0.8.3"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
@@ -38,22 +38,44 @@ use directories::{BaseDirs, UserDirs, ProjectDirs};
 
 let proj_dirs = ProjectDirs::from("com", "Foo Corp",  "Bar App");
 proj_dirs.config_dir();
-// Linux:   /home/alice/.config/barapp
-// Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config
-// macOS:   /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
+// Lin: /home/alice/.config/barapp
+// Win: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config
+// Mac: /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
 
 let base_dirs = BaseDirs::new();
 base_dirs.executable_dir();
-// Linux:   Some(/home/alice/.local/share/bin)
-// Windows: None
-// macOS:   None
+// Lin: Some(/home/alice/.local/share/bin)
+// Win: None
+// Mac: None
 
 let user_dirs = UserDirs::new();
 user_dirs.audio_dir();
-// Linux:   /home/alice/Music
-// Windows: /Users/Alice/Music
-// macOS:   C:\Users\Alice\Music
+// Lin: /home/alice/Music
+// Win: C:\Users\Alice\Music
+// Mac: /Users/Alice/Music
 ```
+
+## Design Goals
+
+- The _directories_ library is designed to provide an accurate snapshot of the system's state at
+  the point of invocation of `BaseDirs::new`, `UserDirs::new` or `ProjectDirs::from`. Subsequent
+  changes to the state of the system are not reflected in values creates prior to such a change.
+- This library does not create directories or check for their existence. The library only provides
+  information on what the path to a certain directory _should_ be. How this information is used is
+  a decision that developers need to make based on the requirements of each individual application.
+- This library is intentionally focused on providing information on user-writable directories only.
+  There is no discernible benefit in returning a path that points to a user-level, writable
+  directory on one operating system, but a system-level, read-only directory on another, that would
+  outweigh the confusion and unexpected failures such an approach would cause.
+  - `executable_dir` is specified to provide the path to a user-writable directory for binaries.<br/>
+    As such a directory only commonly exists on Linux, it returns `None` on macOS and Windows.
+  - `font_dir` is specified to provide the path to a user-writable directory for fonts.<br/>
+    As such a directory only exists on Linux and macOS, it returns `None` Windows.
+  - `runtime_dir` is specified to provide the path to a directory for non-essential runtime data.
+    It is required that this directory is created when the user logs in, is only accessible by the
+    user itself, is deleted when the user logs out, and supports all filesystem features of the
+    operating system.<br/>
+    As such a directory only commonly exists on Linux, it returns `None` on macOS and Windows.
 
 ## Features
 
@@ -109,11 +131,15 @@ which are derived from the standard directories.
 
 The specific value of `_project_path_` is computed by the
 
-    ProjectDirs::from(qualifier: &str, organization: &str, project: &str)
+    ProjectDirs::from(qualifier: &str,
+                      organization: &str,
+                      application: &str)
 
 function and varies across operating systems. As an example, calling
 
-    ProjectDirs::from("org" /*qualifier*/, "Baz Corp" /*organization*/, "Foo Bar-App" /*application*/)
+    ProjectDirs::from("org"         /*qualifier*/,
+                      "Baz Corp"    /*organization*/,
+                      "Foo Bar-App" /*application*/)
 
 results in the following values:
 

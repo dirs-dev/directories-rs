@@ -1,4 +1,4 @@
-#[cfg(target_os = "macos")]
+#![cfg(target_os = "macos")]
 #![deny(missing_docs)]
 
 use std::env;
