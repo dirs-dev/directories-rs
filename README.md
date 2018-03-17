@@ -4,21 +4,27 @@
 
 ## Introduction
 
-- A tiny library with a minimal API (2 structs, 3 factory functions, getters)
+- a tiny library with a minimal API
 - that provides the platform-specific, user-accessible locations
-- for storing configuration, cache and other data
+- for retrieving and storing configuration, cache and other data
 - on Linux, Windows (≥ Vista) and macOS.
 
 The library provides the location of these directories by leveraging the mechanisms defined by
 - the [XDG base directory](https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html) and
   the [XDG user directory](https://www.freedesktop.org/wiki/Software/xdg-user-dirs/) specifications on Linux,
-- the [Known Folder](https://msdn.microsoft.com/en-us/library/windows/desktop/bb776911(v=vs.85).aspx) system on Windows, and
+- the [Known Folder](https://msdn.microsoft.com/en-us/library/windows/desktop/bb776911(v=vs.85).aspx) API on Windows, and
 - the [Standard Directories](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW6)
-  on macOS.
+  guidelines on macOS.
+
+## Platforms
+
+This library is written in Rust, and supports Linux, macOS and Windows.
+
+A version of this library running on the JVM is provided by [directories-jvm](https://github.com/soc/directories-jvm).
 
 ## Usage
 
-### Dependency
+#### Dependency
 
 Add the library as a dependency to your project by inserting
 
@@ -28,7 +34,7 @@ directories = "0.8.3"
 
 into the `[dependencies]` section of your Cargo.toml file.
 
-### Example
+#### Example
 
 Library run by user Alice:
 
@@ -149,7 +155,7 @@ results in the following values:
 
 The `ProjectDirs::from_path` function allows the creation of `ProjectDirs` structs directly from a `PathBuf` value.
 This argument is used verbatim and is not adapted to operating system standards.
-The use of `ProjectDirs::from_path` is heavily discouraged, as its results will not follow operating system standards on at least two of three platforms.
+The use of `ProjectDirs::from_path` is strongly discouraged, as its results will not follow operating system standards on at least two of three platforms.
 
 ## Versioning
 
