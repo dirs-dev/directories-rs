@@ -1,4 +1,9 @@
-[![crates.io version](https://img.shields.io/crates/v/directories.svg)](https://crates.io/crates/directories) [![](https://docs.rs/directories/badge.svg)](https://docs.rs/directories/) ![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg) [![TravisCI status](https://travis-ci.org/soc/directories-rs.svg?branch=master)](https://travis-ci.org/soc/directories-rs) [![AppVeyor status](https://ci.appveyor.com/api/projects/status/p5c600gk0lthlhjn?svg=true)](https://ci.appveyor.com/project/soc/directories-rs)
+[![crates.io](https://img.shields.io/crates/v/directories.svg)](https://crates.io/crates/directories)
+[![API documentation](https://docs.rs/directories/badge.svg)](https://docs.rs/directories/)
+![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
+[![TravisCI status](https://img.shields.io/travis/soc/directories-rs/master.svg?label=Linux/macOS%20build)](https://travis-ci.org/soc/directories-rs)
+[![AppVeyor status](https://img.shields.io/appveyor/ci/soc/directories-rs/master.svg?label=Windows%20build)](https://ci.appveyor.com/project/soc/directories-rs/branch/master)
+[![License: MPL-2.0](https://img.shields.io/github/license/soc/directories-rs.svg)](LICENSE)
 
 # Directories
 
@@ -11,10 +16,10 @@
 
 The library provides the location of these directories by leveraging the mechanisms defined by
 - the [XDG base directory](https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html) and
-  the [XDG user directory](https://www.freedesktop.org/wiki/Software/xdg-user-dirs/) specifications on Linux,
-- the [Known Folder](https://msdn.microsoft.com/en-us/library/windows/desktop/bb776911(v=vs.85).aspx) API on Windows, and
+  the [XDG user directory](https://www.freedesktop.org/wiki/Software/xdg-user-dirs/) specifications on Linux
+- the [Known Folder](https://msdn.microsoft.com/en-us/library/windows/desktop/dd378457.aspx) API on Windows
 - the [Standard Directories](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW6)
-  guidelines on macOS.
+  guidelines on macOS
 
 ## Platforms
 
@@ -65,7 +70,7 @@ user_dirs.audio_dir();
 
 - The _directories_ library is designed to provide an accurate snapshot of the system's state at
   the point of invocation of `BaseDirs::new`, `UserDirs::new` or `ProjectDirs::from`. Subsequent
-  changes to the state of the system are not reflected in values creates prior to such a change.
+  changes to the state of the system are not reflected in values created prior to such a change.
 - This library does not create directories or check for their existence. The library only provides
   information on what the path to a certain directory _should_ be. How this information is used is
   a decision that developers need to make based on the requirements of each individual application.
