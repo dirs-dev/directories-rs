@@ -34,7 +34,7 @@ A version of this library running on the JVM is provided by [directories-jvm](ht
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.8.4"
+directories = "0.8.5"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
@@ -92,55 +92,55 @@ user_dirs.audio_dir();
 
 ### `BaseDirs`
 
-The intended use-case for `BaseDirs` is to query the paths of user-invisible standard directories
+The intended use case for `BaseDirs` is to query the paths of user-invisible standard directories
 that have been defined according to the conventions of the operating system the library is running on.
 
 If you want to compute the location of cache, config or data directories for your own application or project, use `ProjectDirs` instead.
 
-| Function name    | Value on Linux                                                                             | Value on Windows                 | Value on macOS                      |
-| ---------------- | ------------------------------------------------------------------------------------------ | -------------------------------- | ----------------------------------- |
-| `home_dir`       | `$HOME`                                                                                    | `{FOLDERID_Profile}`             | `$HOME`                             |
-| `cache_dir`      | `$XDG_CACHE_HOME`             or `$HOME/.cache`                                            | `{FOLDERID_LocalAppData}`        | `$HOME/Library/Caches`              |
-| `config_dir`     | `$XDG_CONFIG_HOME`            or `$HOME/.config`                                           | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Preferences`         |
-| `data_dir`       | `$XDG_DATA_HOME`              or `$HOME/.local/share`                                      | `{FOLDERID_RoamingAppData}`      | `$HOME/Library/Application Support` |
-| `data_local_dir` | `$XDG_DATA_HOME`              or `$HOME/.local/share`                                      | `{FOLDERID_LocalAppData}`        | `$HOME/Library/Application Support` |
-| `executable_dir` | `Some($XDG_BIN_HOME/../bin)`  or `Some($XDG_DATA_HOME/../bin)` or `Some($HOME/.local/bin)` | `None`                           | `None`                              |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR)`      or `None`                                                    | `None`                           | `None`                              |
+| Function name    | Value on Linux                                                                                  | Value on Windows            | Value on macOS                      |
+| ---------------- | ----------------------------------------------------------------------------------------------- | --------------------------- | ----------------------------------- |
+| `home_dir`       | `$HOME`                                                                                         | `{FOLDERID_Profile}`        | `$HOME`                             |
+| `cache_dir`      | `$XDG_CACHE_HOME`              or `$HOME`/.cache                                                | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Caches              |
+| `config_dir`     | `$XDG_CONFIG_HOME`             or `$HOME`/.config                                               | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Preferences         |
+| `data_dir`       | `$XDG_DATA_HOME`               or `$HOME`/.local/share                                          | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
+| `data_local_dir` | `$XDG_DATA_HOME`               or `$HOME`/.local/share                                          | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Application Support |
+| `executable_dir` | `Some($XDG_BIN_HOME`/../bin`)` or `Some($XDG_DATA_HOME`/../bin`)` or `Some($HOME`/.local/bin`)` | `None`                      | `None`                              |
+| `runtime_dir`    | `Some($XDG_RUNTIME_DIR)`       or `None`                                                        | `None`                      | `None`                              |
 
 ### `UserDirs`
 
-The intended use-case for `UserDirs` is to query the paths of user-facing standard directories
+The intended use case for `UserDirs` is to query the paths of user-facing standard directories
 that have been defined according to the conventions of the operating system the library is running on.
 
-| Function name    | Value on Linux                                                                             | Value on Windows                 | Value on macOS                      |
-| ---------------- | ------------------------------------------------------------------------------------------ | -------------------------------- | ----------------------------------- |
-| `home_dir`       | `$HOME`                                                                                    | `{FOLDERID_Profile}`             | `$HOME`                             |
-| `audio_dir`      | `Some(XDG_MUSIC_DIR)`         or `None`                                                    | `Some({FOLDERID_Music})`         | `Some($HOME/Music/)`                |
-| `desktop_dir`    | `Some(XDG_DESKTOP_DIR)`       or `None`                                                    | `Some({FOLDERID_Desktop})`       | `Some($HOME/Desktop/)`              |
-| `document_dir`   | `Some(XDG_DOCUMENTS_DIR)`     or `None`                                                    | `Some({FOLDERID_Documents})`     | `Some($HOME/Documents/)`            |
-| `download_dir`   | `Some(XDG_DOWNLOAD_DIR)`      or `None`                                                    | `Some({FOLDERID_Downloads})`     | `Some($HOME/Downloads/)`            |
-| `font_dir`       | `Some($XDG_DATA_HOME/fonts/)` or `Some($HOME/.local/share/fonts/)`                         | `None`                           | `Some($HOME/Library/Fonts/)`        |
-| `picture_dir`    | `Some(XDG_PICTURES_DIR)`      or `None`                                                    | `Some({FOLDERID_Pictures})`      | `Some($HOME/Pictures/)`             |
-| `public_dir`     | `Some(XDG_PUBLICSHARE_DIR)`   or `None`                                                    | `Some({FOLDERID_Public})`        | `Some($HOME/Public/)`               |
-| `template_dir`   | `Some(XDG_TEMPLATES_DIR)`     or `None`                                                    | `Some({FOLDERID_Templates})`     | `None`                              |
-| `video_dir`      | `Some(XDG_VIDEOS_DIR)`        or `None`                                                    | `Some({FOLDERID_Videos})`        | `Some($HOME/Movies/)`               |
+| Function name    | Value on Linux                                                         | Value on Windows                 | Value on macOS                 |
+| ---------------- | ---------------------------------------------------------------------- | -------------------------------- | ------------------------------ |
+| `home_dir`       | `$HOME`                                                                | `{FOLDERID_Profile}`             | `$HOME`                        |
+| `audio_dir`      | `Some(XDG_MUSIC_DIR)`           or `None`                              | `Some({FOLDERID_Music})`         | `Some($HOME`/Music/`)`         |
+| `desktop_dir`    | `Some(XDG_DESKTOP_DIR)`         or `None`                              | `Some({FOLDERID_Desktop})`       | `Some($HOME`/Desktop/`)`       |
+| `document_dir`   | `Some(XDG_DOCUMENTS_DIR)`       or `None`                              | `Some({FOLDERID_Documents})`     | `Some($HOME`/Documents/`)`     |
+| `download_dir`   | `Some(XDG_DOWNLOAD_DIR)`        or `None`                              | `Some({FOLDERID_Downloads})`     | `Some($HOME`/Downloads/`)`     |
+| `font_dir`       | `Some($XDG_DATA_HOME`/fonts/`)` or `Some($HOME`/.local/share/fonts/`)` | `None`                           | `Some($HOME`/Library/Fonts/`)` |
+| `picture_dir`    | `Some(XDG_PICTURES_DIR)`        or `None`                              | `Some({FOLDERID_Pictures})`      | `Some($HOME`/Pictures/`)`      |
+| `public_dir`     | `Some(XDG_PUBLICSHARE_DIR)`     or `None`                              | `Some({FOLDERID_Public})`        | `Some($HOME`/Public/`)`        |
+| `template_dir`   | `Some(XDG_TEMPLATES_DIR)`       or `None`                              | `Some({FOLDERID_Templates})`     | `None`                         | 
+| `video_dir`      | `Some(XDG_VIDEOS_DIR)`          or `None`                              | `Some({FOLDERID_Videos})`        | `Some($HOME`/Movies/`)`        |
 
-<!--| `trash_dir`      | `$XDG_DATA_HOME/Trash`        or `$HOME/.local/share/Trash`                                | `???`                            | `$HOME/.trash`                      |-->
+<!--| `trash_dir`  | `$XDG_DATA_HOME/Trash`          or `$HOME/.local/share/Trash`          | `???`                            | `$HOME/.trash`                 |-->
 
 ### `ProjectDirs`
 
-The intended use-case for `ProjectDirs` is to compute the location of cache, config or data directories for your own application or project,
+The intended use case for `ProjectDirs` is to compute the location of cache, config or data directories for your own application or project,
 which are derived from the standard directories.
 
-| Function name    | Value on Linux                                                                  | Value on Windows                                | Value on macOS                                      |
-| ---------------- | ------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------- |
-| `cache_dir`      | `$XDG_CACHE_HOME/_project_path_`        or `$HOME/.cache/_project_path_`        | `{FOLDERID_LocalAppData}/_project_path_/cache`  | `$HOME/Library/Caches/_project_path_`               |
-| `config_dir`     | `$XDG_CONFIG_HOME/_project_path_`       or `$HOME/.config/_project_path_`       | `{FOLDERID_RoamingAppData}/_project_path_`      | `$HOME/Library/Preferences/_project_path_`          |
-| `data_dir`       | `$XDG_DATA_HOME/_project_path_`         or `$HOME/.local/share/_project_path_`  | `{FOLDERID_RoamingAppData}/_project_path_`      | `$HOME/Library/Application Support/_project_path_`  |
-| `data_local_dir` | `$XDG_DATA_HOME/_project_path_`         or `$HOME/.local/share/_project_path_`  | `{FOLDERID_LocalAppData}/_project_path_`        | `$HOME/Library/Application Support/_project_path_`  |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR/_project_path_)`                                         | `None`                                          | `None`                                              |
+| Function name    | Value on Linux                                                                     | Value on Windows                                    | Value on macOS                                       |
+| ---------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------- |
+| `cache_dir`      | `$XDG_CACHE_HOME`/`<project_path>`        or `$HOME`/.cache/`<project_path>`       | `{FOLDERID_LocalAppData}`/`<project_path>`/cache    | `$HOME`/Library/Caches/`<project_path>`              |
+| `config_dir`     | `$XDG_CONFIG_HOME`/`<project_path>`       or `$HOME`/.config/`<project_path>`      | `{FOLDERID_RoamingAppData}`/`<project_path>`/config | `$HOME`/Library/Preferences/`<project_path>`         |
+| `data_dir`       | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_RoamingAppData}`/`<project_path>`/data   | `$HOME`/Library/Application Support/`<project_path>` |
+| `data_local_dir` | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_LocalAppData}`/`<project_path>`/data     | `$HOME`/Library/Application Support/`<project_path>` |
+| `runtime_dir`    | `Some($XDG_RUNTIME_DIR`/`_project_path_)`                                          | `None`                                              | `None`                                               |
 
-The specific value of `_project_path_` is computed by the
+The specific value of `<project_path>` is computed by the
 
     ProjectDirs::from(qualifier: &str,
                       organization: &str,
@@ -161,6 +161,34 @@ results in the following values:
 The `ProjectDirs::from_path` function allows the creation of `ProjectDirs` structs directly from a `PathBuf` value.
 This argument is used verbatim and is not adapted to operating system standards.
 The use of `ProjectDirs::from_path` is strongly discouraged, as its results will not follow operating system standards on at least two of three platforms.
+
+## Comparison
+
+There are other crates in the Rust ecosystem that try similar or related things.
+Here is an overview of them, combined with ratings on properties that guided the design of this crate.
+
+Please take this table with a grain of salt, a different crate might very well be more suitable for your specific use case.
+(Of course _my_ crate achieves _my_ design goals better than other crates, which might have had different design goals.)
+
+| Library                                                   | Status         | Lin | Mac | Win |Base|User|Proj|Conv|
+| --------------------------------------------------------- | -------------- |:---:|:---:|:---:|:--:|:--:|:--:|:--:|
+| [app_dirs](https://crates.io/crates/app_dirs)             | Unmaintained   |  ✔  |  ✔  |  ✔  | 🞈  | ✖  | ✔  | ✖  |
+| [app_dirs2](https://crates.io/crates/app_dirs2)           | Maintained     |  ✔  |  ✔  |  ✔  | 🞈  | ✖  | ✔  | ✖  |
+| **directories**                                           | **Developed**  |  ✔  |  ✔  |  ✔  | ✔  | ✔  | ✔  | ✔  |
+| [dirs](https://crates.io/crates/dirs)                     | Unmaintained?  |  ✔  |  ✔  |  ✔  | 🞈  | ✖  | ✔  | ✖  |
+| [s_app_dir](https://crates.io/crates/s_app_dir)           | Unmaintained?  |  ✔  |  ✖  |  🞈  | ✖  | ✖  | 🞈  | ✖  |
+| [standard_paths](https://crates.io/crates/standard_paths) | Maintained     |  ✔  |  ✖  |  ✔  | ✔  | ✔  | ✔  | ✖  |
+| [xdg](https://crates.io/crates/xdg)                       | Maintaind      |  ✔  |  ✖  |  ✖  | ✔  | ✖  | ✔  | 🞈  |
+| [xdg-basedir](https://crates.io/crates/xdg-basedir)       | Unmaintained?  |  ✔  |  ✖  |  ✖  | ✔   | ✖  | ✖  | 🞈  |
+| [xdg-rs](https://crates.io/crates/xdg-rs)                 | Obsolete       |  ✔  |  ✖  |  ✖  | ✔   | ✖  | ✖  | 🞈  |
+
+- Lin: Linux support
+- Mac: macOS support
+- Win: Windows support
+- Base: Supports [generic base directories](#basedirs)
+- User: Supports [user directories](#userdirs)
+- Proj: Supports [project-specific base directories](#projectdirs)
+- Conv: Follows naming conventions of the operating system ti runs on
 
 ## Versioning
 
