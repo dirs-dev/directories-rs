@@ -13,6 +13,12 @@ use ProjectDirs;
 impl BaseDirs {
     /// Creates a `BaseDirs` struct which holds the paths to user-invisible directories for cache, config, etc. data on the system.
     /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`home_dir`].
+    ///
+    /// [`home_dir`]: #method.home_dir
     pub fn new() -> BaseDirs {
         let home_dir       = env::home_dir().unwrap();
         let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".cache"));
@@ -39,6 +45,12 @@ impl BaseDirs {
 impl UserDirs {
     /// Creates a `UserDirs` struct which holds the paths to user-facing directories for audio, font, video, etc. data on the system.
     /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`home_dir`].
+    ///
+    /// [`home_dir`]: #method.home_dir
     pub fn new() -> UserDirs {
         let home_dir  = env::home_dir().unwrap();
         let data_dir  = env::var_os("XDG_DATA_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
@@ -68,6 +80,12 @@ impl ProjectDirs {
     /// 
     /// The use of `ProjectDirs::from_path` is strongly discouraged, as its results will
     /// not follow operating system standards on at least two of three platforms.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
+    ///
+    /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
     pub fn from_path(project_path: PathBuf) -> ProjectDirs {
         let home_dir       = env::home_dir().unwrap();
         let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".cache")).join(&project_path);
@@ -101,6 +119,12 @@ impl ProjectDirs {
     ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`, `""`
     /// - `application`  – The name of the application itself.<br/>
     ///   Example values: `"Bar App"`, `"ExampleProgram"`, `"Unicorn-Programme"`
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
+    ///
+    /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
     #[allow(unused_variables)]
     pub fn from(qualifier: &str, organization: &str, application: &str) -> ProjectDirs {
         ProjectDirs::from_path(PathBuf::from(&trim_and_lowercase_then_replace_spaces(application, "")))
