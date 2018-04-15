@@ -15,13 +15,13 @@ impl BaseDirs {
     /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
     pub fn new() -> BaseDirs {
         let home_dir       = env::home_dir().unwrap();
-        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or(home_dir.join(".cache"));
-        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(is_absolute_path).unwrap_or(home_dir.join(".config"));
-        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(is_absolute_path).unwrap_or(home_dir.join(".local/share"));
+        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".cache"));
+        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".config"));
+        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let data_local_dir = data_dir.clone();
         let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(is_absolute_path);
         let executable_dir = 
-            env::var_os("XDG_BIN_HOME").and_then(is_absolute_path).unwrap_or({
+            env::var_os("XDG_BIN_HOME").and_then(is_absolute_path).unwrap_or_else(|| {
                 let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir });
 
         BaseDirs {
@@ -41,7 +41,7 @@ impl UserDirs {
     /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
     pub fn new() -> UserDirs {
         let home_dir  = env::home_dir().unwrap();
-        let data_dir  = env::var_os("XDG_DATA_HOME").and_then(is_absolute_path).unwrap_or(home_dir.join(".local/share"));
+        let data_dir  = env::var_os("XDG_DATA_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let font_dir  = data_dir.join("fonts");
         // let trash_dir = data_dir.join("Trash");
 
@@ -70,9 +70,9 @@ impl ProjectDirs {
     /// not follow operating system standards on at least two of three platforms.
     pub fn from_path(project_path: PathBuf) -> ProjectDirs {
         let home_dir       = env::home_dir().unwrap();
-        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or(home_dir.join(".cache")).join(&project_path);
-        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(is_absolute_path).unwrap_or(home_dir.join(".config")).join(&project_path);
-        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(is_absolute_path).unwrap_or(home_dir.join(".local/share")).join(&project_path);
+        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".cache")).join(&project_path);
+        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".config")).join(&project_path);
+        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share")).join(&project_path);
         let data_local_dir = data_dir.clone();
         let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(is_absolute_path).map(|o| o.join(&project_path));
 
