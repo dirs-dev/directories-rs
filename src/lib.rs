@@ -114,11 +114,25 @@ pub struct ProjectDirs {
 impl BaseDirs {
     /// Returns the path to the user's home directory.
     ///
-    /// |Platform | Value                | Example         |
-    /// | ------- | -------------------- | --------------- |
-    /// | Linux   | `$HOME`              | /home/alice     |
-    /// | macOS   | `$HOME`              | /Users/Alice    |
-    /// | Windows | `{FOLDERID_Profile}` | C:\Users\Alice\ |
+    /// |Platform | Value                | Example        |
+    /// | ------- | -------------------- | -------------- |
+    /// | Linux   | `$HOME`              | /home/alice    |
+    /// | macOS   | `$HOME`              | /Users/Alice   |
+    /// | Windows | `{FOLDERID_Profile}` | C:\Users\Alice |
+    ///
+    /// On Linux and macOS, this function uses [`std::env::home_dir`] to
+    /// determine the home directory:
+    /// - Use `$HOME` if it is set.
+    /// - If `$HOME` is not set, the function `getpwuid_r` is used to determine
+    ///   the home directory of the current user.
+    /// - If this also fails, creation of `BaseDirs` panics.
+    /// 
+    /// On Windows, this function retrieves the user profile folder using
+    /// `SHGetKnownFolderPath`.
+    ///
+    /// All the examples on this page mentioning `$HOME` use this behavior.
+    ///
+    /// [`std::env::home_dir`]: https://doc.rust-lang.org/std/env/fn.home_dir.html
     pub fn home_dir(&self) -> &Path {
         self.home_dir.as_path()
     }
@@ -128,7 +142,7 @@ impl BaseDirs {
     /// | ------- | ----------------------------------- | ---------------------------- |
     /// | Linux   | `$XDG_CACHE_HOME` or `$HOME/.cache` | /home/alice/.cache           |
     /// | macOS   | `$HOME/Library/Caches`              | /Users/Alice/Library/Caches  |
-    /// | Windows | `{FOLDERID_LocalAppData}\cache`     | C:\Users\Alice\AppData\Local |
+    /// | Windows | `{FOLDERID_LocalAppData}`           | C:\Users\Alice\AppData\Local |
     pub fn cache_dir(&self) -> &Path {
         self.cache_dir.as_path()
     }
@@ -192,6 +206,20 @@ impl UserDirs {
     /// | Linux   | `$HOME`              | /home/alice    |
     /// | macOS   | `$HOME`              | /Users/Alice   |
     /// | Windows | `{FOLDERID_Profile}` | C:\Users\Alice |
+    ///
+    /// On Linux and macOS, this function uses [`std::env::home_dir`] to
+    /// determine the home directory:
+    /// - Use `$HOME` if it is set.
+    /// - If `$HOME` is not set, the function `getpwuid_r` is used to determine
+    ///   the home directory of the current user.
+    /// - If this also fails, creation of `BaseDirs` panics.
+    /// 
+    /// On Windows, this function retrieves the user profile folder using
+    /// `SHGetKnownFolderPath`.
+    ///
+    /// All the examples on this page mentioning `$HOME` use this behavior.
+    ///
+    /// [`std::env::home_dir`]: https://doc.rust-lang.org/std/env/fn.home_dir.html
     pub fn home_dir(&self) -> &Path {
         self.home_dir.as_path()
     }
@@ -307,11 +335,11 @@ impl ProjectDirs {
     }
     /// Returns the path to the project's cache directory.
     /// 
-    /// |Platform | Value                                                            | Example                                             |
-    /// | ------- | ---------------------------------------------------------------- | --------------------------------------------------- |
-    /// | Linux   | `$XDG_CACHE_HOME_project_path_` or `$HOME/.cache/_project_path_` | /home/alice/.cache/barapp                           |
-    /// | macOS   | `$HOME/Library/Caches/_project_path_`                            | /Users/Alice/Library/Caches/com.Foo-Corp.Bar-App    |
-    /// | Windows | `{FOLDERID_LocalAppData}\_project_path_\cache`                   | C:\Users\Alice\AppData\Local\Foo Corp\Bar App\cache |
+    /// |Platform | Value                                                             | Example                                             |
+    /// | ------- | ----------------------------------------------------------------- | --------------------------------------------------- |
+    /// | Linux   | `$XDG_CACHE_HOME/_project_path_` or `$HOME/.cache/_project_path_` | /home/alice/.cache/barapp                           |
+    /// | macOS   | `$HOME/Library/Caches/_project_path_`                             | /Users/Alice/Library/Caches/com.Foo-Corp.Bar-App    |
+    /// | Windows | `{FOLDERID_LocalAppData}\_project_path_\cache`                    | C:\Users\Alice\AppData\Local\Foo Corp\Bar App\cache |
     pub fn cache_dir(&self) -> &Path {
         self.cache_dir.as_path()
     }
