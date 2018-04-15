@@ -10,7 +10,7 @@
 //! - the [XDG base directory](https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html) and the [XDG user directory](https://www.freedesktop.org/wiki/Software/xdg-user-dirs/) specifications on Linux,
 //! - the [Known Folder](https://msdn.microsoft.com/en-us/library/windows/desktop/bb776911(v=vs.85).aspx) system on Windows, and
 //! - the [Standard Directories](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW6) on macOS.
-//! 
+//!
 
 use std::path::Path;
 use std::path::PathBuf;
@@ -18,6 +18,10 @@ use std::path::PathBuf;
 #[cfg(target_os = "linux")]   mod lin;
 #[cfg(target_os = "windows")] mod win;
 #[cfg(target_os = "macos")]   mod mac;
+
+#[cfg(target_os = "linux")]   use lin as sys;
+#[cfg(target_os = "windows")] use win as sys;
+#[cfg(target_os = "macos")]   use mac as sys;
 
 /// `BaseDirs` provides paths of user-invisible standard directories, following the conventions of the operating system the library is running on.
 ///
@@ -100,7 +104,7 @@ pub struct UserDirs {
 #[derive(Debug, Clone)]
 pub struct ProjectDirs {
     project_path:   PathBuf,
-    
+
     // base directories
     cache_dir:      PathBuf,
     config_dir:     PathBuf,
@@ -111,6 +115,17 @@ pub struct ProjectDirs {
 
 #[deny(missing_docs)]
 impl BaseDirs {
+    /// Creates a `BaseDirs` struct which holds the paths to user-invisible directories for cache, config, etc. data on the system.
+    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`home_dir`].
+    ///
+    /// [`home_dir`]: #method.home_dir
+    pub fn new() -> BaseDirs {
+        sys::base_dirs()
+    }
     /// Returns the path to the user's home directory.
     ///
     /// |Platform | Value                 | Example         |
@@ -195,6 +210,17 @@ impl BaseDirs {
 
 #[deny(missing_docs)]
 impl UserDirs {
+    /// Creates a `UserDirs` struct which holds the paths to user-facing directories for audio, font, video, etc. data on the system.
+    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`home_dir`].
+    ///
+    /// [`home_dir`]: #method.home_dir
+    pub fn new() -> UserDirs {
+        sys::user_dirs()
+    }
     /// Returns the path to the user's home directory.
     ///
     /// |Platform | Value                 | Example        |
@@ -321,13 +347,51 @@ impl UserDirs {
 
 #[deny(missing_docs)]
 impl ProjectDirs {
+    /// Creates a `ProjectDirs` struct directly from a `PathBuf` value.
+    /// The argument is used verbatim and is not adapted to operating system standards.
+    ///
+    /// The use of `ProjectDirs::from_path` is strongly discouraged, as its results will
+    /// not follow operating system standards on at least two of three platforms.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
+    ///
+    /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
+    pub fn from_path(project_path: PathBuf) -> ProjectDirs {
+        sys::project_dirs_from_path(project_path)
+    }
+    /// Creates a `ProjectDirs` struct from values describing the project.
+    ///
+    /// The use of `ProjectDirs::from` (instead of `ProjectDirs::from_path`) is strongly encouraged,
+    /// as its results will follow operating system standards on Linux, macOS and Windows.
+    ///
+    /// # Parameters
+    ///
+    /// - `qualifier`    – The reverse domain name notation of the application, excluding the organization or application name itself.<br/>
+    ///   An empty string can be passed if no qualifier should be used (only affects macOS).<br/>
+    ///   Example values: `"com.example"`, `"org"`, `"uk.co"`, `"io"`, `""`
+    /// - `organization` – The name of the organization that develops this application, or for which the application is developed.<br/>
+    ///   An empty string can be passed if no organization should be used (only affects macOS and Windows).<br/>
+    ///   Example values: `"Foo Corp"`, `"Alice and Bob Inc"`, `""`
+    /// - `application`  – The name of the application itself.<br/>
+    ///   Example values: `"Bar App"`, `"ExampleProgram"`, `"Unicorn-Programme"`
+    ///
+    /// # Panics
+    ///
+    /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
+    ///
+    /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
+    pub fn from(qualifier: &str, organization: &str, application: &str) -> ProjectDirs {
+        sys::project_dirs_from(qualifier, organization, application)
+    }
     /// Returns the project path fragment used to compute the project's cache/config/data directories.
     /// The value is derived from the `ProjectDirs::from` call and is platform-dependent.
     pub fn project_path(&self) -> &Path {
         self.project_path.as_path()
     }
     /// Returns the path to the project's cache directory.
-    /// 
+    ///
     /// |Platform | Value                                                             | Example                                             |
     /// | ------- | ----------------------------------------------------------------- | --------------------------------------------------- |
     /// | Linux   | `$XDG_CACHE_HOME/_project_path_` or `$HOME/.cache/_project_path_` | /home/alice/.cache/barapp                           |
@@ -337,7 +401,7 @@ impl ProjectDirs {
         self.cache_dir.as_path()
     }
     /// Returns the path to the project's config directory.
-    /// 
+    ///
     /// |Platform | Value                                                               | Example                                                |
     /// | ------- | ------------------------------------------------------------------- | ------------------------------------------------------ |
     /// | Linux   | `$XDG_CONFIG_HOME/_project_path_` or `$HOME/.config/_project_path_` | /home/alice/.config/barapp                             |
@@ -347,7 +411,7 @@ impl ProjectDirs {
         self.config_dir.as_path()
     }
     /// Returns the path to the project's data directory.
-    /// 
+    ///
     /// |Platform | Value                                                                  | Example                                                       |
     /// | ------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
     /// | Linux   | `$XDG_DATA_HOME/_project_path_` or `$HOME/.local/share/_project_path_` | /home/alice/.local/share/barapp                               |
@@ -357,7 +421,7 @@ impl ProjectDirs {
         self.data_dir.as_path()
     }
     /// Returns the path to the project's local data directory.
-    /// 
+    ///
     /// |Platform | Value                                                                  | Example                                                       |
     /// | ------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
     /// | Linux   | `$XDG_DATA_HOME/_project_path_` or `$HOME/.local/share/_project_path_` | /home/alice/.local/share/barapp                               |
@@ -367,7 +431,7 @@ impl ProjectDirs {
         self.data_local_dir.as_path()
     }
     /// Returns the path to the project's runtime directory.
-    /// 
+    ///
     /// |Platform | Value              | Example               |
     /// | ------- | ------------------ | --------------------- |
     /// | Linux   | `$XDG_RUNTIME_DIR` | /run/user/1001/barapp |
