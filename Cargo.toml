@@ -11,3 +11,10 @@ keywords    = ["xdg", "basedir", "app_dirs", "path", "folder"]
 
 [dependencies]
 winapi = { version = "0.3", features = ["knownfolders", "objbase", "shlobj"] }
+
+[dev-dependencies]
+bencher = "0.1.5"
+
+[[bench]]
+name = "constructors"
+harness = false
