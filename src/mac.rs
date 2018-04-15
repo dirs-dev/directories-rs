@@ -1,5 +1,4 @@
 #![cfg(target_os = "macos")]
-#![deny(missing_docs)]
 
 use std::env;
 use std::path::PathBuf;

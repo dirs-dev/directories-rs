@@ -1,5 +1,4 @@
 #![cfg(target_os = "linux")]
-#![deny(missing_docs)]
 
 use std::env;
 use std::path::PathBuf;
@@ -60,7 +59,6 @@ impl UserDirs {
     }
 }
 
-#[deny(missing_docs)]
 impl ProjectDirs {
     /// Creates a `ProjectDirs` struct directly from a `PathBuf` value.
     /// The argument is used verbatim and is not adapted to operating system standards.

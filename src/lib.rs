@@ -12,6 +12,8 @@
 //! - the [Standard Directories](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW6) on macOS.
 //! 
 
+#![deny(missing_docs)]
+
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -109,7 +111,6 @@ pub struct ProjectDirs {
     runtime_dir:    Option<PathBuf>
 }
 
-#[deny(missing_docs)]
 impl BaseDirs {
     /// Returns the path to the user's home directory.
     ///
@@ -183,7 +184,6 @@ impl BaseDirs {
     }
 }
 
-#[deny(missing_docs)]
 impl UserDirs {
     /// Returns the path to the user's home directory.
     ///
@@ -299,7 +299,6 @@ impl UserDirs {
     }
 }
 
-#[deny(missing_docs)]
 impl ProjectDirs {
     /// Returns the project path fragment used to compute the project's cache/config/data directories.
     /// The value is derived from the `ProjectDirs::from` call and is platform-dependent.

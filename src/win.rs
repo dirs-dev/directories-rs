@@ -1,5 +1,4 @@
 #![cfg(target_os = "windows")]
-#![deny(missing_docs)]
 
 use std;
 use std::path::PathBuf;
