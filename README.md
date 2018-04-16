@@ -34,7 +34,7 @@ A version of this library running on the JVM is provided by [directories-jvm](ht
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.8.5"
+directories = "0.9.0"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
