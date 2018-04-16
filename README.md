@@ -55,7 +55,7 @@ proj_dirs.config_dir();
 
 let base_dirs = BaseDirs::new();
 base_dirs.executable_dir();
-// Lin: Some(/home/alice/.local/share/bin)
+// Lin: Some(/home/alice/.local/bin)
 // Win: None
 // Mac: None
 
