@@ -5,7 +5,7 @@
 [![AppVeyor status](https://img.shields.io/appveyor/ci/soc/directories-rs/master.svg?label=Windows%20build)](https://ci.appveyor.com/project/soc/directories-rs/branch/master)
 [![License: MPL-2.0](https://img.shields.io/github/license/soc/directories-rs.svg)](LICENSE)
 
-# Directories
+# `directories`
 
 ## Introduction
 
@@ -24,6 +24,7 @@ The library provides the location of these directories by leveraging the mechani
 ## Platforms
 
 This library is written in Rust, and supports Linux, macOS and Windows.
+_dirs_, a slightly more low-level sister library, is available at [dirs-rs](https://github.com/soc/dirs-rs).
 
 A version of this library running on the JVM is provided by [directories-jvm](https://github.com/soc/directories-jvm).
 
@@ -167,18 +168,18 @@ The use of `ProjectDirs::from_path` is strongly discouraged, as its results will
 There are other crates in the Rust ecosystem that try similar or related things.
 Here is an overview of them, combined with ratings on properties that guided the design of this crate.
 
-Please take this table with a grain of salt, a different crate might very well be more suitable for your specific use case.
+Please take this table with a grain of salt: a different crate might very well be more suitable for your specific use case.
 (Of course _my_ crate achieves _my_ design goals better than other crates, which might have had different design goals.)
 
 | Library                                                   | Status         | Lin | Mac | Win |Base|User|Proj|Conv|
 | --------------------------------------------------------- | -------------- |:---:|:---:|:---:|:--:|:--:|:--:|:--:|
 | [app_dirs](https://crates.io/crates/app_dirs)             | Unmaintained   |  ✔  |  ✔  |  ✔  | 🞈  | ✖  | ✔  | ✖  |
 | [app_dirs2](https://crates.io/crates/app_dirs2)           | Maintained     |  ✔  |  ✔  |  ✔  | 🞈  | ✖  | ✔  | ✖  |
+| [dirs](https://crates.io/crates/dirs)                     | Developed      |  ✔  |  ✔  |  ✔  | ✔  | ✔  | ✖  | ✔  |
 | **directories**                                           | **Developed**  |  ✔  |  ✔  |  ✔  | ✔  | ✔  | ✔  | ✔  |
-| [dirs](https://crates.io/crates/dirs)                     | Unmaintained?  |  ✔  |  ✔  |  ✔  | 🞈  | ✖  | ✔  | ✖  |
 | [s_app_dir](https://crates.io/crates/s_app_dir)           | Unmaintained?  |  ✔  |  ✖  |  🞈  | ✖  | ✖  | 🞈  | ✖  |
 | [standard_paths](https://crates.io/crates/standard_paths) | Maintained     |  ✔  |  ✖  |  ✔  | ✔  | ✔  | ✔  | ✖  |
-| [xdg](https://crates.io/crates/xdg)                       | Maintaind      |  ✔  |  ✖  |  ✖  | ✔  | ✖  | ✔  | 🞈  |
+| [xdg](https://crates.io/crates/xdg)                       | Maintained     |  ✔  |  ✖  |  ✖  | ✔  | ✖  | ✔  | 🞈  |
 | [xdg-basedir](https://crates.io/crates/xdg-basedir)       | Unmaintained?  |  ✔  |  ✖  |  ✖  | ✔   | ✖  | ✖  | 🞈  |
 | [xdg-rs](https://crates.io/crates/xdg-rs)                 | Obsolete       |  ✔  |  ✖  |  ✖  | ✔   | ✖  | ✖  | 🞈  |
 
