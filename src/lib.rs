@@ -17,13 +17,13 @@
 use std::path::Path;
 use std::path::PathBuf;
 
-#[cfg(target_os = "linux")]   mod lin;
 #[cfg(target_os = "windows")] mod win;
 #[cfg(target_os = "macos")]   mod mac;
+#[cfg(not(any(target_os = "windows", target_os = "macos")))] mod lin;
 
-#[cfg(target_os = "linux")]   use lin as sys;
 #[cfg(target_os = "windows")] use win as sys;
 #[cfg(target_os = "macos")]   use mac as sys;
+#[cfg(not(any(target_os = "windows", target_os = "macos")))] use lin as sys;
 
 /// `BaseDirs` provides paths of user-invisible standard directories, following the conventions of the operating system the library is running on.
 ///

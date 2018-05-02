@@ -1,5 +1,3 @@
-#![cfg(target_os = "windows")]
-
 use std;
 use std::path::PathBuf;
 use std::iter::FromIterator;
