@@ -9,7 +9,7 @@
 
 ## Introduction
 
-- a tiny library with a minimal API
+- a tiny mid-level library with a minimal API
 - that provides the platform-specific, user-accessible locations
 - for retrieving and storing configuration, cache and other data
 - on Linux, Windows (≥ Vista) and macOS.
@@ -23,8 +23,9 @@ The library provides the location of these directories by leveraging the mechani
 
 ## Platforms
 
-This library is written in Rust, and supports Linux, macOS and Windows.
-_dirs_, a slightly more low-level sister library, is available at [dirs-rs](https://github.com/soc/dirs-rs).
+This library is written in Rust, and supports Linux, macOS and Windows. Other platforms are also supported, they use the Linux conventions.
+
+_dirs_, the low-level sister library, is available at [dirs-rs](https://github.com/soc/dirs-rs).
 
 A version of this library running on the JVM is provided by [directories-jvm](https://github.com/soc/directories-jvm).
 
