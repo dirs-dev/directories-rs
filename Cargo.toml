@@ -9,7 +9,7 @@ repository  = "https://github.com/soc/directories-rs"
 maintenance = { status = "actively-developed" }
 keywords    = ["xdg", "basedir", "app_dirs", "path", "folder"]
 
-[dependencies]
+[target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["knownfolders", "objbase", "shlobj"] }
 
 [dev-dependencies]
