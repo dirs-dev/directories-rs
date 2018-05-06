@@ -31,7 +31,6 @@ pub fn user_dirs() -> UserDirs {
     let download_dir   = home_dir.join("Downloads");
     let picture_dir    = home_dir.join("Pictures");
     let public_dir     = home_dir.join("Public");
-    // let trash_dir      = home_dir.join(".trash");
     let video_dir      = home_dir.join("Movies");
     let font_dir       = home_dir.join("Library/Fonts");
 
@@ -45,7 +44,6 @@ pub fn user_dirs() -> UserDirs {
         picture_dir:  Some(picture_dir),
         public_dir:   Some(public_dir),
         template_dir: None,
-        // trash_dir:    trash_dir,
         video_dir:    Some(video_dir)
     }
 }

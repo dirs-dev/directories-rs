@@ -33,7 +33,6 @@ pub fn user_dirs() -> UserDirs {
     let home_dir  = env::home_dir().unwrap();
     let data_dir  = env::var_os("XDG_DATA_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
     let font_dir  = data_dir.join("fonts");
-    // let trash_dir = data_dir.join("Trash");
 
     UserDirs {
         home_dir:     home_dir,
@@ -45,7 +44,6 @@ pub fn user_dirs() -> UserDirs {
         picture_dir:  run_xdg_user_dir_command("PICTURES"),
         public_dir:   run_xdg_user_dir_command("PUBLICSHARE"),
         template_dir: run_xdg_user_dir_command("TEMPLATES"),
-        // trash_dir:    trash_dir,
         video_dir:    run_xdg_user_dir_command("VIDEOS")
     }
 }

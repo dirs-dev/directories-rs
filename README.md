@@ -36,7 +36,7 @@ A version of this library running on the JVM is provided by [directories-jvm](ht
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.9.0"
+directories = "0.10.0"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
@@ -126,8 +126,6 @@ that have been defined according to the conventions of the operating system the 
 | `public_dir`     | `Some(XDG_PUBLICSHARE_DIR)`     or `None`                              | `Some({FOLDERID_Public})`        | `Some($HOME`/Public/`)`        |
 | `template_dir`   | `Some(XDG_TEMPLATES_DIR)`       or `None`                              | `Some({FOLDERID_Templates})`     | `None`                         | 
 | `video_dir`      | `Some(XDG_VIDEOS_DIR)`          or `None`                              | `Some({FOLDERID_Videos})`        | `Some($HOME`/Movies/`)`        |
-
-<!--| `trash_dir`  | `$XDG_DATA_HOME/Trash`          or `$HOME/.local/share/Trash`          | `???`                            | `$HOME/.trash`                 |-->
 
 ### `ProjectDirs`
 

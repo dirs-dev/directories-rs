@@ -329,18 +329,6 @@ impl UserDirs {
     pub fn template_dir(&self) -> Option<&Path> {
         self.template_dir.as_ref().map(|p| p.as_path())
     }
-    /*
-    /// Returns the path to the user's trash directory.
-    ///
-    /// |Platform | Value                                                | Example                        |
-    /// | ------- | ---------------------------------------------------- | ------------------------------ |
-    /// | Linux   | `$XDG_DATA_HOME/Trash` or `$HOME/.local/share/Trash` | /home/alice/.local/share/Trash |
-    /// | macOS   | `$HOME/.trash`                                       | /Users/Alice/.trash            |
-    /// | Windows | `{FOLDERID_RecycleBinFolder}`                        | C:\Users\Alice\???             |
-    pub fn trash_dir(&self) -> &Path {
-        self.trash_dir.as_path()
-    }
-    */
     /// Returns the path to the user's video directory.
     ///
     /// |Platform | Value               | Example               |

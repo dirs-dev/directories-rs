@@ -40,8 +40,6 @@ pub fn user_dirs() -> UserDirs {
     let picture_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
     let public_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
     let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
-    // see https://github.com/soc/directories-rs/issues/18
-    // let trash_dir      = unsafe { known_folder(&knownfolders::FOLDERID_RecycleBinFolder) };
     let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
 
     UserDirs {
@@ -54,7 +52,6 @@ pub fn user_dirs() -> UserDirs {
         picture_dir:  Some(picture_dir),
         public_dir:   Some(public_dir),
         template_dir: Some(template_dir),
-        // trash_dir:    trash_dir,
         video_dir:    Some(video_dir)
     }
 }
