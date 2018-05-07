@@ -10,7 +10,7 @@ maintenance = { status = "actively-developed" }
 keywords    = ["xdg", "basedir", "app_dirs", "path", "folder"]
 
 [target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["knownfolders", "objbase", "shlobj"] }
+winapi = { version = "0.3", features = ["knownfolders", "objbase", "shlobj", "winbase", "winerror"] }
 
 [dev-dependencies]
 bencher = "0.1.5"

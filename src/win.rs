@@ -3,20 +3,23 @@ use std::path::PathBuf;
 use std::iter::FromIterator;
 
 extern crate winapi;
+use self::winapi::shared::winerror;
 use self::winapi::um::knownfolders;
 use self::winapi::um::combaseapi;
 use self::winapi::um::shlobj;
 use self::winapi::um::shtypes;
+use self::winapi::um::winbase;
 use self::winapi::um::winnt;
+
 
 use BaseDirs;
 use UserDirs;
 use ProjectDirs;
 
 pub fn base_dirs() -> BaseDirs {
-    let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
-    let data_dir       = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) };
-    let data_local_dir = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) };
+    let home_dir       = known_folder(&knownfolders::FOLDERID_Profile);
+    let data_dir       = known_folder(&knownfolders::FOLDERID_RoamingAppData);
+    let data_local_dir = known_folder(&knownfolders::FOLDERID_LocalAppData);
     let cache_dir      = data_local_dir.clone();
     let config_dir     = data_dir.clone();
 
@@ -32,15 +35,15 @@ pub fn base_dirs() -> BaseDirs {
 }
 
 pub fn user_dirs() -> UserDirs {
-    let home_dir       = unsafe { known_folder(&knownfolders::FOLDERID_Profile) };
-    let audio_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Music) };
-    let desktop_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Desktop) };
-    let document_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Documents) };
-    let download_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Downloads) };
-    let picture_dir    = unsafe { known_folder(&knownfolders::FOLDERID_Pictures) };
-    let public_dir     = unsafe { known_folder(&knownfolders::FOLDERID_Public) };
-    let template_dir   = unsafe { known_folder(&knownfolders::FOLDERID_Templates) };
-    let video_dir      = unsafe { known_folder(&knownfolders::FOLDERID_Videos) };
+    let home_dir       = known_folder(&knownfolders::FOLDERID_Profile);
+    let audio_dir      = known_folder(&knownfolders::FOLDERID_Music);
+    let desktop_dir    = known_folder(&knownfolders::FOLDERID_Desktop);
+    let document_dir   = known_folder(&knownfolders::FOLDERID_Documents);
+    let download_dir   = known_folder(&knownfolders::FOLDERID_Downloads);
+    let picture_dir    = known_folder(&knownfolders::FOLDERID_Pictures);
+    let public_dir     = known_folder(&knownfolders::FOLDERID_Public);
+    let template_dir   = known_folder(&knownfolders::FOLDERID_Templates);
+    let video_dir      = known_folder(&knownfolders::FOLDERID_Videos);
 
     UserDirs {
         home_dir:     home_dir,
@@ -57,8 +60,8 @@ pub fn user_dirs() -> UserDirs {
 }
 
 pub fn project_dirs_from_path(project_path: PathBuf) -> ProjectDirs {
-    let app_data_local   = unsafe { known_folder(&knownfolders::FOLDERID_LocalAppData) }.join(&project_path);
-    let app_data_roaming = unsafe { known_folder(&knownfolders::FOLDERID_RoamingAppData) }.join(&project_path);
+    let app_data_local   = known_folder(&knownfolders::FOLDERID_LocalAppData).join(&project_path);
+    let app_data_roaming = known_folder(&knownfolders::FOLDERID_RoamingAppData).join(&project_path);
     let cache_dir      = app_data_local.join("cache");
     let data_local_dir = app_data_local.join("data");
     let config_dir     = app_data_roaming.join("config");
@@ -78,20 +81,17 @@ pub fn project_dirs_from(_qualifier: &str, organization: &str, application: &str
     ProjectDirs::from_path(PathBuf::from_iter(&[organization, application]))
 }
 
-unsafe fn known_folder(folder_id: shtypes::REFKNOWNFOLDERID) -> PathBuf {
-    let mut path_ptr: winnt::PWSTR = std::ptr::null_mut();
-    let _result = shlobj::SHGetKnownFolderPath(folder_id, 0, std::ptr::null_mut(), &mut path_ptr);
-    let len = length_of_u16_string(path_ptr);
-    let path = std::slice::from_raw_parts(path_ptr, len);
-    let ostr: std::ffi::OsString = std::os::windows::ffi::OsStringExt::from_wide(path);
-    combaseapi::CoTaskMemFree(path_ptr as *mut winapi::ctypes::c_void);
-    PathBuf::from(ostr)
-}
-
-unsafe fn length_of_u16_string(ptr: *mut u16) -> usize {
-    let mut index = 0;
-    while *ptr.offset(index as isize) != 0 as u16 {
-        index += 1;
+fn known_folder(folder_id: shtypes::REFKNOWNFOLDERID) -> PathBuf {
+    unsafe {
+        let mut path_ptr: winnt::PWSTR = std::ptr::null_mut();
+        let result = shlobj::SHGetKnownFolderPath(folder_id, 0, std::ptr::null_mut(), &mut path_ptr);
+        if result != winerror::S_OK {
+            panic!("SHGetKnownFolderPath failed with {}", result);
+        }
+        let len = winbase::lstrlenW(path_ptr) as usize;
+        let path = std::slice::from_raw_parts(path_ptr, len);
+        let ostr: std::ffi::OsString = std::os::windows::ffi::OsStringExt::from_wide(path);
+        combaseapi::CoTaskMemFree(path_ptr as *mut winapi::ctypes::c_void);
+        PathBuf::from(ostr)
     }
-    index
 }
