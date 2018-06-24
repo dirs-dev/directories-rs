@@ -83,7 +83,7 @@ user_dirs.audio_dir();
   - `executable_dir` is specified to provide the path to a user-writable directory for binaries.<br/>
     As such a directory only commonly exists on Linux, it returns `None` on macOS and Windows.
   - `font_dir` is specified to provide the path to a user-writable directory for fonts.<br/>
-    As such a directory only exists on Linux and macOS, it returns `None` Windows.
+    As such a directory only exists on Linux and macOS, it returns `None` on Windows.
   - `runtime_dir` is specified to provide the path to a directory for non-essential runtime data.
     It is required that this directory is created when the user logs in, is only accessible by the
     user itself, is deleted when the user logs out, and supports all filesystem features of the
