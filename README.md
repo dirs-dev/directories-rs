@@ -36,7 +36,7 @@ A version of this library running on the JVM is provided by [directories-jvm](ht
 Add the library as a dependency to your project by inserting
 
 ```toml
-directories = "0.10.0"
+directories = "1.0"
 ```
 
 into the `[dependencies]` section of your Cargo.toml file.
@@ -49,23 +49,26 @@ Library run by user Alice:
 extern crate directories;
 use directories::{BaseDirs, UserDirs, ProjectDirs};
 
-let proj_dirs = ProjectDirs::from("com", "Foo Corp",  "Bar App");
-proj_dirs.config_dir();
-// Lin: /home/alice/.config/barapp
-// Win: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config
-// Mac: /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
+if let Some(proj_dirs) = ProjectDirs::from("com", "Foo Corp",  "Bar App") {
+    proj_dirs.config_dir();
+    // Lin: /home/alice/.config/barapp
+    // Win: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config
+    // Mac: /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
+}
 
-let base_dirs = BaseDirs::new();
-base_dirs.executable_dir();
-// Lin: Some(/home/alice/.local/bin)
-// Win: None
-// Mac: None
+if let Some(base_dirs) = BaseDirs::new() {
+    base_dirs.executable_dir();
+    // Lin: Some(/home/alice/.local/bin)
+    // Win: None
+    // Mac: None
+}
 
-let user_dirs = UserDirs::new();
-user_dirs.audio_dir();
-// Lin: /home/alice/Music
-// Win: C:\Users\Alice\Music
-// Mac: /Users/Alice/Music
+if let Some(user_dirs) = UserDirs::new() {
+    user_dirs.audio_dir();
+    // Lin: /home/alice/Music
+    // Win: C:\Users\Alice\Music
+    // Mac: /Users/Alice/Music
+}
 ```
 
 ## Design Goals
