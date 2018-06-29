@@ -17,12 +17,13 @@
 use std::path::Path;
 use std::path::PathBuf;
 
-#[cfg(target_os = "windows")] mod win;
-#[cfg(target_os = "macos")]   mod mac;
+#[cfg(target_os = "windows")]                                mod win;
+#[cfg(target_os = "macos")]                                  mod mac;
 #[cfg(not(any(target_os = "windows", target_os = "macos")))] mod lin;
+#[cfg(unix)]                                                 mod unix;
 
-#[cfg(target_os = "windows")] use win as sys;
-#[cfg(target_os = "macos")]   use mac as sys;
+#[cfg(target_os = "windows")]                                use win as sys;
+#[cfg(target_os = "macos")]                                  use mac as sys;
 #[cfg(not(any(target_os = "windows", target_os = "macos")))] use lin as sys;
 
 /// `BaseDirs` provides paths of user-invisible standard directories, following the conventions of the operating system the library is running on.
@@ -35,11 +36,12 @@ use std::path::PathBuf;
 ///
 /// ```
 /// use directories::BaseDirs;
-/// let base_dirs = BaseDirs::new();
-/// base_dirs.config_dir();
-/// // Linux:   /home/alice/.config
-/// // Windows: C:\Users\Alice\AppData\Roaming
-/// // macOS:   /Users/Alice/Library/Preferences
+/// if let Some(base_dirs) = BaseDirs::new() {
+///     base_dirs.config_dir();
+///     // Linux:   /home/alice/.config
+///     // Windows: C:\Users\Alice\AppData\Roaming
+///     // macOS:   /Users/Alice/Library/Preferences
+/// }
 /// ```
 #[derive(Debug, Clone)]
 pub struct BaseDirs {
@@ -63,11 +65,12 @@ pub struct BaseDirs {
 ///
 /// ```
 /// use directories::UserDirs;
-/// let user_dirs = UserDirs::new();
-/// user_dirs.audio_dir();
-/// // Linux:   /home/alice/Music
-/// // Windows: /Users/Alice/Music
-/// // macOS:   C:\Users\Alice\Music
+/// if let Some(user_dirs) = UserDirs::new() {
+///     user_dirs.audio_dir();
+///     // Linux:   /home/alice/Music
+///     // Windows: /Users/Alice/Music
+///     // macOS:   C:\Users\Alice\Music
+/// }
 /// ```
 #[derive(Debug, Clone)]
 pub struct UserDirs {
@@ -97,11 +100,12 @@ pub struct UserDirs {
 ///
 /// ```
 /// use directories::ProjectDirs;
-/// let proj_dirs = ProjectDirs::from("com", "Foo Corp",  "Bar App");
-/// proj_dirs.config_dir();
-/// // Linux:   /home/alice/.config/barapp
-/// // Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App
-/// // macOS:   /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
+/// if let Some(proj_dirs) = ProjectDirs::from("com", "Foo Corp",  "Bar App") {
+///     proj_dirs.config_dir();
+///     // Linux:   /home/alice/.config/barapp
+///     // Windows: C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App
+///     // macOS:   /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App
+/// }
 /// ```
 #[derive(Debug, Clone)]
 pub struct ProjectDirs {
@@ -124,7 +128,7 @@ impl BaseDirs {
     /// Panics if the home directory cannot be determined. See [`home_dir`].
     ///
     /// [`home_dir`]: #method.home_dir
-    pub fn new() -> BaseDirs {
+    pub fn new() -> Option<BaseDirs> {
         sys::base_dirs()
     }
     /// Returns the path to the user's home directory.
@@ -222,7 +226,7 @@ impl UserDirs {
     /// Panics if the home directory cannot be determined. See [`home_dir`].
     ///
     /// [`home_dir`]: #method.home_dir
-    pub fn new() -> UserDirs {
+    pub fn new() -> Option<UserDirs> {
         sys::user_dirs()
     }
     /// Returns the path to the user's home directory.
@@ -353,7 +357,7 @@ impl ProjectDirs {
     /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
     ///
     /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
-    pub fn from_path(project_path: PathBuf) -> ProjectDirs {
+    pub fn from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         sys::project_dirs_from_path(project_path)
     }
     /// Creates a `ProjectDirs` struct from values describing the project.
@@ -377,7 +381,7 @@ impl ProjectDirs {
     /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
     ///
     /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
-    pub fn from(qualifier: &str, organization: &str, application: &str) -> ProjectDirs {
+    pub fn from(qualifier: &str, organization: &str, application: &str) -> Option<ProjectDirs> {
         sys::project_dirs_from(qualifier, organization, application)
     }
     /// Returns the project path fragment used to compute the project's cache/config/data directories.
