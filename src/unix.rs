@@ -12,9 +12,10 @@ extern crate libc;
 
 // https://github.com/rust-lang/rust/blob/master/src/libstd/sys/unix/os.rs#L498
 pub fn home_dir() -> Option<PathBuf> {
-    return env::var_os("HOME").and_then(|h| { if h.is_empty() { None } else { Some(h) } } ).or_else(|| unsafe {
-        fallback()
-    }).map(PathBuf::from);
+    return env::var_os("HOME")
+        .and_then(|h| { if h.is_empty() { None } else { Some(h) } } )
+        .or_else(|| unsafe { fallback() })
+        .map(PathBuf::from);
 
     #[cfg(any(target_os = "android",
               target_os = "ios",
@@ -31,8 +32,7 @@ pub fn home_dir() -> Option<PathBuf> {
         let mut buf = Vec::with_capacity(amt);
         let mut passwd: libc::passwd = mem::zeroed();
         let mut result = ptr::null_mut();
-        match libc::getpwuid_r(libc::getuid(), &mut passwd, buf.as_mut_ptr(),
-                               buf.capacity(), &mut result) {
+        match libc::getpwuid_r(libc::getuid(), &mut passwd, buf.as_mut_ptr(), buf.capacity(), &mut result) {
             0 if !result.is_null() => {
                 let ptr = passwd.pw_dir as *const _;
                 let bytes = CStr::from_ptr(ptr).to_bytes();

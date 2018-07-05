@@ -15,19 +15,21 @@ pub fn base_dirs() -> Option<BaseDirs> {
         let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".config"));
         let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let data_local_dir = data_dir.clone();
-        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(is_absolute_path);
         let executable_dir = 
-            env::var_os("XDG_BIN_HOME").and_then(is_absolute_path).unwrap_or_else(|| {
-                let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir });
+            Some(
+                env::var_os("XDG_BIN_HOME")
+                    .and_then(is_absolute_path)
+                    .unwrap_or_else(|| { let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir }));
+        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(is_absolute_path);
 
         let base_dirs = BaseDirs {
-            home_dir:       home_dir,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
-            executable_dir: Some(executable_dir),
-            runtime_dir:    runtime_dir
+            home_dir,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
+            executable_dir,
+            runtime_dir
         };
         Some(base_dirs)
     } else {
@@ -38,15 +40,15 @@ pub fn base_dirs() -> Option<BaseDirs> {
 pub fn user_dirs() -> Option<UserDirs> {
     if let Some(home_dir) = unix::home_dir() {
         let data_dir  = env::var_os("XDG_DATA_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
-        let font_dir  = data_dir.join("fonts");
+        let font_dir  = Some(data_dir.join("fonts"));
 
         let user_dirs = UserDirs {
-            home_dir:     home_dir,
+            home_dir,
             audio_dir:    run_xdg_user_dir_command("MUSIC"),
             desktop_dir:  run_xdg_user_dir_command("DESKTOP"),
             document_dir: run_xdg_user_dir_command("DOCUMENTS"),
             download_dir: run_xdg_user_dir_command("DOWNLOAD"),
-            font_dir:     Some(font_dir),
+            font_dir,
             picture_dir:  run_xdg_user_dir_command("PICTURES"),
             public_dir:   run_xdg_user_dir_command("PUBLICSHARE"),
             template_dir: run_xdg_user_dir_command("TEMPLATES"),
@@ -67,12 +69,12 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(is_absolute_path).map(|o| o.join(&project_path));
 
         let project_dirs = ProjectDirs {
-            project_path:   project_path,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
-            runtime_dir:    runtime_dir
+            project_path,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
+            runtime_dir
         };
         Some(project_dirs)
     } else {

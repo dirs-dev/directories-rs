@@ -25,11 +25,11 @@ pub fn base_dirs() -> Option<BaseDirs> {
         let config_dir = data_dir.clone();
 
         let base_dirs = BaseDirs {
-            home_dir:       home_dir,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
+            home_dir,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
             executable_dir: None,
             runtime_dir:    None
         };
@@ -41,26 +41,17 @@ pub fn base_dirs() -> Option<BaseDirs> {
 
 pub fn user_dirs() -> Option<UserDirs> {
     if let Some(home_dir) = known_folder(&knownfolders::FOLDERID_Profile) {
-        let audio_dir     = known_folder(&knownfolders::FOLDERID_Music);
-        let desktop_dir   = known_folder(&knownfolders::FOLDERID_Desktop);
-        let document_dir  = known_folder(&knownfolders::FOLDERID_Documents);
-        let download_dir  = known_folder(&knownfolders::FOLDERID_Downloads);
-        let picture_dir   = known_folder(&knownfolders::FOLDERID_Pictures);
-        let public_dir    = known_folder(&knownfolders::FOLDERID_Public);
-        let template_dir  = known_folder(&knownfolders::FOLDERID_Templates);
-        let video_dir     = known_folder(&knownfolders::FOLDERID_Videos);
-
         let user_dirs = UserDirs {
-            home_dir:     home_dir,
-            audio_dir:    audio_dir,
-            desktop_dir:  desktop_dir,
-            document_dir: document_dir,
-            download_dir: download_dir,
+            home_dir,
+            audio_dir:    known_folder(&knownfolders::FOLDERID_Documents),
+            desktop_dir:  known_folder(&knownfolders::FOLDERID_Desktop),
+            document_dir: known_folder(&knownfolders::FOLDERID_Documents),
+            download_dir: known_folder(&knownfolders::FOLDERID_Downloads),
             font_dir:     None,
-            picture_dir:  picture_dir,
-            public_dir:   public_dir,
-            template_dir: template_dir,
-            video_dir:    video_dir
+            picture_dir:  known_folder(&knownfolders::FOLDERID_Pictures),
+            public_dir:   known_folder(&knownfolders::FOLDERID_Public),
+            template_dir: known_folder(&knownfolders::FOLDERID_Templates),
+            video_dir:    known_folder(&knownfolders::FOLDERID_Videos)
         };
         Some(user_dirs)
     } else {
@@ -80,12 +71,12 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let data_dir         = app_data_roaming.join("data");
 
         let project_dirs = ProjectDirs {
-            project_path:   project_path,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
-            runtime_dir:    None
+            project_path,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
+            runtime_dir: None
         };
         Some(project_dirs)
     } else {

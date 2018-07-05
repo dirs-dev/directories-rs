@@ -191,9 +191,4 @@ Please take this table with a grain of salt: a different crate might very well b
 - Base: Supports [generic base directories](#basedirs)
 - User: Supports [user directories](#userdirs)
 - Proj: Supports [project-specific base directories](#projectdirs)
-- Conv: Follows naming conventions of the operating system ti runs on
-
-## Versioning
-
-After 1.0, the version number of this library consists of a whole number, which is incremented with each release.
-(Think semantic versioning without _minor_ and _patch_ versions.)
+- Conv: Follows naming conventions of the operating system it runs on

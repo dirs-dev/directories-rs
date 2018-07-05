@@ -14,11 +14,11 @@ pub fn base_dirs() -> Option<BaseDirs> {
         let data_local_dir = data_dir.clone();
 
         let base_dirs = BaseDirs {
-            home_dir:       home_dir,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
+            home_dir,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
             executable_dir: None,
             runtime_dir:    None
         };
@@ -30,26 +30,26 @@ pub fn base_dirs() -> Option<BaseDirs> {
 
 pub fn user_dirs() -> Option<UserDirs> {
     if let Some(home_dir) = unix::home_dir() {
-        let audio_dir     = home_dir.join("Music");
-        let desktop_dir   = home_dir.join("Desktop");
-        let document_dir  = home_dir.join("Documents");
-        let download_dir  = home_dir.join("Downloads");
-        let picture_dir   = home_dir.join("Pictures");
-        let public_dir    = home_dir.join("Public");
-        let video_dir     = home_dir.join("Movies");
-        let font_dir      = home_dir.join("Library/Fonts");
+        let audio_dir     = Some(home_dir.join("Music"));
+        let desktop_dir   = Some(home_dir.join("Desktop"));
+        let document_dir  = Some(home_dir.join("Documents"));
+        let download_dir  = Some(home_dir.join("Downloads"));
+        let picture_dir   = Some(home_dir.join("Pictures"));
+        let public_dir    = Some(home_dir.join("Public"));
+        let video_dir     = Some(home_dir.join("Movies"));
+        let font_dir      = Some(home_dir.join("Library/Fonts"));
 
         let user_dirs = UserDirs {
-            home_dir:     home_dir,
-            audio_dir:    Some(audio_dir),
-            desktop_dir:  Some(desktop_dir),
-            document_dir: Some(document_dir),
-            download_dir: Some(download_dir),
-            font_dir:     Some(font_dir),
-            picture_dir:  Some(picture_dir),
-            public_dir:   Some(public_dir),
+            home_dir,
+            audio_dir,
+            desktop_dir,
+            document_dir,
+            download_dir,
+            font_dir,
+            picture_dir,
+            public_dir,
             template_dir: None,
-            video_dir:    Some(video_dir)
+            video_dir
         };
         Some(user_dirs)
     } else {
@@ -65,12 +65,12 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let data_local_dir = data_dir.clone();
 
         let project_dirs = ProjectDirs {
-            project_path:   project_path,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
-            runtime_dir:    None,
+            project_path,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
+            runtime_dir: None
         };
         Some(project_dirs)
     } else {
