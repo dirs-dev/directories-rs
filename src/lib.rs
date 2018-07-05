@@ -159,8 +159,8 @@ impl BaseDirs {
     ///
     /// |Platform | Value                               | Example                      |
     /// | ------- | ----------------------------------- | ---------------------------- |
-    /// | Linux   | `$XDG_CACHE_HOME` or `$HOME/.cache` | /home/alice/.cache           |
-    /// | macOS   | `$HOME/Library/Caches`              | /Users/Alice/Library/Caches  |
+    /// | Linux   | `$XDG_CACHE_HOME` or `$HOME`/.cache | /home/alice/.cache           |
+    /// | macOS   | `$HOME`/Library/Caches              | /Users/Alice/Library/Caches  |
     /// | Windows | `{FOLDERID_LocalAppData}`           | C:\Users\Alice\AppData\Local |
     pub fn cache_dir(&self) -> &Path {
         self.cache_dir.as_path()
@@ -169,8 +169,8 @@ impl BaseDirs {
     ///
     /// |Platform | Value                                 | Example                          |
     /// | ------- | ------------------------------------- | -------------------------------- |
-    /// | Linux   | `$XDG_CONFIG_HOME` or `$HOME/.config` | /home/alice/.config              |
-    /// | macOS   | `$HOME/Library/Preferences`           | /Users/Alice/Library/Preferences |
+    /// | Linux   | `$XDG_CONFIG_HOME` or `$HOME`/.config | /home/alice/.config              |
+    /// | macOS   | `$HOME`/Library/Preferences           | /Users/Alice/Library/Preferences |
     /// | Windows | `{FOLDERID_RoamingAppData}`           | C:\Users\Alice\AppData\Roaming   |
     pub fn config_dir(&self) -> &Path {
         self.config_dir.as_path()
@@ -179,8 +179,8 @@ impl BaseDirs {
     ///
     /// |Platform | Value                                    | Example                                  |
     /// | ------- | ---------------------------------------- | ---------------------------------------- |
-    /// | Linux   | `$XDG_DATA_HOME` or `$HOME/.local/share` | /home/alice/.local/share                 |
-    /// | macOS   | `$HOME/Library/Application Support`      | /Users/Alice/Library/Application Support |
+    /// | Linux   | `$XDG_DATA_HOME` or `$HOME`/.local/share | /home/alice/.local/share                 |
+    /// | macOS   | `$HOME`/Library/Application Support      | /Users/Alice/Library/Application Support |
     /// | Windows | `{FOLDERID_RoamingAppData}`              | C:\Users\Alice\AppData\Roaming           |
     pub fn data_dir(&self) -> &Path {
         self.data_dir.as_path()
@@ -189,8 +189,8 @@ impl BaseDirs {
     ///
     /// |Platform | Value                                    | Example                                  |
     /// | ------- | ---------------------------------------- | ---------------------------------------- |
-    /// | Linux   | `$XDG_DATA_HOME` or `$HOME/.local/share` | /home/alice/.local/share                 |
-    /// | macOS   | `$HOME/Library/Application Support`      | /Users/Alice/Library/Application Support |
+    /// | Linux   | `$XDG_DATA_HOME` or `$HOME`/.local/share | /home/alice/.local/share                 |
+    /// | macOS   | `$HOME`/Library/Application Support      | /Users/Alice/Library/Application Support |
     /// | Windows | `{FOLDERID_LocalAppData}`                | C:\Users\Alice\AppData\Local             |
     pub fn data_local_dir(&self) -> &Path {
         self.data_local_dir.as_path()
@@ -199,7 +199,7 @@ impl BaseDirs {
     ///
     /// |Platform | Value                                                            | Example                |
     /// | ------- | ---------------------------------------------------------------- | ---------------------- |
-    /// | Linux   | `$XDG_BIN_HOME` or `$XDG_DATA_HOME/../bin` or `$HOME/.local/bin` | /home/alice/.local/bin |
+    /// | Linux   | `$XDG_BIN_HOME` or `$XDG_DATA_HOME`/../bin or `$HOME`/.local/bin | /home/alice/.local/bin |
     /// | macOS   | –                                                                | –                      |
     /// | Windows | –                                                                | –                      |
     pub fn executable_dir(&self) -> Option<&Path> {
@@ -258,7 +258,7 @@ impl UserDirs {
     /// |Platform | Value              | Example              |
     /// | ------- | ------------------ | -------------------- |
     /// | Linux   | `XDG_MUSIC_DIR`    | /home/alice/Music    |
-    /// | macOS   | `$HOME/Music`      | /Users/Alice/Music   |
+    /// | macOS   | `$HOME`/Music      | /Users/Alice/Music   |
     /// | Windows | `{FOLDERID_Music}` | C:\Users\Alice\Music |
     pub fn audio_dir(&self) -> Option<&Path> {
         self.audio_dir.as_ref().map(|p| p.as_path())
@@ -268,7 +268,7 @@ impl UserDirs {
     /// |Platform | Value                | Example                |
     /// | ------- | -------------------- | ---------------------- |
     /// | Linux   | `XDG_DESKTOP_DIR`    | /home/alice/Desktop    |
-    /// | macOS   | `$HOME/Desktop`      | /Users/Alice/Desktop   |
+    /// | macOS   | `$HOME`/Desktop      | /Users/Alice/Desktop   |
     /// | Windows | `{FOLDERID_Desktop}` | C:\Users\Alice\Desktop |
     pub fn desktop_dir(&self) -> Option<&Path> {
         self.desktop_dir.as_ref().map(|p| p.as_path())
@@ -278,7 +278,7 @@ impl UserDirs {
     /// |Platform | Value                  | Example                  |
     /// | ------- | ---------------------- | ------------------------ |
     /// | Linux   | `XDG_DOCUMENTS_DIR`    | /home/alice/Documents    |
-    /// | macOS   | `$HOME/Documents`      | /Users/Alice/Documents   |
+    /// | macOS   | `$HOME`/Documents      | /Users/Alice/Documents   |
     /// | Windows | `{FOLDERID_Documents}` | C:\Users\Alice\Documents |
     pub fn document_dir(&self) -> Option<&Path> {
         self.document_dir.as_ref().map(|p| p.as_path())
@@ -288,7 +288,7 @@ impl UserDirs {
     /// |Platform | Value                  | Example                  |
     /// | ------- | ---------------------- | ------------------------ |
     /// | Linux   | `XDG_DOWNLOAD_DIR`     | /home/alice/Downloads    |
-    /// | macOS   | `$HOME/Downloads`      | /Users/Alice/Downloads   |
+    /// | macOS   | `$HOME`/Downloads      | /Users/Alice/Downloads   |
     /// | Windows | `{FOLDERID_Downloads}` | C:\Users\Alice\Downloads |
     pub fn download_dir(&self) -> Option<&Path> {
         self.download_dir.as_ref().map(|p| p.as_path())
@@ -297,8 +297,8 @@ impl UserDirs {
     ///
     /// |Platform | Value                                                | Example                        |
     /// | ------- | ---------------------------------------------------- | ------------------------------ |
-    /// | Linux   | `$XDG_DATA_HOME/fonts` or `$HOME/.local/share/fonts` | /home/alice/.local/share/fonts |
-    /// | macOS   | `$HOME/Library/Fonts`                                | /Users/Alice/Library/Fonts     |
+    /// | Linux   | `$XDG_DATA_HOME`/fonts or `$HOME`/.local/share/fonts | /home/alice/.local/share/fonts |
+    /// | macOS   | `$HOME`/Library/Fonts                                | /Users/Alice/Library/Fonts     |
     /// | Windows | –                                                    | –                              |
     pub fn font_dir(&self) -> Option<&Path> {
         self.font_dir.as_ref().map(|p| p.as_path())
@@ -308,7 +308,7 @@ impl UserDirs {
     /// |Platform | Value                 | Example                 |
     /// | ------- | --------------------- | ----------------------- |
     /// | Linux   | `XDG_PICTURES_DIR`    | /home/alice/Pictures    |
-    /// | macOS   | `$HOME/Pictures`      | /Users/Alice/Pictures   |
+    /// | macOS   | `$HOME`/Pictures      | /Users/Alice/Pictures   |
     /// | Windows | `{FOLDERID_Pictures}` | C:\Users\Alice\Pictures |
     pub fn picture_dir(&self) -> Option<&Path> {
         self.picture_dir.as_ref().map(|p| p.as_path())
@@ -318,7 +318,7 @@ impl UserDirs {
     /// |Platform | Value                 | Example             |
     /// | ------- | --------------------- | ------------------- |
     /// | Linux   | `XDG_PUBLICSHARE_DIR` | /home/alice/Public  |
-    /// | macOS   | `$HOME/Public`        | /Users/Alice/Public |
+    /// | macOS   | `$HOME`/Public        | /Users/Alice/Public |
     /// | Windows | `{FOLDERID_Public}`   | C:\Users\Public     |
     pub fn public_dir(&self) -> Option<&Path> {
         self.public_dir.as_ref().map(|p| p.as_path())
@@ -338,7 +338,7 @@ impl UserDirs {
     /// |Platform | Value               | Example               |
     /// | ------- | ------------------- | --------------------- |
     /// | Linux   | `XDG_VIDEOS_DIR`    | /home/alice/Videos    |
-    /// | macOS   | `$HOME/Movies`      | /Users/Alice/Movies   |
+    /// | macOS   | `$HOME`/Movies      | /Users/Alice/Movies   |
     /// | Windows | `{FOLDERID_Videos}` | C:\Users\Alice\Videos |
     pub fn video_dir(&self) -> Option<&Path> {
         self.video_dir.as_ref().map(|p| p.as_path())
@@ -391,51 +391,51 @@ impl ProjectDirs {
     }
     /// Returns the path to the project's cache directory.
     ///
-    /// |Platform | Value                                                             | Example                                             |
-    /// | ------- | ----------------------------------------------------------------- | --------------------------------------------------- |
-    /// | Linux   | `$XDG_CACHE_HOME/_project_path_` or `$HOME/.cache/_project_path_` | /home/alice/.cache/barapp                           |
-    /// | macOS   | `$HOME/Library/Caches/_project_path_`                             | /Users/Alice/Library/Caches/com.Foo-Corp.Bar-App    |
-    /// | Windows | `{FOLDERID_LocalAppData}\_project_path_\cache`                    | C:\Users\Alice\AppData\Local\Foo Corp\Bar App\cache |
+    /// |Platform | Value                                                                 | Example                                             |
+    /// | ------- | --------------------------------------------------------------------- | --------------------------------------------------- |
+    /// | Linux   | `$XDG_CACHE_HOME`/`_project_path_` or `$HOME`/.cache/`_project_path_` | /home/alice/.cache/barapp                           |
+    /// | macOS   | `$HOME`/Library/Caches/`_project_path_`                               | /Users/Alice/Library/Caches/com.Foo-Corp.Bar-App    |
+    /// | Windows | `{FOLDERID_LocalAppData}`\`_project_path_`\cache                      | C:\Users\Alice\AppData\Local\Foo Corp\Bar App\cache |
     pub fn cache_dir(&self) -> &Path {
         self.cache_dir.as_path()
     }
     /// Returns the path to the project's config directory.
     ///
-    /// |Platform | Value                                                               | Example                                                |
-    /// | ------- | ------------------------------------------------------------------- | ------------------------------------------------------ |
-    /// | Linux   | `$XDG_CONFIG_HOME/_project_path_` or `$HOME/.config/_project_path_` | /home/alice/.config/barapp                             |
-    /// | macOS   | `$HOME/Library/Preferences/_project_path_`                          | /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App  |
-    /// | Windows | `{FOLDERID_RoamingAppData}\_project_path_\config`                   | C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config |
+    /// |Platform | Value                                                                   | Example                                                |
+    /// | ------- | ----------------------------------------------------------------------- | ------------------------------------------------------ |
+    /// | Linux   | `$XDG_CONFIG_HOME`/`_project_path_` or `$HOME`/.config/`_project_path_` | /home/alice/.config/barapp                             |
+    /// | macOS   | `$HOME`/Library/Preferences/`_project_path_`                            | /Users/Alice/Library/Preferences/com.Foo-Corp.Bar-App  |
+    /// | Windows | `{FOLDERID_RoamingAppData}`\`_project_path_`\config                     | C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config |
     pub fn config_dir(&self) -> &Path {
         self.config_dir.as_path()
     }
     /// Returns the path to the project's data directory.
     ///
-    /// |Platform | Value                                                                  | Example                                                       |
-    /// | ------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
-    /// | Linux   | `$XDG_DATA_HOME/_project_path_` or `$HOME/.local/share/_project_path_` | /home/alice/.local/share/barapp                               |
-    /// | macOS   | `$HOME/Library/Application Support/_project_path_`                     | /Users/Alice/Library/Application Support/com.Foo-Corp.Bar-App |
-    /// | Windows | `{FOLDERID_RoamingAppData}\_project_path_\data`                        | C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\data          |
+    /// |Platform | Value                                                                      | Example                                                       |
+    /// | ------- | -------------------------------------------------------------------------- | ------------------------------------------------------------- |
+    /// | Linux   | `$XDG_DATA_HOME`/`_project_path_` or `$HOME`/.local/share/`_project_path_` | /home/alice/.local/share/barapp                               |
+    /// | macOS   | `$HOME`/Library/Application Support/`_project_path_`                       | /Users/Alice/Library/Application Support/com.Foo-Corp.Bar-App |
+    /// | Windows | `{FOLDERID_RoamingAppData}`\`_project_path_`\data                          | C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\data          |
     pub fn data_dir(&self) -> &Path {
         self.data_dir.as_path()
     }
     /// Returns the path to the project's local data directory.
     ///
-    /// |Platform | Value                                                                  | Example                                                       |
-    /// | ------- | ---------------------------------------------------------------------- | ------------------------------------------------------------- |
-    /// | Linux   | `$XDG_DATA_HOME/_project_path_` or `$HOME/.local/share/_project_path_` | /home/alice/.local/share/barapp                               |
-    /// | macOS   | `$HOME/Library/Application Support/_project_path_`                     | /Users/Alice/Library/Application Support/com.Foo-Corp.Bar-App |
-    /// | Windows | `{FOLDERID_LocalAppData}\_project_path_\data`                          | C:\Users\Alice\AppData\Local\Foo Corp\Bar App\data            |
+    /// |Platform | Value                                                                      | Example                                                       |
+    /// | ------- | -------------------------------------------------------------------------- | ------------------------------------------------------------- |
+    /// | Linux   | `$XDG_DATA_HOME`/`_project_path_` or `$HOME`/.local/share/`_project_path_` | /home/alice/.local/share/barapp                               |
+    /// | macOS   | `$HOME`/Library/Application Support/`_project_path_`                       | /Users/Alice/Library/Application Support/com.Foo-Corp.Bar-App |
+    /// | Windows | `{FOLDERID_LocalAppData}`\`_project_path_`\data                            | C:\Users\Alice\AppData\Local\Foo Corp\Bar App\data            |
     pub fn data_local_dir(&self) -> &Path {
         self.data_local_dir.as_path()
     }
     /// Returns the path to the project's runtime directory.
     ///
-    /// |Platform | Value              | Example               |
-    /// | ------- | ------------------ | --------------------- |
-    /// | Linux   | `$XDG_RUNTIME_DIR` | /run/user/1001/barapp |
-    /// | macOS   | –                  | –                     |
-    /// | Windows | –                  | –                     |
+    /// |Platform | Value                               | Example               |
+    /// | ------- | ----------------------------------- | --------------------- |
+    /// | Linux   | `$XDG_RUNTIME_DIR`/`_project_path_` | /run/user/1001/barapp |
+    /// | macOS   | –                                   | –                     |
+    /// | Windows | –                                   | –                     |
     pub fn runtime_dir(&self) -> Option<&Path> {
         self.runtime_dir.as_ref().map(|p| p.as_path())
     }
