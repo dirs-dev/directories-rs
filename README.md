@@ -3,7 +3,7 @@
 ![actively developed](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 [![TravisCI status](https://img.shields.io/travis/soc/directories-rs/master.svg?label=Linux/macOS%20build)](https://travis-ci.org/soc/directories-rs)
 [![AppVeyor status](https://img.shields.io/appveyor/ci/soc/directories-rs/master.svg?label=Windows%20build)](https://ci.appveyor.com/project/soc/directories-rs/branch/master)
-[![License: MPL-2.0](https://img.shields.io/github/license/soc/directories-rs.svg)](LICENSE)
+![License: MIT/Apache-2.0](https://img.shields.io/badge/license-MIT%2FApache--2.0-orange.svg)
 
 # `directories`
 
