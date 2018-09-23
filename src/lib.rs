@@ -121,13 +121,30 @@ pub struct ProjectDirs {
 
 impl BaseDirs {
     /// Creates a `BaseDirs` struct which holds the paths to user-invisible directories for cache, config, etc. data on the system.
-    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
     ///
-    /// # Panics
+    /// The returned value depends on the operating system and is either
+    /// - `Some`, containing a snapshot of the state of the system's paths at the time `new()` was invoked, or
+    /// - `None`, if no valid home directory path could be retrieved from the operating system.
     ///
-    /// Panics if the home directory cannot be determined. See [`home_dir`].
+    /// To determine whether a system provides a valid `$HOME` path, the following rules are applied:
     ///
-    /// [`home_dir`]: #method.home_dir
+    /// ### Linux and macOS:
+    ///
+    /// - Use `$HOME` if it is set and not empty.
+    /// - If `$HOME` is not set or empty, then the function `getpwuid_r` is used to determine
+    ///   the home directory of the current user.
+    /// - If `getpwuid_r` lacks an entry for the current user id or the home directory field is empty,
+    ///   then the function returns `None`.
+    ///
+    /// ### Windows:
+    ///
+    /// - Retrieve the user profile folder using `SHGetKnownFolderPath`.
+    /// - If this fails, then the function returns `None`.
+    ///
+    /// _Note:_ This logic differs from [`std::env::home_dir`],
+    /// which works incorrectly on Linux, macOS and Windows.
+    ///
+    /// [`std::env::home_dir`]: https://doc.rust-lang.org/std/env/fn.home_dir.html
     pub fn new() -> Option<BaseDirs> {
         sys::base_dirs()
     }
@@ -138,20 +155,6 @@ impl BaseDirs {
     /// | Linux   | `$HOME`              | /home/alice    |
     /// | macOS   | `$HOME`              | /Users/Alice   |
     /// | Windows | `{FOLDERID_Profile}` | C:\Users\Alice |
-    ///
-    /// On Linux and macOS, this function uses [`std::env::home_dir`] to
-    /// determine the home directory:
-    /// - Use `$HOME` if it is set.
-    /// - If `$HOME` is not set, the function `getpwuid_r` is used to determine
-    ///   the home directory of the current user.
-    /// - If this also fails, creation of `BaseDirs` panics.
-    /// 
-    /// On Windows, this function retrieves the user profile folder using
-    /// `SHGetKnownFolderPath`.
-    ///
-    /// All the examples on this page mentioning `$HOME` use this behavior.
-    ///
-    /// [`std::env::home_dir`]: https://doc.rust-lang.org/std/env/fn.home_dir.html
     pub fn home_dir(&self) -> &Path {
         self.home_dir.as_path()
     }
@@ -219,13 +222,12 @@ impl BaseDirs {
 
 impl UserDirs {
     /// Creates a `UserDirs` struct which holds the paths to user-facing directories for audio, font, video, etc. data on the system.
-    /// The returned struct is a snapshot of the state of the system at the time `new()` was invoked.
     ///
-    /// # Panics
+    /// The returned value depends on the operating system and is either
+    /// - `Some`, containing a snapshot of the state of the system's paths at the time `new()` was invoked, or
+    /// - `None`, if no valid home directory path could be retrieved from the operating system.
     ///
-    /// Panics if the home directory cannot be determined. See [`home_dir`].
-    ///
-    /// [`home_dir`]: #method.home_dir
+    /// To determine whether a system provides a valid `$HOME` path, please refer to [`BaseDirs::new`]
     pub fn new() -> Option<UserDirs> {
         sys::user_dirs()
     }
@@ -236,20 +238,6 @@ impl UserDirs {
     /// | Linux   | `$HOME`              | /home/alice    |
     /// | macOS   | `$HOME`              | /Users/Alice   |
     /// | Windows | `{FOLDERID_Profile}` | C:\Users\Alice |
-    ///
-    /// On Linux and macOS, this function uses [`std::env::home_dir`] to
-    /// determine the home directory:
-    /// - Use `$HOME` if it is set.
-    /// - If `$HOME` is not set, the function `getpwuid_r` is used to determine
-    ///   the home directory of the current user.
-    /// - If this also fails, creation of `BaseDirs` panics.
-    /// 
-    /// On Windows, this function retrieves the user profile folder using
-    /// `SHGetKnownFolderPath`.
-    ///
-    /// All the examples on this page mentioning `$HOME` use this behavior.
-    ///
-    /// [`std::env::home_dir`]: https://doc.rust-lang.org/std/env/fn.home_dir.html
     pub fn home_dir(&self) -> &Path {
         self.home_dir.as_path()
     }
@@ -351,16 +339,18 @@ impl ProjectDirs {
     ///
     /// The use of `ProjectDirs::from_path` is strongly discouraged, as its results will
     /// not follow operating system standards on at least two of three platforms.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
-    ///
-    /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
+    /// 
+    /// Use [`ProjectDirs::from`] instead.
     pub fn from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         sys::project_dirs_from_path(project_path)
     }
     /// Creates a `ProjectDirs` struct from values describing the project.
+    ///
+    /// The returned value depends on the operating system and is either
+    /// - `Some`, containing project directory paths based on the state of the system's paths at the time `new()` was invoked, or
+    /// - `None`, if no valid home directory path could be retrieved from the operating system.
+    ///
+    /// To determine whether a system provides a valid `$HOME` path, please refer to [`BaseDirs::new`]
     ///
     /// The use of `ProjectDirs::from` (instead of `ProjectDirs::from_path`) is strongly encouraged,
     /// as its results will follow operating system standards on Linux, macOS and Windows.
