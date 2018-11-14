@@ -192,7 +192,7 @@ Please take this table with a grain of salt: a different crate might very well b
 - Base: Supports [generic base directories](#basedirs)
 - User: Supports [user directories](#userdirs)
 - Proj: Supports [project-specific base directories](#projectdirs)
-- Conv: Follows naming conventions of the operating system ti runs on
+- Conv: Follows naming conventions of the operating system it runs on
 
 ## Versioning
 
