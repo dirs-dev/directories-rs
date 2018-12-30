@@ -14,17 +14,12 @@
 
 #![deny(missing_docs)]
 
+extern crate dirs;
+
+mod sys;
+
 use std::path::Path;
 use std::path::PathBuf;
-
-#[cfg(target_os = "windows")]                                mod win;
-#[cfg(target_os = "macos")]                                  mod mac;
-#[cfg(not(any(target_os = "windows", target_os = "macos")))] mod lin;
-#[cfg(unix)]                                                 mod unix;
-
-#[cfg(target_os = "windows")]                                use win as sys;
-#[cfg(target_os = "macos")]                                  use mac as sys;
-#[cfg(not(any(target_os = "windows", target_os = "macos")))] use lin as sys;
 
 /// `BaseDirs` provides paths of user-invisible standard directories, following the conventions of the operating system the library is running on.
 ///
@@ -146,7 +141,17 @@ impl BaseDirs {
     ///
     /// [`std::env::home_dir`]: https://doc.rust-lang.org/std/env/fn.home_dir.html
     pub fn new() -> Option<BaseDirs> {
-        sys::base_dirs()
+        let base_dirs = BaseDirs {
+            home_dir:       dirs::home_dir()?,
+            cache_dir:      dirs::cache_dir().unwrap(),
+            config_dir:     dirs::config_dir().unwrap(),
+            data_dir:       dirs::data_dir().unwrap(),
+            data_local_dir: dirs::data_local_dir().unwrap(),
+            executable_dir: dirs::executable_dir(),
+            runtime_dir:    dirs::runtime_dir(),
+        };
+
+        Some(base_dirs)
     }
     /// Returns the path to the user's home directory.
     ///
@@ -229,7 +234,20 @@ impl UserDirs {
     ///
     /// To determine whether a system provides a valid `$HOME` path, please refer to [`BaseDirs::new`]
     pub fn new() -> Option<UserDirs> {
-        sys::user_dirs()
+        let user_dirs = UserDirs {
+            home_dir:     dirs::home_dir()?,
+            audio_dir:    dirs::audio_dir(),
+            desktop_dir:  dirs::desktop_dir(),
+            document_dir: dirs::document_dir(),
+            download_dir: dirs::download_dir(),
+            font_dir:     dirs::font_dir(),
+            picture_dir:  dirs::picture_dir(),
+            public_dir:   dirs::public_dir(),
+            template_dir: dirs::template_dir(),
+            video_dir:    dirs::video_dir(),
+        };
+
+        Some(user_dirs)
     }
     /// Returns the path to the user's home directory.
     ///
@@ -342,7 +360,16 @@ impl ProjectDirs {
     /// 
     /// Use [`ProjectDirs::from`] instead.
     pub fn from_path(project_path: PathBuf) -> Option<ProjectDirs> {
-        sys::project_dirs_from_path(project_path)
+        let project_dirs = ProjectDirs {
+            project_path:   project_path.clone(),
+            cache_dir:      dirs::cache_dir()?.join(&project_path),
+            config_dir:     dirs::config_dir()?.join(&project_path),
+            data_dir:       dirs::data_dir()?.join(&project_path),
+            data_local_dir: dirs::data_local_dir()?,
+            runtime_dir:    dirs::runtime_dir().map(|o| o.join(&project_path)),
+        };
+
+        Some(project_dirs)
     }
     /// Creates a `ProjectDirs` struct from values describing the project.
     ///
