@@ -6,6 +6,7 @@ description = "A tiny mid-level library that provides platform-specific standard
 readme      = "README.md"
 license     = "MIT OR Apache-2.0"
 repository  = "https://github.com/soc/directories-rs"
+documentation = "https://docs.rs/directories/~1.0"
 maintenance = { status = "actively-developed" }
 keywords    = ["xdg", "basedir", "app_dirs", "path", "folder"]
 
