@@ -68,8 +68,8 @@ pub struct BaseDirs {
 /// if let Some(user_dirs) = UserDirs::new() {
 ///     user_dirs.audio_dir();
 ///     // Linux:   /home/alice/Music
-///     // Windows: /Users/Alice/Music
-///     // macOS:   C:\Users\Alice\Music
+///     // Windows: C:\Users\Alice\Music
+///     // macOS:   /Users/Alice/Music
 /// }
 /// ```
 #[derive(Debug, Clone)]
