@@ -21,6 +21,7 @@ use std::path::PathBuf;
 #[cfg(target_os = "macos")]                                  mod mac;
 #[cfg(not(any(target_os = "windows", target_os = "macos")))] mod lin;
 #[cfg(unix)]                                                 mod unix;
+#[cfg(unix)]                                                 mod xdg_user_dirs;
 
 #[cfg(target_os = "windows")]                                use win as sys;
 #[cfg(target_os = "macos")]                                  use mac as sys;

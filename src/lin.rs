@@ -1,13 +1,13 @@
 use std::env;
 use std::ffi::OsString;
 use std::path::PathBuf;
-use std::process::Command;
 
 use BaseDirs;
 use UserDirs;
 use ProjectDirs;
 
 use unix;
+use xdg_user_dirs;
 
 pub fn base_dirs() -> Option<BaseDirs> {
     if let Some(home_dir)  = unix::home_dir() {
@@ -39,18 +39,18 @@ pub fn user_dirs() -> Option<UserDirs> {
     if let Some(home_dir) = unix::home_dir() {
         let data_dir  = env::var_os("XDG_DATA_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let font_dir  = data_dir.join("fonts");
-
+        let dirs = xdg_user_dirs::get(&home_dir);
         let user_dirs = UserDirs {
             home_dir:     home_dir,
-            audio_dir:    run_xdg_user_dir_command("MUSIC"),
-            desktop_dir:  run_xdg_user_dir_command("DESKTOP"),
-            document_dir: run_xdg_user_dir_command("DOCUMENTS"),
-            download_dir: run_xdg_user_dir_command("DOWNLOAD"),
+            audio_dir:    dirs.get("MUSIC").cloned(),
+            desktop_dir:  dirs.get("DESKTOP").cloned(),
+            document_dir: dirs.get("DOCUMENTS").cloned(),
+            download_dir: dirs.get("DOWNLOAD").cloned(),
             font_dir:     Some(font_dir),
-            picture_dir:  run_xdg_user_dir_command("PICTURES"),
-            public_dir:   run_xdg_user_dir_command("PUBLICSHARE"),
-            template_dir: run_xdg_user_dir_command("TEMPLATES"),
-            video_dir:    run_xdg_user_dir_command("VIDEOS")
+            picture_dir:  dirs.get("PICTURES").cloned(),
+            public_dir:   dirs.get("PUBLICSHARE").cloned(),
+            template_dir: dirs.get("TEMPLATES").cloned(),
+            video_dir:    dirs.get("VIDEOS").cloned(),
         };
         Some(user_dirs)
     } else {
@@ -93,17 +93,6 @@ fn is_absolute_path(path: OsString) -> Option<PathBuf> {
     } else {
         None
     }
-}
-
-fn run_xdg_user_dir_command(arg: &str) -> Option<PathBuf> {
-    use std::os::unix::ffi::OsStringExt;
-    let mut out = match Command::new("xdg-user-dir").arg(arg).output() {
-        Ok(output) => output.stdout,
-        Err(_) => return None,
-    };
-    let out_len = out.len();
-    out.truncate(out_len - 1);
-    Some(PathBuf::from(OsString::from_vec(out)))
 }
 
 fn trim_and_lowercase_then_replace_spaces(name: &str, replacement: &str) -> String {
