@@ -1,23 +1,21 @@
+extern crate dirs_sys;
+
 use std::env;
-use std::ffi::OsString;
 use std::path::PathBuf;
-use std::process::Command;
 
 use BaseDirs;
 use UserDirs;
 use ProjectDirs;
 
-use unix;
-
 pub fn base_dirs() -> Option<BaseDirs> {
-    if let Some(home_dir)  = unix::home_dir() {
-        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".cache"));
-        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".config"));
-        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
+    if let Some(home_dir)  = dirs_sys::home_dir() {
+        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".cache"));
+        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config"));
+        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let data_local_dir = data_dir.clone();
-        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(is_absolute_path);
+        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path);
         let executable_dir = 
-            env::var_os("XDG_BIN_HOME").and_then(is_absolute_path).unwrap_or_else(|| {
+            env::var_os("XDG_BIN_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| {
                 let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir });
 
         let base_dirs = BaseDirs {
@@ -36,21 +34,21 @@ pub fn base_dirs() -> Option<BaseDirs> {
 }
 
 pub fn user_dirs() -> Option<UserDirs> {
-    if let Some(home_dir) = unix::home_dir() {
-        let data_dir  = env::var_os("XDG_DATA_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
+    if let Some(home_dir) = dirs_sys::home_dir() {
+        let data_dir  = env::var_os("XDG_DATA_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let font_dir  = data_dir.join("fonts");
 
         let user_dirs = UserDirs {
             home_dir:     home_dir,
-            audio_dir:    run_xdg_user_dir_command("MUSIC"),
-            desktop_dir:  run_xdg_user_dir_command("DESKTOP"),
-            document_dir: run_xdg_user_dir_command("DOCUMENTS"),
-            download_dir: run_xdg_user_dir_command("DOWNLOAD"),
+            audio_dir:    dirs_sys::user_dir("MUSIC"),
+            desktop_dir:  dirs_sys::user_dir("DESKTOP"),
+            document_dir: dirs_sys::user_dir("DOCUMENTS"),
+            download_dir: dirs_sys::user_dir("DOWNLOAD"),
             font_dir:     Some(font_dir),
-            picture_dir:  run_xdg_user_dir_command("PICTURES"),
-            public_dir:   run_xdg_user_dir_command("PUBLICSHARE"),
-            template_dir: run_xdg_user_dir_command("TEMPLATES"),
-            video_dir:    run_xdg_user_dir_command("VIDEOS")
+            picture_dir:  dirs_sys::user_dir("PICTURES"),
+            public_dir:   dirs_sys::user_dir("PUBLICSHARE"),
+            template_dir: dirs_sys::user_dir("TEMPLATES"),
+            video_dir:    dirs_sys::user_dir("VIDEOS")
         };
         Some(user_dirs)
     } else {
@@ -59,12 +57,12 @@ pub fn user_dirs() -> Option<UserDirs> {
 }
 
 pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
-    if let Some(home_dir)  = unix::home_dir() { 
-        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".cache")).join(&project_path);
-        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".config")).join(&project_path);
-        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share")).join(&project_path);
+    if let Some(home_dir)  = dirs_sys::home_dir() {
+        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".cache")).join(&project_path);
+        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config")).join(&project_path);
+        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share")).join(&project_path);
         let data_local_dir = data_dir.clone();
-        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(is_absolute_path).map(|o| o.join(&project_path));
+        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path).map(|o| o.join(&project_path));
 
         let project_dirs = ProjectDirs {
             project_path:   project_path,
@@ -82,28 +80,6 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
 
 pub fn project_dirs_from(_qualifier: &str, _organization: &str, application: &str) -> Option<ProjectDirs> {
     ProjectDirs::from_path(PathBuf::from(&trim_and_lowercase_then_replace_spaces(application, "")))
-}
-
-// we don't need to explicitly handle empty strings in the code above,
-// because an empty string is not considered to be a absolute path here.
-fn is_absolute_path(path: OsString) -> Option<PathBuf> {
-    let path = PathBuf::from(path);
-    if path.is_absolute() {
-        Some(path)
-    } else {
-        None
-    }
-}
-
-fn run_xdg_user_dir_command(arg: &str) -> Option<PathBuf> {
-    use std::os::unix::ffi::OsStringExt;
-    let mut out = match Command::new("xdg-user-dir").arg(arg).output() {
-        Ok(output) => output.stdout,
-        Err(_) => return None,
-    };
-    let out_len = out.len();
-    out.truncate(out_len - 1);
-    Some(PathBuf::from(OsString::from_vec(out)))
 }
 
 fn trim_and_lowercase_then_replace_spaces(name: &str, replacement: &str) -> String {

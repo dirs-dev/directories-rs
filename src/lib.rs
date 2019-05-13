@@ -3,7 +3,7 @@
 //! - a tiny library with a minimal API (3 structs, 4 factory functions, getters)
 //! - that provides the platform-specific, user-accessible locations
 //! - for finding and storing configuration, cache and other data
-//! - on Linux, Windows (≥ Vista) and macOS.
+//! - on Linux, Redox, Windows (≥ Vista) and macOS.
 //!
 //! The library provides the location of these directories by leveraging the mechanisms defined by
 //!
@@ -14,17 +14,27 @@
 
 #![deny(missing_docs)]
 
+#[macro_use]
+extern crate cfg_if;
+
 use std::path::Path;
 use std::path::PathBuf;
 
-#[cfg(target_os = "windows")]                                mod win;
-#[cfg(target_os = "macos")]                                  mod mac;
-#[cfg(not(any(target_os = "windows", target_os = "macos")))] mod lin;
-#[cfg(unix)]                                                 mod unix;
-
-#[cfg(target_os = "windows")]                                use win as sys;
-#[cfg(target_os = "macos")]                                  use mac as sys;
-#[cfg(not(any(target_os = "windows", target_os = "macos")))] use lin as sys;
+cfg_if! {
+    if #[cfg(target_os = "windows")] {
+        mod win;
+        use win as sys;
+    } else if #[cfg(target_os = "macos")] {
+        mod mac;
+        use mac as sys;
+    } else if #[cfg(target_os = "wasi")] {
+        mod wasi;
+        use wasi as sys;
+    } else {
+        mod lin;
+        use lin as sys;
+    }
+}
 
 /// `BaseDirs` provides paths of user-invisible standard directories, following the conventions of the operating system the library is running on.
 ///

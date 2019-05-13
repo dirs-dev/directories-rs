@@ -12,7 +12,7 @@
 - a tiny mid-level library with a minimal API
 - that provides the platform-specific, user-accessible locations
 - for retrieving and storing configuration, cache and other data
-- on Linux, Windows (≥ Vista), macOS and other platforms.
+- on Linux, Redox, Windows (≥ Vista), macOS and other platforms.
 
 The library provides the location of these directories by leveraging the mechanisms defined by
 - the [XDG base directory](https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html) and
@@ -23,7 +23,7 @@ The library provides the location of these directories by leveraging the mechani
 
 ## Platforms
 
-This library is written in Rust, and supports Linux, macOS and Windows.
+This library is written in Rust, and supports Linux, Redox, macOS and Windows.
 Other platforms are also supported; they use the Linux conventions.
 
 _dirs_, the low-level sister library, is available at [dirs-rs](https://github.com/soc/dirs-rs).
@@ -194,10 +194,19 @@ Please take this table with a grain of salt: a different crate might very well b
 - Proj: Supports [project-specific base directories](#projectdirs)
 - Conv: Follows naming conventions of the operating system it runs on
 
-## Versioning
+## Build
 
-After 1.0, the version number of this library consists of a whole number, which is incremented with each release.
-(Think semantic versioning without _minor_ and _patch_ versions.)
+It's possible to cross-compile this library if the necessary toolchains are installed with rustup.
+This is helpful to ensure a change has not broken compilation on a different platform.
+
+The following commands will build this library on Linux, macOS and Windows:
+
+```
+cargo build --target=x86_64-unknown-linux-gnu
+cargo build --target=x86_64-pc-windows-gnu
+cargo build --target=x86_64-apple-darwin
+cargo build --target=x86_64-unknown-redox
+```
 
 ## License
 

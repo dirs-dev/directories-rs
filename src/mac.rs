@@ -1,13 +1,13 @@
+extern crate dirs_sys;
+
 use std::path::PathBuf;
 
 use BaseDirs;
 use UserDirs;
 use ProjectDirs;
 
-use unix;
-
 pub fn base_dirs() -> Option<BaseDirs> {
-    if let Some(home_dir)  = unix::home_dir() {
+    if let Some(home_dir)  = dirs_sys::home_dir() {
         let cache_dir      = home_dir.join("Library/Caches");
         let config_dir     = home_dir.join("Library/Preferences");
         let data_dir       = home_dir.join("Library/Application Support");
@@ -29,7 +29,7 @@ pub fn base_dirs() -> Option<BaseDirs> {
 }
 
 pub fn user_dirs() -> Option<UserDirs> {
-    if let Some(home_dir) = unix::home_dir() {
+    if let Some(home_dir) = dirs_sys::home_dir() {
         let audio_dir     = home_dir.join("Music");
         let desktop_dir   = home_dir.join("Desktop");
         let document_dir  = home_dir.join("Documents");
@@ -58,7 +58,7 @@ pub fn user_dirs() -> Option<UserDirs> {
 }
 
 pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
-    if let Some(home_dir)  = unix::home_dir() {
+    if let Some(home_dir)  = dirs_sys::home_dir() {
         let cache_dir      = home_dir.join("Library/Caches").join(&project_path);
         let config_dir     = home_dir.join("Library/Preferences").join(&project_path);
         let data_dir       = home_dir.join("Library/Application Support").join(&project_path);
