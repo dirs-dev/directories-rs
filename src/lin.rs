@@ -37,18 +37,19 @@ pub fn user_dirs() -> Option<UserDirs> {
     if let Some(home_dir) = dirs_sys::home_dir() {
         let data_dir  = env::var_os("XDG_DATA_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let font_dir  = data_dir.join("fonts");
+        let mut user_dirs_map = dirs_sys::user_dirs(&home_dir, &dirs_sys::user_dir_file(&home_dir));
 
         let user_dirs = UserDirs {
             home_dir:     home_dir,
-            audio_dir:    dirs_sys::user_dir("MUSIC"),
-            desktop_dir:  dirs_sys::user_dir("DESKTOP"),
-            document_dir: dirs_sys::user_dir("DOCUMENTS"),
-            download_dir: dirs_sys::user_dir("DOWNLOAD"),
+            audio_dir:    user_dirs_map.remove("MUSIC"),
+            desktop_dir:  user_dirs_map.remove("DESKTOP"),
+            document_dir: user_dirs_map.remove("DOCUMENTS"),
+            download_dir: user_dirs_map.remove("DOWNLOAD"),
             font_dir:     Some(font_dir),
-            picture_dir:  dirs_sys::user_dir("PICTURES"),
-            public_dir:   dirs_sys::user_dir("PUBLICSHARE"),
-            template_dir: dirs_sys::user_dir("TEMPLATES"),
-            video_dir:    dirs_sys::user_dir("VIDEOS")
+            picture_dir:  user_dirs_map.remove("PICTURES"),
+            public_dir:   user_dirs_map.remove("PUBLICSHARE"),
+            template_dir: user_dirs_map.remove("TEMPLATES"),
+            video_dir:    user_dirs_map.remove("VIDEOS")
         };
         Some(user_dirs)
     } else {
