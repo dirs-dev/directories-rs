@@ -37,7 +37,7 @@ pub fn user_dirs() -> Option<UserDirs> {
     if let Some(home_dir) = dirs_sys::home_dir() {
         let data_dir  = env::var_os("XDG_DATA_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let font_dir  = data_dir.join("fonts");
-        let mut user_dirs_map = dirs_sys::user_dirs(&home_dir, &dirs_sys::user_dir_file(&home_dir));
+        let mut user_dirs_map = dirs_sys::user_dirs(&home_dir);
 
         let user_dirs = UserDirs {
             home_dir:     home_dir,

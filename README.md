@@ -208,6 +208,16 @@ cargo build --target=x86_64-apple-darwin
 cargo build --target=x86_64-unknown-redox
 ```
 
+## Changelog
+
+### 2
+
+The behavior of deactivated, missing or invalid [_XDG User Dirs_](https://www.freedesktop.org/wiki/Software/xdg-user-dirs/)
+entries on Linux has been improved (contributed by @tmiasko, thank you!):
+
+- Version 1 returned the user's home directory (`Some($HOME)`) for such faulty entries, except for a faulty `XDG_DESKTOP_DIR` entry which returned (`Some($HOME/Desktop)`).
+- Version 2 returns `None` for such entries.
+
 ## License
 
 Licensed under either of
