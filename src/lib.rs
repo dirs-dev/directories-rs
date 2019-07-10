@@ -24,7 +24,7 @@ cfg_if! {
     if #[cfg(target_os = "windows")] {
         mod win;
         use win as sys;
-    } else if #[cfg(target_os = "macos")] {
+    } else if #[cfg(any(target_os = "macos", target_os = "ios"))] {
         mod mac;
         use mac as sys;
     } else if #[cfg(target_os = "wasi")] {
