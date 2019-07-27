@@ -27,9 +27,9 @@ cfg_if! {
     } else if #[cfg(any(target_os = "macos", target_os = "ios"))] {
         mod mac;
         use mac as sys;
-    } else if #[cfg(target_os = "wasi")] {
-        mod wasi;
-        use wasi as sys;
+    } else if #[cfg(target_arch = "wasm32")] {
+        mod wasm;
+        use wasm as sys;
     } else {
         mod lin;
         use lin as sys;
