@@ -376,10 +376,6 @@ impl ProjectDirs {
     /// - `application`  – The name of the application itself.<br/>
     ///   Example values: `"Bar App"`, `"ExampleProgram"`, `"Unicorn-Programme"`
     ///
-    /// # Panics
-    ///
-    /// Panics if the home directory cannot be determined. See [`BaseDirs::home_dir`].
-    ///
     /// [`BaseDirs::home_dir`]: struct.BaseDirs.html#method.home_dir
     pub fn from(qualifier: &str, organization: &str, application: &str) -> Option<ProjectDirs> {
         sys::project_dirs_from(qualifier, organization, application)
