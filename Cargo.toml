@@ -10,7 +10,7 @@ maintenance = { status = "actively-developed" }
 keywords    = ["xdg", "basedir", "app_dirs", "path", "folder"]
 
 [dependencies]
-cfg-if = "0.1"
+cfg-if = "=0.1.9"
 dirs-sys = "0.3.4"
 
 [dev-dependencies]
