@@ -12,8 +12,9 @@ pub fn base_dirs() -> Option<BaseDirs> {
     let data_dir       = dirs_sys::known_folder_roaming_app_data();
     let data_local_dir = dirs_sys::known_folder_local_app_data();
     if let (Some(home_dir), Some(data_dir), Some(data_local_dir)) = (home_dir, data_dir, data_local_dir) {
-        let cache_dir  = data_local_dir.clone();
-        let config_dir = data_dir.clone();
+        let cache_dir      = data_local_dir.clone();
+        let config_dir     = data_dir.clone();
+        let preference_dir = data_dir.clone();
 
         let base_dirs = BaseDirs {
             home_dir:       home_dir,
@@ -22,6 +23,7 @@ pub fn base_dirs() -> Option<BaseDirs> {
             data_dir:       data_dir,
             data_local_dir: data_local_dir,
             executable_dir: None,
+            preference_dir: preference_dir,
             runtime_dir:    None
         };
         Some(base_dirs)
@@ -69,6 +71,7 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let data_local_dir   = app_data_local.join("data");
         let config_dir       = app_data_roaming.join("config");
         let data_dir         = app_data_roaming.join("data");
+        let preference_dir   = config_dir.clone();
 
         let project_dirs = ProjectDirs {
             project_path:   project_path,
@@ -76,6 +79,7 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
             config_dir:     config_dir,
             data_dir:       data_dir,
             data_local_dir: data_local_dir,
+            preference_dir: preference_dir,
             runtime_dir:    None
         };
         Some(project_dirs)

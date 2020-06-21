@@ -13,8 +13,9 @@ pub fn base_dirs() -> Option<BaseDirs> {
         let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config"));
         let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
         let data_local_dir = data_dir.clone();
+        let preference_dir = config_dir.clone();
         let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path);
-        let executable_dir = 
+        let executable_dir =
             env::var_os("XDG_BIN_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| {
                 let mut new_dir = data_dir.clone(); new_dir.pop(); new_dir.push("bin"); new_dir });
 
@@ -25,6 +26,7 @@ pub fn base_dirs() -> Option<BaseDirs> {
             data_dir:       data_dir,
             data_local_dir: data_local_dir,
             executable_dir: Some(executable_dir),
+            preference_dir: preference_dir,
             runtime_dir:    runtime_dir
         };
         Some(base_dirs)
@@ -63,6 +65,7 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config")).join(&project_path);
         let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share")).join(&project_path);
         let data_local_dir = data_dir.clone();
+        let preference_dir = config_dir.clone();
         let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path).map(|o| o.join(&project_path));
 
         let project_dirs = ProjectDirs {
@@ -71,6 +74,7 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
             config_dir:     config_dir,
             data_dir:       data_dir,
             data_local_dir: data_local_dir,
+            preference_dir: preference_dir,
             runtime_dir:    runtime_dir
         };
         Some(project_dirs)
