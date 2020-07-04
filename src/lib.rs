@@ -14,27 +14,33 @@
 
 #![deny(missing_docs)]
 
-#[macro_use]
-extern crate cfg_if;
-
 use std::path::Path;
 use std::path::PathBuf;
 
-cfg_if! {
-    if #[cfg(target_os = "windows")] {
-        mod win;
-        use win as sys;
-    } else if #[cfg(any(target_os = "macos", target_os = "ios"))] {
-        mod mac;
-        use mac as sys;
-    } else if #[cfg(target_arch = "wasm32")] {
-        mod wasm;
-        use wasm as sys;
-    } else {
-        mod lin;
-        use lin as sys;
-    }
-}
+#[cfg(target_os = "windows")]
+mod win;
+#[cfg(target_os = "windows")]
+use win as sys;
+#[cfg(any(target_os = "macos", target_os = "ios"))]
+mod mac;
+#[cfg(any(target_os = "macos", target_os = "ios"))]
+use mac as sys;
+#[cfg(target_arch = "wasm32")]
+mod wasm;
+#[cfg(target_arch = "wasm32")]
+use wasm as sys;
+#[cfg(not(any(
+    target_os = "windows",
+    target_os = "macos", target_os = "ios",
+    target_arch = "wasm32"
+)))]
+mod lin;
+#[cfg(not(any(
+    target_os = "windows",
+    target_os = "macos", target_os = "ios",
+    target_arch = "wasm32"
+)))]
+use lin as sys;
 
 /// `BaseDirs` provides paths of user-invisible standard directories, following the conventions of the operating system the library is running on.
 ///
