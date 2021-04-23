@@ -10,7 +10,7 @@ maintenance = { status = "actively-developed" }
 keywords    = ["xdg", "basedir", "app_dirs", "path", "folder"]
 
 [dependencies]
-dirs-sys = "0.3.5"
+dirs-sys = "0.3.6"
 
 [dev-dependencies]
 bencher = "0.1.5"
