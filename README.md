@@ -106,17 +106,17 @@ that have been defined according to the conventions of the operating system the 
 
 If you want to compute the location of cache, config or data directories for your own application or project, use `ProjectDirs` instead.
 
-| Function name    | Value on Linux                                                                                  | Value on Windows            | Value on macOS                      |
-| ---------------- | ----------------------------------------------------------------------------------------------- | --------------------------- | ----------------------------------- |
-| `home_dir`       | `$HOME`                                                                                         | `{FOLDERID_Profile}`        | `$HOME`                             |
-| `cache_dir`      | `$XDG_CACHE_HOME`              or `$HOME`/.cache                                                | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Caches              |
-| `config_dir`     | `$XDG_CONFIG_HOME`             or `$HOME`/.config                                               | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
-| `data_dir`       | `$XDG_DATA_HOME`               or `$HOME`/.local/share                                          | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
-| `data_local_dir` | `$XDG_DATA_HOME`               or `$HOME`/.local/share                                          | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Application Support |
-| `executable_dir` | `Some($XDG_BIN_HOME`/../bin`)` or `Some($XDG_DATA_HOME`/../bin`)` or `Some($HOME`/.local/bin`)` | `None`                      | `None`                              |
-| `preference_dir` | `$XDG_CONFIG_HOME`             or `$HOME`/.config                                               | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Preferences         |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR)`       or `None`                                                        | `None`                      | `None`                              |
-| `state_dir`      | `Some($XDG_STATE_HOME)`        or `Some($HOME`/.local/state`)`                                  | `None`                      | `None`                              |
+| Function name    | Value on Linux                                           | Value on Windows            | Value on macOS                      |
+| ---------------- | -------------------------------------------------------- | --------------------------- | ----------------------------------- |
+| `home_dir`       | `$HOME`                                                  | `{FOLDERID_Profile}`        | `$HOME`                             |
+| `cache_dir`      | `$XDG_CACHE_HOME`        or `$HOME`/.cache               | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Caches              |
+| `config_dir`     | `$XDG_CONFIG_HOME`       or `$HOME`/.config              | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
+| `data_dir`       | `$XDG_DATA_HOME`         or `$HOME`/.local/share         | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
+| `data_local_dir` | `$XDG_DATA_HOME`         or `$HOME`/.local/share         | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Application Support |
+| `executable_dir` | `Some($XDG_BIN_HOME)`    or `Some($HOME`/.local/bin`)`   | `None`                      | `None`                              |
+| `preference_dir` | `$XDG_CONFIG_HOME`       or `$HOME`/.config              | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Preferences         |
+| `runtime_dir`    | `Some($XDG_RUNTIME_DIR)` or `None`                       | `None`                      | `None`                              |
+| `state_dir`      | `Some($XDG_STATE_HOME)`  or `Some($HOME`/.local/state`)` | `None`                      | `None`                              |
 
 ### `UserDirs`
 
@@ -220,6 +220,9 @@ cargo build --target=x86_64-unknown-redox
 
 ### 4
 
+- **BREAKING CHANGE** The behavior of `executable_dir` has been adjusted to not depend on `$XDG_DATA_HOME`.
+  Code, which assumed that setting the `$XDG_DATA_HOME` environment variable also impacted `executable_dir` if
+  the `$XDG_BIN_HOME` environment variable was not set, requires adjustment.
 - Add support for `XDG_STATE_HOME`.
 
 ### 3
