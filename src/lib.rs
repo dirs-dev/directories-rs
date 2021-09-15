@@ -473,6 +473,9 @@ impl ProjectDirs {
     }
     /// Returns the path to the project's runtime directory.
     ///
+    /// The runtime directory contains transient, non-essential data (like sockets or named pipes) that
+    /// is expected to be cleared when the user's session ends.
+    ///
     /// |Platform | Value                               | Example               |
     /// | ------- | ----------------------------------- | --------------------- |
     /// | Linux   | `$XDG_RUNTIME_DIR`/`_project_path_` | /run/user/1001/barapp |
