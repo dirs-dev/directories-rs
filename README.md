@@ -116,6 +116,7 @@ If you want to compute the location of cache, config or data directories for you
 | `executable_dir` | `Some($XDG_BIN_HOME`/../bin`)` or `Some($XDG_DATA_HOME`/../bin`)` or `Some($HOME`/.local/bin`)` | `None`                      | `None`                              |
 | `preference_dir` | `$XDG_CONFIG_HOME`             or `$HOME`/.config                                               | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Preferences         |
 | `runtime_dir`    | `Some($XDG_RUNTIME_DIR)`       or `None`                                                        | `None`                      | `None`                              |
+| `state_dir`      | `Some($XDG_STATE_HOME)`        or `Some($HOME`/.local/state`)`                                  | `None`                      | `None`                              |
 
 ### `UserDirs`
 
@@ -147,7 +148,8 @@ which are derived from the standard directories.
 | `data_dir`       | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_RoamingAppData}`/`<project_path>`/data   | `$HOME`/Library/Application Support/`<project_path>` |
 | `data_local_dir` | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_LocalAppData}`/`<project_path>`/data     | `$HOME`/Library/Application Support/`<project_path>` |
 | `preference_dir` | `$XDG_CONFIG_HOME`/`<project_path>`       or `$HOME`/.config/`<project_path>`      | `{FOLDERID_RoamingAppData}`/`<project_path>`/config | `$HOME`/Library/Preferences/`<project_path>`         |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR`/`_project_path_)`                                          | `None`                                              | `None`                                               |
+| `runtime_dir`    | `Some($XDG_RUNTIME_DIR`/`<project_path>)`                                          | `None`                                              | `None`                                               |
+| `state_dir`      | `Some($XDG_STATE_HOME`/`<project_path>)`  or `$HOME`/.local/state/`<project_path>` | `None`                                              | `None`                                               |
 
 The specific value of `<project_path>` is computed by the
 
@@ -215,6 +217,10 @@ cargo build --target=x86_64-unknown-redox
 ```
 
 ## Changelog
+
+### 4
+
+- Add support for `XDG_STATE_HOME`.
 
 ### 3
 

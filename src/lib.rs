@@ -72,6 +72,7 @@ pub struct BaseDirs {
     executable_dir: Option<PathBuf>,
     preference_dir: PathBuf,
     runtime_dir:    Option<PathBuf>,
+    state_dir:      Option<PathBuf>
 }
 
 /// `UserDirs` provides paths of user-facing standard directories, following the conventions of the operating system the library is running on.
@@ -134,7 +135,8 @@ pub struct ProjectDirs {
     data_dir:       PathBuf,
     data_local_dir: PathBuf,
     preference_dir: PathBuf,
-    runtime_dir:    Option<PathBuf>
+    runtime_dir:    Option<PathBuf>,
+    state_dir:      Option<PathBuf>
 }
 
 impl BaseDirs {
@@ -245,6 +247,22 @@ impl BaseDirs {
     /// | Windows | –                  | –               |
     pub fn runtime_dir(&self) -> Option<&Path> {
         self.runtime_dir.as_ref().map(|p| p.as_path())
+    }
+    /// Returns the path to the user's state directory.
+    ///
+    /// The state directory contains data that should be retained between sessions (unlike the runtime
+    /// directory), but may not be important/portable enough to be synchronized across machines (unlike
+    /// the config/preferences/data directories).
+    ///
+    /// The returned value depends on the operating system and is either a `Some`, containing a value from the following table, or a `None`.
+    ///
+    /// |Platform | Value                                     | Example                  |
+    /// | ------- | ----------------------------------------- | ------------------------ |
+    /// | Linux   | `$XDG_STATE_HOME` or `$HOME`/.local/state | /home/alice/.local/state |
+    /// | macOS   | –                                         | –                        |
+    /// | Windows | –                                         | –                        |
+    pub fn state_dir(&self) -> Option<&Path> {
+        self.state_dir.as_ref().map(|p| p.as_path())
     }
 }
 
@@ -462,6 +480,22 @@ impl ProjectDirs {
     /// | Windows | –                                   | –                     |
     pub fn runtime_dir(&self) -> Option<&Path> {
         self.runtime_dir.as_ref().map(|p| p.as_path())
+    }
+    /// Returns the path to the project's state directory.
+    ///
+    /// The state directory contains data that should be retained between sessions (unlike the runtime
+    /// directory), but may not be important/portable enough to be synchronized across machines (unlike
+    /// the config/preferences/data directories).
+    ///
+    /// The returned value depends on the operating system and is either a `Some`, containing a value from the following table, or a `None`.
+    ///
+    /// |Platform | Value                                                                       | Example                         |
+    /// | ------- | --------------------------------------------------------------------------- | ------------------------------- |
+    /// | Linux   | `$XDG_STATE_HOME`/`_project_path_` or `$HOME`/.local/state/`_project_path_` | /home/alice/.local/state/barapp |
+    /// | macOS   | –                                                                           | –                               |
+    /// | Windows | –                                                                           | –                               |
+    pub fn state_dir(&self) -> Option<&Path> {
+        self.state_dir.as_ref().map(|p| p.as_path())
     }
 }
 
