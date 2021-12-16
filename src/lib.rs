@@ -132,6 +132,7 @@ pub struct ProjectDirs {
     // base directories
     cache_dir:      PathBuf,
     config_dir:     PathBuf,
+    config_local_dir: PathBuf,
     data_dir:       PathBuf,
     data_local_dir: PathBuf,
     preference_dir: PathBuf,
@@ -440,6 +441,16 @@ impl ProjectDirs {
     /// | Windows | `{FOLDERID_RoamingAppData}`\\`_project_path_`\\config                   | C:\Users\Alice\AppData\Roaming\Foo Corp\Bar App\config         |
     pub fn config_dir(&self) -> &Path {
         self.config_dir.as_path()
+    }
+    /// Returns the path to the project's local config directory.
+    ///
+    /// |Platform | Value                                                                   | Example                                                        |
+    /// | ------- | ----------------------------------------------------------------------- | -------------------------------------------------------------- |
+    /// | Linux   | `$XDG_CONFIG_HOME`/`_project_path_` or `$HOME`/.config/`_project_path_` | /home/alice/.config/barapp                                     |
+    /// | macOS   | `$HOME`/Library/Application Support/`_project_path_`                    | /Users/Alice/Library/Application Support/com.Foo-Corp.Bar-App  |
+    /// | Windows | `{FOLDERID_LocalAppData}`\\`_project_path_`\\config                     | C:\Users\Alice\AppData\Local\Foo Corp\Bar App\config           |
+    pub fn config_local_dir(&self) -> &Path {
+        self.config_local_dir.as_path()
     }
     /// Returns the path to the project's data directory.
     ///

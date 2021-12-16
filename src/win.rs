@@ -71,6 +71,7 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let cache_dir        = app_data_local.join("cache");
         let data_local_dir   = app_data_local.join("data");
         let config_dir       = app_data_roaming.join("config");
+        let config_local_dir = app_data_local.join("config");
         let data_dir         = app_data_roaming.join("data");
         let preference_dir   = config_dir.clone();
 
@@ -78,6 +79,7 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
             project_path:   project_path,
             cache_dir:      cache_dir,
             config_dir:     config_dir,
+            config_local_dir,
             data_dir:       data_dir,
             data_local_dir: data_local_dir,
             preference_dir: preference_dir,
