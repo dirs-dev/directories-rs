@@ -127,17 +127,17 @@ pub struct UserDirs {
 /// ```
 #[derive(Debug, Clone)]
 pub struct ProjectDirs {
-    project_path:   PathBuf,
+    project_path:     PathBuf,
 
     // base directories
-    cache_dir:      PathBuf,
-    config_dir:     PathBuf,
+    cache_dir:        PathBuf,
+    config_dir:       PathBuf,
     config_local_dir: PathBuf,
-    data_dir:       PathBuf,
-    data_local_dir: PathBuf,
-    preference_dir: PathBuf,
-    runtime_dir:    Option<PathBuf>,
-    state_dir:      Option<PathBuf>
+    data_dir:         PathBuf,
+    data_local_dir:   PathBuf,
+    preference_dir:   PathBuf,
+    runtime_dir:      Option<PathBuf>,
+    state_dir:        Option<PathBuf>
 }
 
 impl BaseDirs {

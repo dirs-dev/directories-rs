@@ -76,15 +76,15 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let preference_dir   = config_dir.clone();
 
         let project_dirs = ProjectDirs {
-            project_path:   project_path,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            config_local_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
-            preference_dir: preference_dir,
-            runtime_dir:    None,
-            state_dir:      None
+            project_path:     project_path,
+            cache_dir:        cache_dir,
+            config_dir:       config_dir,
+            config_local_dir: config_local_dir,
+            data_dir:         data_dir,
+            data_local_dir:   data_local_dir,
+            preference_dir:   preference_dir,
+            runtime_dir:      None,
+            state_dir:        None
         };
         Some(project_dirs)
     } else {
