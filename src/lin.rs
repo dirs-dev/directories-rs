@@ -60,24 +60,26 @@ pub fn user_dirs() -> Option<UserDirs> {
 }
 
 pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
-    if let Some(home_dir)  = dirs_sys::home_dir() {
-        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".cache")).join(&project_path);
-        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config")).join(&project_path);
-        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share")).join(&project_path);
-        let data_local_dir = data_dir.clone();
-        let preference_dir = config_dir.clone();
-        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path).map(|o| o.join(&project_path));
-        let state_dir      = env::var_os("XDG_STATE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/state")).join(&project_path);
+    if let Some(home_dir)    = dirs_sys::home_dir() {
+        let cache_dir        = env::var_os("XDG_CACHE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".cache")).join(&project_path);
+        let config_dir       = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config")).join(&project_path);
+        let config_local_dir = config_dir.clone();
+        let data_dir         = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share")).join(&project_path);
+        let data_local_dir   = data_dir.clone();
+        let preference_dir   = config_dir.clone();
+        let runtime_dir      = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path).map(|o| o.join(&project_path));
+        let state_dir        = env::var_os("XDG_STATE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/state")).join(&project_path);
 
         let project_dirs = ProjectDirs {
-            project_path:   project_path,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
-            preference_dir: preference_dir,
-            runtime_dir:    runtime_dir,
-            state_dir:      Some(state_dir)
+            project_path:     project_path,
+            cache_dir:        cache_dir,
+            config_dir:       config_dir,
+            config_local_dir: config_local_dir,
+            data_dir:         data_dir,
+            data_local_dir:   data_local_dir,
+            preference_dir:   preference_dir,
+            runtime_dir:      runtime_dir,
+            state_dir:        Some(state_dir)
         };
         Some(project_dirs)
     } else {
