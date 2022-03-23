@@ -15,13 +15,13 @@ pub fn base_dirs() -> Option<BaseDirs> {
         let preference_dir = home_dir.join("Library/Preferences");
 
         let base_dirs = BaseDirs {
-            home_dir: home_dir,
-            cache_dir: cache_dir,
-            config_dir: config_dir,
-            data_dir: data_dir,
-            data_local_dir: data_local_dir,
+            home_dir,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
             executable_dir: None,
-            preference_dir: preference_dir,
+            preference_dir,
             runtime_dir: None,
             state_dir: None,
         };
@@ -43,7 +43,7 @@ pub fn user_dirs() -> Option<UserDirs> {
         let font_dir = home_dir.join("Library/Fonts");
 
         let user_dirs = UserDirs {
-            home_dir: home_dir,
+            home_dir,
             audio_dir: Some(audio_dir),
             desktop_dir: Some(desktop_dir),
             document_dir: Some(document_dir),
@@ -73,12 +73,12 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         let preference_dir = home_dir.join("Library/Preferences").join(&project_path);
 
         let project_dirs = ProjectDirs {
-            project_path: project_path,
-            cache_dir: cache_dir,
-            config_dir: config_dir,
-            data_dir: data_dir,
-            data_local_dir: data_local_dir,
-            preference_dir: preference_dir,
+            project_path,
+            cache_dir,
+            config_dir,
+            data_dir,
+            data_local_dir,
+            preference_dir,
             runtime_dir: None,
             state_dir: None,
         };

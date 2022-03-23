@@ -228,7 +228,7 @@ impl BaseDirs {
     /// | macOS   | –                                                                | –                      |
     /// | Windows | –                                                                | –                      |
     pub fn executable_dir(&self) -> Option<&Path> {
-        self.executable_dir.as_ref().map(|p| p.as_path())
+        self.executable_dir.as_deref()
     }
     /// Returns the path to the user's preference directory.
     ///
@@ -248,7 +248,7 @@ impl BaseDirs {
     /// | macOS   | –                  | –               |
     /// | Windows | –                  | –               |
     pub fn runtime_dir(&self) -> Option<&Path> {
-        self.runtime_dir.as_ref().map(|p| p.as_path())
+        self.runtime_dir.as_deref()
     }
     /// Returns the path to the user's state directory.
     ///
@@ -264,7 +264,7 @@ impl BaseDirs {
     /// | macOS   | –                                         | –                        |
     /// | Windows | –                                         | –                        |
     pub fn state_dir(&self) -> Option<&Path> {
-        self.state_dir.as_ref().map(|p| p.as_path())
+        self.state_dir.as_deref()
     }
 }
 
@@ -297,7 +297,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Music      | /Users/Alice/Music   |
     /// | Windows | `{FOLDERID_Music}` | C:\Users\Alice\Music |
     pub fn audio_dir(&self) -> Option<&Path> {
-        self.audio_dir.as_ref().map(|p| p.as_path())
+        self.audio_dir.as_deref()
     }
     /// Returns the path to the user's desktop directory.
     ///
@@ -307,7 +307,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Desktop      | /Users/Alice/Desktop   |
     /// | Windows | `{FOLDERID_Desktop}` | C:\Users\Alice\Desktop |
     pub fn desktop_dir(&self) -> Option<&Path> {
-        self.desktop_dir.as_ref().map(|p| p.as_path())
+        self.desktop_dir.as_deref()
     }
     /// Returns the path to the user's document directory.
     ///
@@ -317,7 +317,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Documents      | /Users/Alice/Documents   |
     /// | Windows | `{FOLDERID_Documents}` | C:\Users\Alice\Documents |
     pub fn document_dir(&self) -> Option<&Path> {
-        self.document_dir.as_ref().map(|p| p.as_path())
+        self.document_dir.as_deref()
     }
     /// Returns the path to the user's download directory.
     ///
@@ -327,7 +327,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Downloads      | /Users/Alice/Downloads   |
     /// | Windows | `{FOLDERID_Downloads}` | C:\Users\Alice\Downloads |
     pub fn download_dir(&self) -> Option<&Path> {
-        self.download_dir.as_ref().map(|p| p.as_path())
+        self.download_dir.as_deref()
     }
     /// Returns the path to the user's font directory.
     ///
@@ -337,7 +337,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Library/Fonts                                | /Users/Alice/Library/Fonts     |
     /// | Windows | –                                                    | –                              |
     pub fn font_dir(&self) -> Option<&Path> {
-        self.font_dir.as_ref().map(|p| p.as_path())
+        self.font_dir.as_deref()
     }
     /// Returns the path to the user's picture directory.
     ///
@@ -347,7 +347,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Pictures      | /Users/Alice/Pictures   |
     /// | Windows | `{FOLDERID_Pictures}` | C:\Users\Alice\Pictures |
     pub fn picture_dir(&self) -> Option<&Path> {
-        self.picture_dir.as_ref().map(|p| p.as_path())
+        self.picture_dir.as_deref()
     }
     /// Returns the path to the user's public directory.
     ///
@@ -357,7 +357,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Public        | /Users/Alice/Public |
     /// | Windows | `{FOLDERID_Public}`   | C:\Users\Public     |
     pub fn public_dir(&self) -> Option<&Path> {
-        self.public_dir.as_ref().map(|p| p.as_path())
+        self.public_dir.as_deref()
     }
     /// Returns the path to the user's template directory.
     ///
@@ -367,7 +367,7 @@ impl UserDirs {
     /// | macOS   | –                      | –                                                          |
     /// | Windows | `{FOLDERID_Templates}` | C:\Users\Alice\AppData\Roaming\Microsoft\Windows\Templates |
     pub fn template_dir(&self) -> Option<&Path> {
-        self.template_dir.as_ref().map(|p| p.as_path())
+        self.template_dir.as_deref()
     }
     /// Returns the path to the user's video directory.
     ///
@@ -377,7 +377,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Movies      | /Users/Alice/Movies   |
     /// | Windows | `{FOLDERID_Videos}` | C:\Users\Alice\Videos |
     pub fn video_dir(&self) -> Option<&Path> {
-        self.video_dir.as_ref().map(|p| p.as_path())
+        self.video_dir.as_deref()
     }
 }
 
@@ -484,7 +484,7 @@ impl ProjectDirs {
     /// | macOS   | –                                   | –                     |
     /// | Windows | –                                   | –                     |
     pub fn runtime_dir(&self) -> Option<&Path> {
-        self.runtime_dir.as_ref().map(|p| p.as_path())
+        self.runtime_dir.as_deref()
     }
     /// Returns the path to the project's state directory.
     ///
@@ -500,7 +500,7 @@ impl ProjectDirs {
     /// | macOS   | –                                                                           | –                               |
     /// | Windows | –                                                                           | –                               |
     pub fn state_dir(&self) -> Option<&Path> {
-        self.state_dir.as_ref().map(|p| p.as_path())
+        self.state_dir.as_deref()
     }
 }
 
