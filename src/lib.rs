@@ -31,13 +31,15 @@ mod wasm;
 use wasm as sys;
 #[cfg(not(any(
     target_os = "windows",
-    target_os = "macos", target_os = "ios",
+    target_os = "macos",
+    target_os = "ios",
     target_arch = "wasm32"
 )))]
 mod lin;
 #[cfg(not(any(
     target_os = "windows",
-    target_os = "macos", target_os = "ios",
+    target_os = "macos",
+    target_os = "ios",
     target_arch = "wasm32"
 )))]
 use lin as sys;
@@ -62,17 +64,17 @@ use lin as sys;
 #[derive(Debug, Clone)]
 pub struct BaseDirs {
     // home directory
-    home_dir:       PathBuf,
+    home_dir: PathBuf,
 
     // base directories
-    cache_dir:      PathBuf,
-    config_dir:     PathBuf,
-    data_dir:       PathBuf,
+    cache_dir: PathBuf,
+    config_dir: PathBuf,
+    data_dir: PathBuf,
     data_local_dir: PathBuf,
     executable_dir: Option<PathBuf>,
     preference_dir: PathBuf,
-    runtime_dir:    Option<PathBuf>,
-    state_dir:      Option<PathBuf>
+    runtime_dir: Option<PathBuf>,
+    state_dir: Option<PathBuf>,
 }
 
 /// `UserDirs` provides paths of user-facing standard directories, following the conventions of the operating system the library is running on.
@@ -93,19 +95,19 @@ pub struct BaseDirs {
 #[derive(Debug, Clone)]
 pub struct UserDirs {
     // home directory
-    home_dir:     PathBuf,
+    home_dir: PathBuf,
 
     // user directories
-    audio_dir:    Option<PathBuf>,
-    desktop_dir:  Option<PathBuf>,
+    audio_dir: Option<PathBuf>,
+    desktop_dir: Option<PathBuf>,
     document_dir: Option<PathBuf>,
     download_dir: Option<PathBuf>,
-    font_dir:     Option<PathBuf>,
-    picture_dir:  Option<PathBuf>,
-    public_dir:   Option<PathBuf>,
+    font_dir: Option<PathBuf>,
+    picture_dir: Option<PathBuf>,
+    public_dir: Option<PathBuf>,
     template_dir: Option<PathBuf>,
     // trash_dir:    PathBuf,
-    video_dir:    Option<PathBuf>
+    video_dir: Option<PathBuf>,
 }
 
 /// `ProjectDirs` computes the location of cache, config or data directories for a specific application,
@@ -127,16 +129,16 @@ pub struct UserDirs {
 /// ```
 #[derive(Debug, Clone)]
 pub struct ProjectDirs {
-    project_path:   PathBuf,
+    project_path: PathBuf,
 
     // base directories
-    cache_dir:      PathBuf,
-    config_dir:     PathBuf,
-    data_dir:       PathBuf,
+    cache_dir: PathBuf,
+    config_dir: PathBuf,
+    data_dir: PathBuf,
     data_local_dir: PathBuf,
     preference_dir: PathBuf,
-    runtime_dir:    Option<PathBuf>,
-    state_dir:      Option<PathBuf>
+    runtime_dir: Option<PathBuf>,
+    state_dir: Option<PathBuf>,
 }
 
 impl BaseDirs {
@@ -226,7 +228,7 @@ impl BaseDirs {
     /// | macOS   | –                                                                | –                      |
     /// | Windows | –                                                                | –                      |
     pub fn executable_dir(&self) -> Option<&Path> {
-        self.executable_dir.as_ref().map(|p| p.as_path())
+        self.executable_dir.as_deref()
     }
     /// Returns the path to the user's preference directory.
     ///
@@ -246,7 +248,7 @@ impl BaseDirs {
     /// | macOS   | –                  | –               |
     /// | Windows | –                  | –               |
     pub fn runtime_dir(&self) -> Option<&Path> {
-        self.runtime_dir.as_ref().map(|p| p.as_path())
+        self.runtime_dir.as_deref()
     }
     /// Returns the path to the user's state directory.
     ///
@@ -262,7 +264,7 @@ impl BaseDirs {
     /// | macOS   | –                                         | –                        |
     /// | Windows | –                                         | –                        |
     pub fn state_dir(&self) -> Option<&Path> {
-        self.state_dir.as_ref().map(|p| p.as_path())
+        self.state_dir.as_deref()
     }
 }
 
@@ -295,7 +297,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Music      | /Users/Alice/Music   |
     /// | Windows | `{FOLDERID_Music}` | C:\Users\Alice\Music |
     pub fn audio_dir(&self) -> Option<&Path> {
-        self.audio_dir.as_ref().map(|p| p.as_path())
+        self.audio_dir.as_deref()
     }
     /// Returns the path to the user's desktop directory.
     ///
@@ -305,7 +307,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Desktop      | /Users/Alice/Desktop   |
     /// | Windows | `{FOLDERID_Desktop}` | C:\Users\Alice\Desktop |
     pub fn desktop_dir(&self) -> Option<&Path> {
-        self.desktop_dir.as_ref().map(|p| p.as_path())
+        self.desktop_dir.as_deref()
     }
     /// Returns the path to the user's document directory.
     ///
@@ -315,7 +317,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Documents      | /Users/Alice/Documents   |
     /// | Windows | `{FOLDERID_Documents}` | C:\Users\Alice\Documents |
     pub fn document_dir(&self) -> Option<&Path> {
-        self.document_dir.as_ref().map(|p| p.as_path())
+        self.document_dir.as_deref()
     }
     /// Returns the path to the user's download directory.
     ///
@@ -325,7 +327,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Downloads      | /Users/Alice/Downloads   |
     /// | Windows | `{FOLDERID_Downloads}` | C:\Users\Alice\Downloads |
     pub fn download_dir(&self) -> Option<&Path> {
-        self.download_dir.as_ref().map(|p| p.as_path())
+        self.download_dir.as_deref()
     }
     /// Returns the path to the user's font directory.
     ///
@@ -335,7 +337,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Library/Fonts                                | /Users/Alice/Library/Fonts     |
     /// | Windows | –                                                    | –                              |
     pub fn font_dir(&self) -> Option<&Path> {
-        self.font_dir.as_ref().map(|p| p.as_path())
+        self.font_dir.as_deref()
     }
     /// Returns the path to the user's picture directory.
     ///
@@ -345,7 +347,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Pictures      | /Users/Alice/Pictures   |
     /// | Windows | `{FOLDERID_Pictures}` | C:\Users\Alice\Pictures |
     pub fn picture_dir(&self) -> Option<&Path> {
-        self.picture_dir.as_ref().map(|p| p.as_path())
+        self.picture_dir.as_deref()
     }
     /// Returns the path to the user's public directory.
     ///
@@ -355,7 +357,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Public        | /Users/Alice/Public |
     /// | Windows | `{FOLDERID_Public}`   | C:\Users\Public     |
     pub fn public_dir(&self) -> Option<&Path> {
-        self.public_dir.as_ref().map(|p| p.as_path())
+        self.public_dir.as_deref()
     }
     /// Returns the path to the user's template directory.
     ///
@@ -365,7 +367,7 @@ impl UserDirs {
     /// | macOS   | –                      | –                                                          |
     /// | Windows | `{FOLDERID_Templates}` | C:\Users\Alice\AppData\Roaming\Microsoft\Windows\Templates |
     pub fn template_dir(&self) -> Option<&Path> {
-        self.template_dir.as_ref().map(|p| p.as_path())
+        self.template_dir.as_deref()
     }
     /// Returns the path to the user's video directory.
     ///
@@ -375,7 +377,7 @@ impl UserDirs {
     /// | macOS   | `$HOME`/Movies      | /Users/Alice/Movies   |
     /// | Windows | `{FOLDERID_Videos}` | C:\Users\Alice\Videos |
     pub fn video_dir(&self) -> Option<&Path> {
-        self.video_dir.as_ref().map(|p| p.as_path())
+        self.video_dir.as_deref()
     }
 }
 
@@ -385,7 +387,7 @@ impl ProjectDirs {
     ///
     /// The use of `ProjectDirs::from_path` is strongly discouraged, as its results will
     /// not follow operating system standards on at least two of three platforms.
-    /// 
+    ///
     /// Use [`ProjectDirs::from`] instead.
     pub fn from_path(project_path: PathBuf) -> Option<ProjectDirs> {
         sys::project_dirs_from_path(project_path)
@@ -482,7 +484,7 @@ impl ProjectDirs {
     /// | macOS   | –                                   | –                     |
     /// | Windows | –                                   | –                     |
     pub fn runtime_dir(&self) -> Option<&Path> {
-        self.runtime_dir.as_ref().map(|p| p.as_path())
+        self.runtime_dir.as_deref()
     }
     /// Returns the path to the project's state directory.
     ///
@@ -498,7 +500,7 @@ impl ProjectDirs {
     /// | macOS   | –                                                                           | –                               |
     /// | Windows | –                                                                           | –                               |
     pub fn state_dir(&self) -> Option<&Path> {
-        self.state_dir.as_ref().map(|p| p.as_path())
+        self.state_dir.as_deref()
     }
 }
 
@@ -517,10 +519,19 @@ mod tests {
     #[test]
     fn test_project_dirs() {
         let proj_dirs = ::ProjectDirs::from("qux", "FooCorp", "BarApp");
-        println!("ProjectDirs::from(\"qux\", \"FooCorp\", \"BarApp\")\n{:?}", proj_dirs);
+        println!(
+            "ProjectDirs::from(\"qux\", \"FooCorp\", \"BarApp\")\n{:?}",
+            proj_dirs
+        );
         let proj_dirs = ::ProjectDirs::from("qux.zoo", "Foo Corp", "Bar-App");
-        println!("ProjectDirs::from(\"qux.zoo\", \"Foo Corp\", \"Bar-App\")\n{:?}", proj_dirs);
+        println!(
+            "ProjectDirs::from(\"qux.zoo\", \"Foo Corp\", \"Bar-App\")\n{:?}",
+            proj_dirs
+        );
         let proj_dirs = ::ProjectDirs::from("com", "Foo Corp.", "Bar App");
-        println!("ProjectDirs::from(\"com\", \"Foo Corp.\", \"Bar App\")\n{:?}", proj_dirs);
+        println!(
+            "ProjectDirs::from(\"com\", \"Foo Corp.\", \"Bar App\")\n{:?}",
+            proj_dirs
+        );
     }
 }

@@ -3,10 +3,22 @@
 use std::path::PathBuf;
 
 use BaseDirs;
-use UserDirs;
 use ProjectDirs;
+use UserDirs;
 
-pub fn base_dirs() -> Option<BaseDirs> { None }
-pub fn user_dirs() -> Option<UserDirs> { None }
-pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> { None }
-pub fn project_dirs_from(qualifier: &str, organization: &str, application: &str) -> Option<ProjectDirs> { None }
+pub fn base_dirs() -> Option<BaseDirs> {
+    None
+}
+pub fn user_dirs() -> Option<UserDirs> {
+    None
+}
+pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
+    None
+}
+pub fn project_dirs_from(
+    qualifier: &str,
+    organization: &str,
+    application: &str,
+) -> Option<ProjectDirs> {
+    None
+}
