@@ -14,11 +14,19 @@
 
 #![deny(missing_docs)]
 
+extern crate anyhow;
+
 use std::path::Path;
 use std::path::PathBuf;
 
+/// Extends capabilities of the base Directory structs.
+pub mod ext;
+pub use ext::*;
+
 #[cfg(target_os = "windows")]
 mod win;
+use ext::create_directory;
+use ext::read_file;
 #[cfg(target_os = "windows")]
 use win as sys;
 #[cfg(any(target_os = "macos", target_os = "ios"))]
@@ -132,8 +140,10 @@ pub struct ProjectDirs {
     // base directories
     cache_dir:        PathBuf,
     config_dir:       PathBuf,
+    config_dirs:      Vec<PathBuf>,
     config_local_dir: PathBuf,
     data_dir:         PathBuf,
+    data_dirs:        Vec<PathBuf>,
     data_local_dir:   PathBuf,
     preference_dir:   PathBuf,
     runtime_dir:      Option<PathBuf>,
@@ -264,6 +274,12 @@ impl BaseDirs {
     /// | Windows | –                                         | –                        |
     pub fn state_dir(&self) -> Option<&Path> {
         self.state_dir.as_ref().map(|p| p.as_path())
+    }
+}
+
+impl BaseDirsExt for BaseDirs {
+    fn create_config_directory<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        create_directory(&self.config_dir().to_path_buf(), path)
     }
 }
 
@@ -513,6 +529,27 @@ impl ProjectDirs {
     }
 }
 
+impl ProjectDirsExt for ProjectDirs {
+    fn find_config_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        read_file(
+            &self.config_dir().to_path_buf(), 
+            &self.config_dirs,
+            path.as_ref()
+        )
+    }
+
+    fn place_config_file<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        write_file(&self.config_dir().to_path_buf(), path)
+    }
+
+    fn find_data_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        read_file(
+            &self.data_dir().to_path_buf(), 
+            &self.data_dirs,
+            path.as_ref()
+        )
+    }
+}
 #[cfg(test)]
 mod tests {
     #[test]
