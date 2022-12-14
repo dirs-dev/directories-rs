@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::{path::{Path, PathBuf}, fs::read_dir};
 use anyhow::Result;
 
 /// Creates a directory.
@@ -11,13 +11,17 @@ pub fn create_directory<P: AsRef<Path>>(home: &PathBuf, path: P) -> Result<PathB
 /// Reads a file from a directory.
 pub fn read_file(
     home: &PathBuf, 
-    dirs: &Vec<PathBuf>, 
     path: &Path
 ) -> Option<PathBuf> {
     let full_path = home.join(path);
     if path_exists(&full_path) {
         return Some(full_path)
     }
+    let dirs: Vec<PathBuf> = read_dir(home).ok()?
+        .into_iter()
+        .map(|entry| entry.unwrap())
+        .map(|path| path.path())
+        .collect();
     for dir in dirs.iter() {
         let full_path = dir.join(path);
         if path_exists(&full_path) {

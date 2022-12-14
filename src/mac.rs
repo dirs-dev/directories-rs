@@ -64,22 +64,8 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
     if let Some(home_dir)    = dirs_sys::home_dir() {
         let cache_dir        = home_dir.join("Library/Caches").join(&project_path);
         let config_dir       = home_dir.join("Library/Application Support").join(&project_path);
-        let mut config_dirs = vec![];
-        std::fs::read_dir(&config_dir).unwrap().for_each(|entry| {
-            let entry = entry.unwrap();
-            let path = entry.path();
-            config_dirs.push(path)
-        });
-        let config_dirs = config_dirs;
         let config_local_dir = config_dir.clone();
         let data_dir         = home_dir.join("Library/Application Support").join(&project_path);
-        let mut data_dirs = vec![];
-        std::fs::read_dir(&data_dir).unwrap().for_each(|entry| {
-            let entry = entry.unwrap();
-            let path = entry.path();
-            data_dirs.push(path)
-        });
-        let data_dirs = data_dirs;
         let data_local_dir   = data_dir.clone();
         let preference_dir   = home_dir.join("Library/Preferences").join(&project_path);
 
@@ -87,10 +73,8 @@ pub fn project_dirs_from_path(project_path: PathBuf) -> Option<ProjectDirs> {
             project_path:     project_path,
             cache_dir:        cache_dir,
             config_dir:       config_dir,
-            config_dirs:      config_dirs,
             config_local_dir: config_local_dir,
             data_dir:         data_dir,
-            data_dirs:        data_dirs,
             data_local_dir:   data_local_dir,
             preference_dir:   preference_dir,
             runtime_dir:      None,

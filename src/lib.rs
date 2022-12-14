@@ -21,6 +21,7 @@ use std::path::PathBuf;
 
 /// Extends capabilities of the base Directory structs.
 pub mod extensions;
+use anyhow::Context;
 pub use extensions::*;
 
 #[cfg(target_os = "windows")]
@@ -138,10 +139,8 @@ pub struct ProjectDirs {
     // base directories
     cache_dir:        PathBuf,
     config_dir:       PathBuf,
-    config_dirs:      Vec<PathBuf>,
     config_local_dir: PathBuf,
     data_dir:         PathBuf,
-    data_dirs:        Vec<PathBuf>,
     data_local_dir:   PathBuf,
     preference_dir:   PathBuf,
     runtime_dir:      Option<PathBuf>,
@@ -278,6 +277,22 @@ impl BaseDirs {
 impl BaseDirsExt for BaseDirs {
     fn create_config_directory<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
         create_directory(&self.config_dir().to_path_buf(), path)
+    }
+
+    fn create_data_directory<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        create_directory(&self.data_dir().to_path_buf(), path)
+    }
+
+    fn create_cache_directory<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        create_directory(&self.cache_dir().to_path_buf(), path)
+    }
+
+    fn create_state_directory<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        create_directory(&self.state_dir().context("The state directory is unavailable.")?.to_path_buf(), path)
+    }
+
+    fn create_runtime_directory<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        create_directory(&self.runtime_dir().context("The xdg runtime directory is unavailable.")?.to_path_buf(), path)
     }
 }
 
@@ -531,20 +546,87 @@ impl ProjectDirsExt for ProjectDirs {
     fn find_config_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
         read_file(
             &self.config_dir().to_path_buf(), 
-            &self.config_dirs,
             path.as_ref()
         )
+    }
+
+    fn find_data_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        read_file(
+            &self.data_dir().to_path_buf(), 
+            path.as_ref()
+        )
+    }
+
+    fn find_cache_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        read_file(
+            &self.cache_dir().to_path_buf(), 
+            path.as_ref()
+        )
+    }
+
+    fn find_state_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        read_file(
+            &self.state_dir()?.to_path_buf(), 
+            path.as_ref()
+        )
+    }
+
+    fn find_runtime_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        read_file(
+            &self.runtime_dir()?.to_path_buf(), 
+            path.as_ref()
+        )
+    }
+
+    fn get_config_file<P: AsRef<Path>>(&self, path: P) -> PathBuf {
+        self.config_dir().join(path).to_path_buf()
+    }
+
+    fn get_data_file<P: AsRef<Path>>(&self, path: P) -> PathBuf {
+        self.data_dir().join(path).to_path_buf()
+    }
+
+    fn get_cache_file<P: AsRef<Path>>(&self, path: P) -> PathBuf {
+        self.cache_dir().join(path).to_path_buf()
+    }
+
+    fn get_state_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        match self.state_dir() {
+            Some(state_dir) => Some(state_dir.join(path)),
+            None => None,
+        }
+    }
+
+    fn get_runtime_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
+        match self.runtime_dir() {
+            Some(runtime_dir) => Some(runtime_dir.join(path)),
+            None => None,
+        }
     }
 
     fn place_config_file<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
         write_file(&self.config_dir().to_path_buf(), path)
     }
 
-    fn find_data_file<P: AsRef<Path>>(&self, path: P) -> Option<PathBuf> {
-        read_file(
-            &self.data_dir().to_path_buf(), 
-            &self.data_dirs,
-            path.as_ref()
+    fn place_data_file<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        write_file(&self.data_dir().to_path_buf(), path)
+    }
+
+    fn place_cache_file<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        write_file(&self.cache_dir().to_path_buf(), path)
+    }
+
+    fn place_state_file<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        write_file(
+            &self.state_dir().context("Failed to get state directory")?.to_path_buf(),
+            path
+        )
+    }
+
+    fn place_runtime_file<P: AsRef<Path>>(&self, path: P) -> anyhow::Result<PathBuf> {
+        write_file(
+            &self.runtime_dir().context("Failed to get runtime directory")?.to_path_buf(),
+            path
         )
     }
 }
