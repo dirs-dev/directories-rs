@@ -20,13 +20,11 @@ use std::path::Path;
 use std::path::PathBuf;
 
 /// Extends capabilities of the base Directory structs.
-pub mod ext;
-pub use ext::*;
+pub mod extensions;
+pub use extensions::*;
 
 #[cfg(target_os = "windows")]
 mod win;
-use ext::create_directory;
-use ext::read_file;
 #[cfg(target_os = "windows")]
 use win as sys;
 #[cfg(any(target_os = "macos", target_os = "ios"))]
