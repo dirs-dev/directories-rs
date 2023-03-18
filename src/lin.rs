@@ -8,26 +8,28 @@ use UserDirs;
 use ProjectDirs;
 
 pub fn base_dirs() -> Option<BaseDirs> {
-    if let Some(home_dir)  = dirs_sys::home_dir() {
-        let cache_dir      = env::var_os("XDG_CACHE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".cache"));
-        let config_dir     = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config"));
-        let data_dir       = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
-        let data_local_dir = data_dir.clone();
-        let preference_dir = config_dir.clone();
-        let runtime_dir    = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path);
-        let state_dir      = env::var_os("XDG_STATE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/state"));
-        let executable_dir = env::var_os("XDG_BIN_HOME")   .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/bin"));
+    if let Some(home_dir)    = dirs_sys::home_dir() {
+        let cache_dir        = env::var_os("XDG_CACHE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".cache"));
+        let config_dir       = env::var_os("XDG_CONFIG_HOME").and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".config"));
+        let config_local_dir = config_dir.clone();
+        let data_dir         = env::var_os("XDG_DATA_HOME")  .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/share"));
+        let data_local_dir   = data_dir.clone();
+        let preference_dir   = config_dir.clone();
+        let runtime_dir      = env::var_os("XDG_RUNTIME_DIR").and_then(dirs_sys::is_absolute_path);
+        let state_dir        = env::var_os("XDG_STATE_HOME") .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/state"));
+        let executable_dir   = env::var_os("XDG_BIN_HOME")   .and_then(dirs_sys::is_absolute_path).unwrap_or_else(|| home_dir.join(".local/bin"));
 
         let base_dirs = BaseDirs {
-            home_dir:       home_dir,
-            cache_dir:      cache_dir,
-            config_dir:     config_dir,
-            data_dir:       data_dir,
-            data_local_dir: data_local_dir,
-            executable_dir: Some(executable_dir),
-            preference_dir: preference_dir,
-            runtime_dir:    runtime_dir,
-            state_dir:      Some(state_dir)
+            home_dir:         home_dir,
+            cache_dir:        cache_dir,
+            config_dir:       config_dir,
+            config_local_dir: config_local_dir,
+            data_dir:         data_dir,
+            data_local_dir:   data_local_dir,
+            executable_dir:   Some(executable_dir),
+            preference_dir:   preference_dir,
+            runtime_dir:      runtime_dir,
+            state_dir:        Some(state_dir)
         };
         Some(base_dirs)
     } else {
