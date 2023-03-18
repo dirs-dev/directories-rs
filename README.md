@@ -104,17 +104,18 @@ that have been defined according to the conventions of the operating system the 
 
 If you want to compute the location of cache, config or data directories for your own application or project, use `ProjectDirs` instead.
 
-| Function name    | Value on Linux                                           | Value on Windows            | Value on macOS                      |
-| ---------------- | -------------------------------------------------------- | --------------------------- | ----------------------------------- |
-| `home_dir`       | `$HOME`                                                  | `{FOLDERID_Profile}`        | `$HOME`                             |
-| `cache_dir`      | `$XDG_CACHE_HOME`        or `$HOME`/.cache               | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Caches              |
-| `config_dir`     | `$XDG_CONFIG_HOME`       or `$HOME`/.config              | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
-| `data_dir`       | `$XDG_DATA_HOME`         or `$HOME`/.local/share         | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
-| `data_local_dir` | `$XDG_DATA_HOME`         or `$HOME`/.local/share         | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Application Support |
-| `executable_dir` | `Some($XDG_BIN_HOME)`    or `Some($HOME`/.local/bin`)`   | `None`                      | `None`                              |
-| `preference_dir` | `$XDG_CONFIG_HOME`       or `$HOME`/.config              | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Preferences         |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR)` or `None`                       | `None`                      | `None`                              |
-| `state_dir`      | `Some($XDG_STATE_HOME)`  or `Some($HOME`/.local/state`)` | `None`                      | `None`                              |
+| Function name      | Value on Linux                                           | Value on Windows            | Value on macOS                      |
+|--------------------|----------------------------------------------------------| --------------------------- | ----------------------------------- |
+| `home_dir`         | `$HOME`                                                  | `{FOLDERID_Profile}`        | `$HOME`                             |
+| `cache_dir`        | `$XDG_CACHE_HOME`        or `$HOME`/.cache               | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Caches              |
+| `config_dir`       | `$XDG_CONFIG_HOME`       or `$HOME`/.config              | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
+| `config_local_dir` | `$XDG_CONFIG_HOME`       or `$HOME`/.config              | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Application Support |
+| `data_dir`         | `$XDG_DATA_HOME`         or `$HOME`/.local/share         | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Application Support |
+| `data_local_dir`   | `$XDG_DATA_HOME`         or `$HOME`/.local/share         | `{FOLDERID_LocalAppData}`   | `$HOME`/Library/Application Support |
+| `executable_dir`   | `Some($XDG_BIN_HOME)`    or `Some($HOME`/.local/bin`)`   | `None`                      | `None`                              |
+| `preference_dir`   | `$XDG_CONFIG_HOME`       or `$HOME`/.config              | `{FOLDERID_RoamingAppData}` | `$HOME`/Library/Preferences         |
+| `runtime_dir`      | `Some($XDG_RUNTIME_DIR)` or `None`                       | `None`                      | `None`                              |
+| `state_dir`        | `Some($XDG_STATE_HOME)`  or `Some($HOME`/.local/state`)` | `None`                      | `None`                              |
 
 ### `UserDirs`
 
@@ -139,15 +140,16 @@ that have been defined according to the conventions of the operating system the 
 The intended use case for `ProjectDirs` is to compute the location of cache, config or data directories for your own application or project,
 which are derived from the standard directories.
 
-| Function name    | Value on Linux                                                                     | Value on Windows                                    | Value on macOS                                       |
-| ---------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------- |
-| `cache_dir`      | `$XDG_CACHE_HOME`/`<project_path>`        or `$HOME`/.cache/`<project_path>`       | `{FOLDERID_LocalAppData}`/`<project_path>`/cache    | `$HOME`/Library/Caches/`<project_path>`              |
-| `config_dir`     | `$XDG_CONFIG_HOME`/`<project_path>`       or `$HOME`/.config/`<project_path>`      | `{FOLDERID_RoamingAppData}`/`<project_path>`/config | `$HOME`/Library/Application Support/`<project_path>` |
-| `data_dir`       | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_RoamingAppData}`/`<project_path>`/data   | `$HOME`/Library/Application Support/`<project_path>` |
-| `data_local_dir` | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_LocalAppData}`/`<project_path>`/data     | `$HOME`/Library/Application Support/`<project_path>` |
-| `preference_dir` | `$XDG_CONFIG_HOME`/`<project_path>`       or `$HOME`/.config/`<project_path>`      | `{FOLDERID_RoamingAppData}`/`<project_path>`/config | `$HOME`/Library/Preferences/`<project_path>`         |
-| `runtime_dir`    | `Some($XDG_RUNTIME_DIR`/`<project_path>)`                                          | `None`                                              | `None`                                               |
-| `state_dir`      | `Some($XDG_STATE_HOME`/`<project_path>)`  or `$HOME`/.local/state/`<project_path>` | `None`                                              | `None`                                               |
+| Function name      | Value on Linux                                                                     | Value on Windows                                    | Value on macOS                                       |
+|--------------------|------------------------------------------------------------------------------------|-----------------------------------------------------| ---------------------------------------------------- |
+| `cache_dir`        | `$XDG_CACHE_HOME`/`<project_path>`        or `$HOME`/.cache/`<project_path>`       | `{FOLDERID_LocalAppData}`/`<project_path>`/cache    | `$HOME`/Library/Caches/`<project_path>`              |
+| `config_dir`       | `$XDG_CONFIG_HOME`/`<project_path>`       or `$HOME`/.config/`<project_path>`      | `{FOLDERID_RoamingAppData}`/`<project_path>`/config | `$HOME`/Library/Application Support/`<project_path>` |
+| `config_local_dir` | `$XDG_CONFIG_HOME`/`<project_path>`       or `$HOME`/.config/`<project_path>`      | `{FOLDERID_LocalAppData}`/`<project_path>`/config   | `$HOME`/Library/Application Support/`<project_path>` |
+| `data_dir`         | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_RoamingAppData}`/`<project_path>`/data   | `$HOME`/Library/Application Support/`<project_path>` |
+| `data_local_dir`   | `$XDG_DATA_HOME`/`<project_path>`         or `$HOME`/.local/share/`<project_path>` | `{FOLDERID_LocalAppData}`/`<project_path>`/data     | `$HOME`/Library/Application Support/`<project_path>` |
+| `preference_dir`   | `$XDG_CONFIG_HOME`/`<project_path>`       or `$HOME`/.config/`<project_path>`      | `{FOLDERID_RoamingAppData}`/`<project_path>`/config | `$HOME`/Library/Preferences/`<project_path>`         |
+| `runtime_dir`      | `Some($XDG_RUNTIME_DIR`/`<project_path>)`                                          | `None`                                              | `None`                                               |
+| `state_dir`        | `Some($XDG_STATE_HOME`/`<project_path>)`  or `$HOME`/.local/state/`<project_path>` | `None`                                              | `None`                                               |
 
 The specific value of `<project_path>` is computed by the
 
