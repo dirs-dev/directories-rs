@@ -1,6 +1,6 @@
 [package]
 name        = "directories"
-version     = "5.0.0"
+version     = "5.0.1"
 authors     = ["Simon Ochsenreither <simon@ochsenreither.de>"]
 description = "A tiny mid-level library that provides platform-specific standard locations of directories for config, cache and other data on Linux, Windows and macOS by leveraging the mechanisms defined by the XDG base/user directory specifications on Linux, the Known Folder API on Windows, and the Standard Directory guidelines on macOS."
 readme      = "README.md"
