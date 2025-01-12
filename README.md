@@ -218,6 +218,10 @@ cargo build --target=x86_64-unknown-redox
 
 ## Changelog
 
+### 6
+
+- Update `dirs-sys` dependency to `0.5.0`, which in turn updates `windows-sys` dependency to `0.59.0`.
+
 ### 5
 
 - Update `dirs-sys` dependency to `0.4.0`.
